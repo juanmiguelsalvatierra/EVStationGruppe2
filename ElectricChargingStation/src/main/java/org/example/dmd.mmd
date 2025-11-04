@@ -1,0 +1,88 @@
+classDiagram
+%% ====== CUSTOMER SIDE ======
+    class Customer {
+        +String customerID
+        +String name
+        +String email
+        +String paymentInfo
+        +Double balance
+        +createAccount()
+        +updateAccount()
+        +deleteAccount()
+        +viewAccount()
+        +topUpBalance()
+        +withdrawBalance()
+        +viewBalance()
+    }
+
+    class Invoice {
+        +String invoiceID
+        +Date date
+        +Double totalAmount
+        +Double remainingBalance
+        +viewInvoice()
+    }
+
+    class InvoiceItem {
+        +String itemID
+        +String type  // charge or top-up
+        +Double energyConsumed
+        +Double duration
+        +Double pricePerKWh
+        +Double totalCost
+    }
+
+    class ChargingSession {
+        +String sessionID
+        +Date startTime
+        +Date endTime
+        +Double energyConsumed
+        +Double totalCost
+        +startCharging()
+        +stopCharging()
+    }
+
+%% ====== OWNER SIDE ======
+    class Owner {
+        +String ownerID
+        +String name
+        +String contactInfo
+        +createLocation()
+        +updateLocation()
+        +deleteLocation()
+        +createCharger()
+        +updateCharger()
+        +deleteCharger()
+        +updatePrice()
+        +viewInvoices()
+    }
+
+    class Location {
+        +String locationID
+        +String address
+        +String description
+        +viewStatus()
+    }
+
+    class Charger {
+        +String chargerID
+        +String type  // AC or DC
+        +String status  // free, occupied, outOfOrder
+    }
+
+    class Price {
+        +String priceID
+        +Double ratePerKWh
+        +String chargingMode  // AC/DC
+        +Double durationRate
+        +Date validFrom
+    }
+
+%% ====== RELATIONSHIPS ======
+    Customer "1" --> "0..*" Invoice : has
+    Invoice "1" --> "1..*" InvoiceItem : contains
+    InvoiceItem "*" --> "1" ChargingSession : refersTo
+    ChargingSession "1" --> "1" Charger : uses
+    Charger "*" --> "1" Location : belongsTo
+    Location "1" --> "1..*" Price : defines
+    Owner "1" --> "0..*" Location : manages
