@@ -5,24 +5,49 @@ Feature: Charge EV and pay by consumption/duration
 
   Background:
     Given I am logged in
-      And my balance is at least "€5.00"
-      And my RFID/app authorization is active
 
   @US4.1
   Scenario Outline: Successful charging session
-    Given I connect to charger "<chargerId>" of type "<type>"
-    When I start charging and consume "<kWh>" kWh in "<minutes>" minutes
+    Given I connect to charger "<chargerId>"
+    And my balance is "100"
+    When I attempt to start charging for "<minutes>" minutes
     Then the invoice item reflects correct price and duration
       And my balance is reduced accordingly
 
     Examples:
-      | chargerId | type | minutes | kWh  |
-      | AC-001    | AC   | 45      | 12.3 |
-      | DC-010    | DC   | 20      | 18.7 |
+      | chargerId | minutes |
+      | 1         | 45      |
+      | 2         | 60      |
 
   @US4.1 @negative
-  Scenario: Block start when insufficient balance
-    Given my balance is "€0.80"
-    When I attempt to start charging
+  Scenario: Unsuccessful charging session - due to insufficient balance
+    Given I connect to charger "1"
+    And my balance is "0"
+    When I attempt to start charging for "45" minutes
     Then the session is not started
       And I see "Insufficient balance — please top up"
+
+  @US4.1 @negative
+  Scenario Outline: Unsuccessful charging session - due to invalid time
+    Given I connect to charger "1"
+    And my balance is "100"
+    When I attempt to start charging for "<minutes>" minutes
+    Then the session is not started
+    And I see "Invalid time — please insert correct time"
+
+    Examples:
+      | minutes |
+      | 0       |
+      | -10     |
+
+  @US4.1 @negative
+  Scenario Outline: Unsuccessful charging session - due to invalid chargerId
+    Given I connect to charger "<chargerId>"
+    When I attempt to start charging for "<minutes>" minutes
+    Then the session is not started
+    And I see "Invalid chargerId — please insert correct chargerId"
+
+    Examples:
+      | chargerId |
+      | -1        |
+      | 0         |
