@@ -1,10 +1,12 @@
 # E4 – Charge EV
 @customer @charging
 Feature: Charge EV and pay by consumption/duration
-  As a customer I want to start and finish a charging session and be billed correctly.
+  As a customer
+  I want to charge my electric vehicle (EV)
+  so that I can replenish my vehicle’s battery using my prepaid account balance.
 
   Background:
-    Given I am logged in
+    Given I am logged in as a customer
 
   @US4.1
   Scenario Outline: Successful charging session
