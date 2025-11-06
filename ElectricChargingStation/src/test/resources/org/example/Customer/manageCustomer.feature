@@ -1,24 +1,16 @@
 # E1 – Customer Account Management
 @customer @account
 Feature: Manage customer account
-  So that I can keep my personal data current,
   As a customer
-  I want to create, update, and delete my account.
-
-  Background:
-    Given the platform is online
-    And no outages are reported
-    And the customer portal supports email-based login and prepaid accounts
+  I want to manage my customer account
+  so that I can keep my personal data and account information up to date.
 
   @US1.1
   Scenario Outline: Create a new customer account successfully
     Given I am a visitor without an existing account for "<email>"
-    When I register with email "<email>" and password "<password>"
-      And I accept the terms and conditions
+    When I register with email "<email>" , password "<password>" and username “Name”
     Then my account is created with a unique Customer ID
-      And I receive a verification email to "<email>"
-      And my initial balance is "0"
-      And my profile status is "Pending verification"
+    And my initial balance is "0"
 
     Examples:
       | email             | password    |
@@ -29,27 +21,33 @@ Feature: Manage customer account
   Scenario: Prevent duplicate account creation
     Given an account already exists for "alice@demo.com"
     When I try to register again with "alice@demo.com"
-    Then I am informed that the email is already in use
-      And I am offered to reset my password
+    Then I won’t be allowed to create a new account for "alice@demo.com"
 
   @US1.2
-  Scenario Outline: Update account details
-    Given I am logged in as customer "<email>"
-      And my current contact phone is "<oldPhone>"
-    When I update my phone to "<newPhone>"
-    Then my account shows phone "<newPhone>"
-      And an audit log entry is recorded
-
-    Examples:
-      | email            | oldPhone | newPhone  |
-      | alice@demo.com   | +4311111 | +4312222  |
+  Scenario: Update account details
+    Given I am logged in as customer "alice@demo.com"
+    And my current username is "Name"
+    When I update my username to "NewName"
+    Then my account shows “NewName” as my username
+    #only name changeable in settings?
 
   @US1.3
-  Scenario: Delete customer account
+  Scenario: Delete customer account successfully
     Given I am logged in as customer "alice@demo.com"
-      And my balance is "0"
+    And my balance is "0"
     When I request to delete my account
-      And I confirm the deletion
-    Then my account is scheduled for deletion within "30 days"
-      And I immediately lose access to the portal
-      And I receive a confirmation email
+    Then my account is deleted
+    And I immediately lose access to the portal
+
+  @US1.3 @negative
+  Scenario: Delete customer account with non-zero balance
+    Given I am logged in as customer "alice@demo.com"
+    And my balance is "10"
+    When I request to delete my account
+    Then I won’t be able to delete my account
+
+  @US1.4
+  Scenario: View customer account
+    Given I am logged in as customer "alice@demo.com"
+    When I open my profile page
+    Then I see my account details
