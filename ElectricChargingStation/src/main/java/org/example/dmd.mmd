@@ -15,27 +15,28 @@ classDiagram
 
     class Invoice {
         +int invoiceId
-        +int CustomerId
+        +int customerId
         +readInvoiceItems(): InvoiceItem[]
     }
 
+    %% means:
+    %% Sum of getBalanceAmount() for all InvoiceItems = current balance
     class InvoiceItem {
         <<abstract>>
         +String itemID
         +InvoiceItemType type
-        %%means if you sum up all getBalanceAmount() Methods of all InvoiceItems you will get the current Balance
         +getBalanceAmount(): Double
     }
 
+    %% is always negative since it reduces the balance
     class ChargingItem {
         +Double duration
         +Double pricePerKWh
-        %%is always negativ since it reduces the balance
         +getBalanceAmount(): Double
     }
 
+    %% amount is negative for withdraw and positive for top-up
     class BalanceItem {
-        %%amount is negative for withdraw and positive for top-up
         +Double amount 
         +getBalanceAmount(): Double
     }
@@ -49,7 +50,7 @@ classDiagram
 
     class Charger {
         +int chargerId
-        +int LocationId
+        +int locationId
         +ChargerType type
         +Status status
         +Double kwH
@@ -75,7 +76,7 @@ classDiagram
         OUT_OF_ORDER
     }
 
-%% ===== Vererbung im Domain Layer =====
+%% ===== Vererbung =====
 
     InvoiceItem <|-- ChargingItem
     InvoiceItem <|-- BalanceItem
@@ -87,112 +88,147 @@ classDiagram
     Location "1" --> "0..*" Charger : provides
 
 %% ============================================================
-%% =============== REPOSITORY LAYER (Persistenz) ==============
+%% =============== REPOSITORY LAYER (Concrete) =================
 %% ============================================================
 
     class CustomerRepository {
-        <<interface>>
-        -storage: Map
+        -storage: Map~int, Customer~
         +save(customer: Customer): Customer
-        +findAll(): List
+        +findAll(): List~Customer~
         +findById(customerId: int): Customer
         +deleteById(customerId: int)
     }
 
     class InvoiceRepository {
-        <<interface>>
-        -storage: Map
+        -storage: Map~int, Invoice~
         +save(invoice: Invoice): Invoice
         +findById(invoiceId: int): Invoice
-        +findByCustomerId(customerId: int): List
+        +findByCustomerId(customerId: int): List~Invoice~
+        +findAll(): List~Invoice~
     }
 
     class LocationRepository {
-        <<interface>>
-        -storage: Map
+        -storage: Map~int, Location~
         +save(location: Location): Location
-        +findAll(): List
+        +findAll(): List~Location~
         +findById(locationId: int): Location
+        +deleteById(locationId: int)
     }
 
     class ChargerRepository {
-        <<interface>>
-        -storage: Map
+        -storage: Map~int, Charger~
         +save(charger: Charger): Charger
         +findById(chargerId: int): Charger
-        +findByLocationId(locationId: int): List
+        +findByLocationId(locationId: int): List~Charger~
+        +deleteById(chargerId: int)
     }
 
 %% ============================================================
-%% =============== SERVICE LAYER (Fachlogik) ==================
+%% =============== SERVICE LAYER ==============================
 %% ============================================================
 
     class CustomerService {
+        -customerRepo: CustomerRepository
+        -invoiceRepo: InvoiceRepository
         +createCustomer(name: String, email: String): Customer
         +updateCustomer(customerId: int, name: String, email: String): Customer
         +deleteCustomer(customerId: int): Customer
-        +getAllCustomers(): List<Customer>
+        +getAllCustomers(): List~Customer~
         +getCustomerById(customerId: int): Customer
         +topUpBalance(customerId: int, amount: Double)
         +withdrawBalance(customerId: int, amount: Double)
     }
 
     class InvoiceService {
+        -invoiceRepo: InvoiceRepository
+        -customerRepo: CustomerRepository
         +createInvoice(customerId: int): Invoice
         +getInvoice(invoiceId: int): Invoice
         +getInvoiceForCustomer(customerId: int): Invoice
-        +getAllInvoices(): List<Invoice>
+        +getAllInvoices(): List~Invoice~
         +addChargingItem(invoiceId: int, duration: Double, pricePerKWh: Double): ChargingItem
         +addBalanceItem(invoiceId: int, amount: Double): BalanceItem
         +calculateTotal(invoiceId: int): Double
     }
 
     class LocationService {
+        -locationRepo: LocationRepository
         +createLocation(address: String, description: String): Location
         +updateLocation(locationId: int, address: String, description: String): Location
         +deleteLocation(locationId: int): Location
-        +getAllLocations(): List
-        %%List with all Locations and their Chargers
+        +getAllLocations(): List~Location~
         +getStationNetwork(): Map
         +getLocation(locationId: int): Location
     }
 
     class ChargerService {
+        -chargerRepo: ChargerRepository
+        -locationRepo: LocationRepository
         +createCharger(locationId: int, type: ChargerType, kwH: Double, pricePerKWh: Double): Charger
         +updateChargerStatus(chargerId: int, status: Status): Charger
         +deleteCharger(chargerId: int): Charger
-        +getChargersForLocation(locationId: int): List
+        +getChargersForLocation(locationId: int): List~Charger~
         +getCharger(chargerId: int): Charger
     }
+
+%% ============================================================
+%% =============== APPLICATION CONTEXT =========================
+%% ============================================================
+
+%% This class creates one shared instance of each repository
+%% and injects these instances into the services.
+%% This ensures all services work with the same runtime data.
+    class ApplicationContext {
+        -customerRepo: CustomerRepository
+        -invoiceRepo: InvoiceRepository
+        -locationRepo: LocationRepository
+        -chargerRepo: ChargerRepository
+
+        -customerService: CustomerService
+        -invoiceService: InvoiceService
+        -locationService: LocationService
+        -chargerService: ChargerService
+
+        +init(): void
+        +getCustomerService(): CustomerService
+        +getInvoiceService(): InvoiceService
+        +getLocationService(): LocationService
+        +getChargerService(): ChargerService
+    }
+
+%% ===== Wiring: ApplicationContext erzeugt Shared Repo Instanzen =====
+
+    ApplicationContext o-- CustomerRepository : creates 1 shared instance
+    ApplicationContext o-- InvoiceRepository  : creates 1 shared instance
+    ApplicationContext o-- LocationRepository : creates 1 shared instance
+    ApplicationContext o-- ChargerRepository  : creates 1 shared instance
+
+%% ===== Wiring: ApplicationContext injiziert Instanzen in Service-Layer =====
+
+    ApplicationContext o-- CustomerService
+    ApplicationContext o-- InvoiceService
+    ApplicationContext o-- LocationService
+    ApplicationContext o-- ChargerService
+
+%% ===== Services nutzen Repositories =====
+
+    CustomerService ..> CustomerRepository
+    CustomerService ..> InvoiceRepository
+
+    InvoiceService ..> InvoiceRepository
+    InvoiceService ..> CustomerRepository
+
+    LocationService ..> LocationRepository
+
+    ChargerService ..> ChargerRepository
+    ChargerService ..> LocationRepository
 
 %% ============================================================
 %% ========================== Main ============================
 %% ============================================================
 
-class ElectricChargingStationApp {
-    +main(args: String[])
-}
+    class ElectricChargingStationApp {
+        +main(args: String[])
+    }
 
-%% ===== Service -> Main Abhängigkeiten =====
-    CustomerService ..> ElectricChargingStationApp
-    InvoiceService ..> ElectricChargingStationApp   
-    LocationService ..> ElectricChargingStationApp
-    ChargerService ..> ElectricChargingStationApp
-
-
-%% ===== Service -> Repository Abhängigkeiten =====
-
-    CustomerService ..> CustomerRepository
-    InvoiceService ..> InvoiceRepository
-    InvoiceService ..> CustomerRepository
-    LocationService ..> LocationRepository
-    ChargerService ..> ChargerRepository
-    ChargerService ..> LocationRepository
-
-%% ===== Services arbeiten auf Domain-Objekten =====
-
-    CustomerService --> Customer : manages
-    InvoiceService --> Invoice : manages
-    InvoiceService --> InvoiceItem : manages
-    LocationService --> Location : manages
-    ChargerService --> Charger : manages
+    ElectricChargingStationApp ..> ApplicationContext : "uses 1 shared context"
