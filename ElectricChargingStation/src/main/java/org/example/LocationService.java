@@ -19,7 +19,7 @@ public class LocationService {
         return locationRepo.findById(id);
     }*/
 
-    public List<Location> getAllLocations() {
-        return locationRepo.findAll();
+    public List<Location> ReadAllLocations() {
+        return locationRepo.ReadAll();
     }
 }

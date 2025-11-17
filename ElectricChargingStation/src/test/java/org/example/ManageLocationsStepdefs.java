@@ -31,7 +31,7 @@ public class ManageLocationsStepdefs {
 
     @Then("the location appears in the list of all locations")
     public void theLocationAppearsInTheListOfAllLocations() {
-        List<Location> locations = ac.locationService.getAllLocations();
+        List<Location> locations = ac.locationService.ReadAllLocations();
         List<Location> temp = locations.stream().filter(item -> item.getDescription().equals(this.arg0) && item.getAddress().equals(this.arg1)).collect(Collectors.toList());
         assertEquals(1, temp.size());
     }
@@ -54,7 +54,7 @@ public class ManageLocationsStepdefs {
 
     @Then("I see all existing locations in a list")
     public void iSeeAllExistingLocationsInAList() {
-        assertFalse(ac.locationService.getAllLocations().isEmpty());
+        assertFalse(ac.locationService.ReadAllLocations().isEmpty());
     }
 
     @When("I change its address to {string}")

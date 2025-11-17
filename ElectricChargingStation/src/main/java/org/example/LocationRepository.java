@@ -20,7 +20,7 @@ public class LocationRepository {
         return locationRepo.get(id);
     }*/
 
-    public List<Location> findAll() {
+    public List<Location> ReadAll() {
         return new ArrayList<>(locationRepo.values());
     }
 }

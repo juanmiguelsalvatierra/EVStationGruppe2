@@ -6,7 +6,6 @@ public class Location {
     public int locationId;
     private String address;
     private String description;
-    //public List<Charger> chargerList;
 
     public Location(String address, String description){
         this.address = address;
