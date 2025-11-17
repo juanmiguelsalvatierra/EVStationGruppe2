@@ -4,18 +4,32 @@ import java.util.List;
 
 public class Location {
     public int locationId;
-    public String address;
-    public String description;
-    public List<Charger> chargerList;
+    private String address;
+    private String description;
 
-    public Location(int locationId, String address, String description){
-        this.locationId = locationId;
+    public Location(String address, String description){
         this.address = address;
         this.description = description;
     }
 
-    public void addCharger(Charger charger){
-        charger.locationId = this.locationId;
-        this.chargerList.add(charger);
+    public String getAddress() {
+        return address;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getLocationId() {
+        return locationId;
+    }
+
+    @Override
+    public String toString() {
+        return "Location ID: " + locationId +
+                " | Address: " + address +
+                " | Description: " + description;
+    }
+
+
 }

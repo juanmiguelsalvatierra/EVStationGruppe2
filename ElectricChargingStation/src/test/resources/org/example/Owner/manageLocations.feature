@@ -15,6 +15,7 @@ Feature: Manage locations
 
   @US6.2
   Scenario: Read all locations
+    Given a location "Brigittenau, Wien" exists
     When I view locations
     Then I see all existing locations in a list
 

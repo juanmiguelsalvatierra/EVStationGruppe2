@@ -1,10 +1,17 @@
 package org.example;
 
 public class ApplicationContext {
-    public CustomerRepository cr = new CustomerRepository();
-    public CustomerService cs = new CustomerService(cr);
+    public CustomerRepository customerRepo;
+    public CustomerService customerService;
 
-    public ApplicationContext(){
-        this.cr = cr;
+    public LocationRepository locationRepo;
+    public LocationService locationService;
+
+    public ApplicationContext() {
+        this.customerRepo = new CustomerRepository();
+        this.customerService = new CustomerService(customerRepo);
+
+        this.locationRepo = new LocationRepository();
+        this.locationService = new LocationService(locationRepo);
     }
 }
