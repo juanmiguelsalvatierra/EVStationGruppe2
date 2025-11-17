@@ -4,10 +4,8 @@ public class Customer {
     public int customerId;
     public String name;
     public String email;
-    private double balance;
 
-    public Customer(int customerId, String name, String email){
-        this.customerId = customerId;
+    public Customer( String name, String email){
         this.name = name;
         this.email = email;
     }
@@ -17,28 +15,12 @@ public class Customer {
         this.email = email;
     }
 
-    public double topUpBalance(double amount){
-        this.balance += amount;
-        return this.balance;
-    }
-
-    public double withdrawBalance(double amount){
-        if(this.balance >= amount){
-            this.balance -= amount;
-        }
-        return this.balance;
-    }
-
-    public double viewBalance(){
-        return this.balance;
-    }
-
     public void setId(int newId) {
         this.customerId = newId;
     }
 
     @Override
     public String toString(){
-        return "Created Customer " + name + " ID: " + customerId + " Balance: " + balance;
+        return  name + " " + customerId;
     }
 }

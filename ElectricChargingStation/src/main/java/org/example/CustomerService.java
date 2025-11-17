@@ -11,7 +11,7 @@ public class CustomerService {
     }
 
     public Customer createCustomer(String name, String email) {
-        Customer customer = new Customer(repo.customers.size() + 1, name, email);
+        Customer customer = new Customer(name, email);
         repo.save(customer);
         return customer;
     }
