@@ -13,6 +13,14 @@ public class Location {
         this.description = description;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public String toString() {
         return "Location ID: " + locationId +
@@ -20,9 +28,5 @@ public class Location {
                 " | Description: " + description;
     }
 
-    /*//juan
-    public void addCharger(Charger charger){
-        charger.locationId = this.locationId;
-        this.chargerList.add(charger);
-    }*/
+
 }
