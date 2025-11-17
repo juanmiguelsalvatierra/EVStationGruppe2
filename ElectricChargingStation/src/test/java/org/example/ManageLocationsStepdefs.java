@@ -6,6 +6,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,26 +38,23 @@ public class ManageLocationsStepdefs {
 
     @And("it initially has zero chargers")
     public void itInitiallyHasZeroChargers() {
-        // Write code here that turns the phrase above into concrete actions
+        // Chargers still to be implemented
         //throw new PendingException();
-    }
-
-    @When("I view locations")
-    public void iViewLocations() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @Then("I see all existing locations in a list")
-    public void iSeeAllExistingLocationsInAList() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
     }
 
     @Given("a location {string} exists")
     public void aLocationExists(String arg0) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        ac.locationService.createLocation("", arg0);
+    }
+
+    @When("I view locations")
+    public void iViewLocations() {
+        //no action
+    }
+
+    @Then("I see all existing locations in a list")
+    public void iSeeAllExistingLocationsInAList() {
+        assertFalse(ac.locationService.getAllLocations().isEmpty());
     }
 
     @When("I change its address to {string}")

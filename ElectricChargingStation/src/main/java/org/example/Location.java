@@ -21,6 +21,10 @@ public class Location {
         return description;
     }
 
+    public int getLocationId() {
+        return locationId;
+    }
+
     @Override
     public String toString() {
         return "Location ID: " + locationId +
