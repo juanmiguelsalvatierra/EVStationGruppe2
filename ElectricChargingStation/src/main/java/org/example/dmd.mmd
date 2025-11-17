@@ -71,7 +71,7 @@ classDiagram
 
     class Status {
         <<enumeration>>
-        FREE
+        IN_OPERATION_FREE
         OCCUPIED
         OUT_OF_ORDER
     }
@@ -210,7 +210,7 @@ classDiagram
     ApplicationContext o-- LocationService
     ApplicationContext o-- ChargerService
 
-%% ===== Services nutzen Repositories =====
+%% ===== Services use Repositories =====
 
     CustomerService ..> CustomerRepository
     CustomerService ..> InvoiceRepository
@@ -222,6 +222,14 @@ classDiagram
 
     ChargerService ..> ChargerRepository
     ChargerService ..> LocationRepository
+
+
+%% ===== Repositories use Domain Classes =====
+
+    CustomerRepository ..> Customer : manages
+    InvoiceRepository ..> Invoice : manages
+    LocationRepository ..> Location : manages
+    ChargerRepository ..> Charger : manages
 
 %% ============================================================
 %% ========================== Main ============================
