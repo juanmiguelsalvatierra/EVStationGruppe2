@@ -2,16 +2,16 @@ package org.example;
 
 public class ChargingItem extends InvoiceItem{
     public double duration;
-    public double pricePerUnit;
+    public double pricePerKwh;
 
-    public ChargingItem(String itemId, double duration, double pricePerUnit){
+    public ChargingItem(String itemId, double duration, double pricePerKwh){
         super(itemId, InvoiceItemType.CHARGING);
         this.duration = duration;
-        this.pricePerUnit = pricePerUnit;
+        this.pricePerKwh = pricePerKwh;
     }
 
     @Override
     public double getBalanceAmount(){
-        return duration * pricePerUnit;
+        return (duration / 60) * pricePerKwh;
     }
 }

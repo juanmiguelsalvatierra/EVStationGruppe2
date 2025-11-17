@@ -10,9 +10,4 @@ public class Invoice {
         this.invoiceId = invoiceId;
         this.customerId = customerId;
     }
-
-    public List<InvoiceItem> readInvoiceItem(){
-        //ToDo
-        return List.of();
-    }
 }
