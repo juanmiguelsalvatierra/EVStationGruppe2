@@ -13,9 +13,13 @@ Feature: Manage chargers
     Then it appears under "Vienna West" with status "in order free"
 
   @US7.2
-  Scenario: Read all chargers
-    When I open the Chargers page
-    Then I see each charger with type and operational status
+  Scenario Outline: Read charger successfully
+    When I open the overview page for all chargers
+    Then I see each charger with its "<chargerID>", "<chargerType>" and "<operationalStatus>"
+    Examples:
+      | chargerID    | chargerType | operationalStatus |
+      | 1           | AC           | occupied          |
+      | 20          | DC           | in order free     |
 
   @US7.3
   Scenario: Update charger location
