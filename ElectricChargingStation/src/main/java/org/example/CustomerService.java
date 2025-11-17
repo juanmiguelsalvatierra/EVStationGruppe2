@@ -2,9 +2,6 @@ package org.example;
 
 public class CustomerService {
     public CustomerRepository repo;
-    public String name;
-    public String email;
-    public int customerId = -1;
 
     public CustomerService(CustomerRepository repo){
         this.repo = repo;
