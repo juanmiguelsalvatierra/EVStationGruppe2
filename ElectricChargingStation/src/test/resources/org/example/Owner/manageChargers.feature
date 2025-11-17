@@ -1,6 +1,6 @@
 # E7 – Manage Chargers
 @owner @chargers
-Feature: CRUD chargers
+Feature: Manage chargers
   As the owner, I want to manage chargers, so that I can ensure accurate setup,
   maintenance, and availability of all charging stations.
 
@@ -8,31 +8,37 @@ Feature: CRUD chargers
     Given I am logged in as an owner
 
   @US7.1
-  Scenario Outline: Create charger successfully
-    When I create a charger with "<chargerID>" of type "<chargerType>" at location "<location>"
-    Then it appears under "<location>" with "<chargerID>" and "<chargerType>"
-    Examples:
-      | chargerID  | chargerType | location                     |
-      | AC-1       | AC          | Brigittenau, Wien            |
-      | DC-20      | DC          | Schwechat, Niederösterreich  |
+  Scenario: Create charger
+    When I create a charger with the charger ID "1" of type "AC" at location "Vienna West"
+    Then it appears under "Vienna West" with status "in order free"
 
   @US7.2
   Scenario Outline: Read charger successfully
     When I open the overview page for all chargers
     Then I see each charger with its "<chargerID>", "<chargerType>" and "<operationalStatus>"
     Examples:
-      | chargerID  | chargerType | operationalStatus |
-      | AC-1       | AC          | occupied          |
-      | DC-20      | DC          | free              |
+      | chargerID    | chargerType | operationalStatus |
+      | 1           | AC           | occupied          |
+      | 20          | DC           | in order free     |
 
   @US7.3
-  Scenario: Update charger
-    Given charger "AC-1" exists at "Brigittenau, Wien"
-    When I move it to "Schwechat, Niederösterreich"
-    Then it shows location "Schwechat, Niederösterreich"
+  Scenario: Update charger location
+    Given the charger with the charger ID "1" exists at "Vienna West"
+    When I move it to "Linz Center"
+    Then it shows location "Linz Center"
+
+  Scenario: Update charger type
+    Given the charger with the charger ID "1" currently has type "AC"
+    When I assign it type "DC"
+    Then it shows charger-type "DC"
+
+  Scenario: Update charger status
+    Given the charger with the charger ID "1" currently has charger status "in operation free"
+    When I assign it charger status "out of order"
+    Then it shows charger status "out of order"
 
   @US7.4
   Scenario: Delete charger
-    Given charger "AC-1" exists
-    When I delete it
-    Then it disappears from the list of all chargers
+    Given the charger with the charger ID "1" exists
+    When I request to delete it
+    Then it disappears from the list

@@ -1,88 +1,234 @@
 classDiagram
-%% ====== CUSTOMER SIDE ======
+%% ============================================================
+%% =============== DOMAIN LAYER (Fachmodell) ==================
+%% ============================================================
+
     class Customer {
-        +String customerID
+        +int customerId
         +String name
         +String email
-        +String paymentInfo
-        +Double balance
-        +createAccount()
-        +updateAccount()
-        +deleteAccount()
-        +viewAccount()
-        +topUpBalance()
-        +withdrawBalance()
-        +viewBalance()
+        +updateAccount(name: String, email: String)
+        +topUpBalance(amount: Double): Double
+        +withdrawBalance(amount: Double): Double
+        +viewBalance(): Double
     }
 
     class Invoice {
-        +String invoiceID
-        +Date date
-        +Double totalAmount
-        +Double remainingBalance
-        +viewInvoice()
+        +int invoiceId
+        +int customerId
+        +readInvoiceItems(): InvoiceItem[]
     }
 
+    %% means:
+    %% Sum of getBalanceAmount() for all InvoiceItems = current balance
     class InvoiceItem {
+        <<abstract>>
         +String itemID
-        +String type  // charge or top-up
-        +Double energyConsumed
+        +InvoiceItemType type
+        +getBalanceAmount(): Double
+    }
+
+    %% is always negative since it reduces the balance
+    class ChargingItem {
         +Double duration
         +Double pricePerKWh
-        +Double totalCost
+        +getBalanceAmount(): Double
     }
 
-    class ChargingSession {
-        +String sessionID
-        +Date startTime
-        +Date endTime
-        +Double energyConsumed
-        +Double totalCost
-        +startCharging()
-        +stopCharging()
-    }
-
-%% ====== OWNER SIDE ======
-    class Owner {
-        +String ownerID
-        +String name
-        +String contactInfo
-        +createLocation()
-        +updateLocation()
-        +deleteLocation()
-        +createCharger()
-        +updateCharger()
-        +deleteCharger()
-        +updatePrice()
-        +viewInvoices()
+    %% amount is negative for withdraw and positive for top-up
+    class BalanceItem {
+        +Double amount 
+        +getBalanceAmount(): Double
     }
 
     class Location {
-        +String locationID
+        +int locationId
         +String address
         +String description
-        +viewStatus()
+        +readAllCharger(): Charger[]
     }
 
     class Charger {
-        +String chargerID
-        +String type  // AC or DC
-        +String status  // free, occupied, outOfOrder
+        +int chargerId
+        +int locationId
+        +ChargerType type
+        +Status status
+        +Double kwH
+        +Double pricePerKWh
     }
 
-    class Price {
-        +String priceID
-        +Double ratePerKWh
-        +String chargingMode  // AC/DC
-        +Double durationRate
-        +Date validFrom
+    class InvoiceItemType {
+        <<enumeration>>
+        CHARGING
+        TOPUP
     }
 
-%% ====== RELATIONSHIPS ======
+    class ChargerType {
+        <<enumeration>>
+        AC
+        DC
+    }
+
+    class Status {
+        <<enumeration>>
+        FREE
+        OCCUPIED
+        OUT_OF_ORDER
+    }
+
+%% ===== Vererbung =====
+
+    InvoiceItem <|-- ChargingItem
+    InvoiceItem <|-- BalanceItem
+
+%% ===== Domain-Relationen =====
+
     Customer "1" --> "0..*" Invoice : has
     Invoice "1" --> "1..*" InvoiceItem : contains
-    InvoiceItem "*" --> "1" ChargingSession : refersTo
-    ChargingSession "1" --> "1" Charger : uses
-    Charger "*" --> "1" Location : belongsTo
-    Location "1" --> "1..*" Price : defines
-    Owner "1" --> "0..*" Location : manages
+    Location "1" --> "0..*" Charger : provides
+
+%% ============================================================
+%% =============== REPOSITORY LAYER (Concrete) =================
+%% ============================================================
+
+    class CustomerRepository {
+        -storage: Map~int, Customer~
+        +save(customer: Customer): Customer
+        +findAll(): List~Customer~
+        +findById(customerId: int): Customer
+        +deleteById(customerId: int)
+    }
+
+    class InvoiceRepository {
+        -storage: Map~int, Invoice~
+        +save(invoice: Invoice): Invoice
+        +findById(invoiceId: int): Invoice
+        +findByCustomerId(customerId: int): List~Invoice~
+        +findAll(): List~Invoice~
+    }
+
+    class LocationRepository {
+        -storage: Map~int, Location~
+        +save(location: Location): Location
+        +findAll(): List~Location~
+        +findById(locationId: int): Location
+        +deleteById(locationId: int)
+    }
+
+    class ChargerRepository {
+        -storage: Map~int, Charger~
+        +save(charger: Charger): Charger
+        +findById(chargerId: int): Charger
+        +findByLocationId(locationId: int): List~Charger~
+        +deleteById(chargerId: int)
+    }
+
+%% ============================================================
+%% =============== SERVICE LAYER ==============================
+%% ============================================================
+
+    class CustomerService {
+        -customerRepo: CustomerRepository
+        -invoiceRepo: InvoiceRepository
+        +createCustomer(name: String, email: String): Customer
+        +updateCustomer(customerId: int, name: String, email: String): Customer
+        +deleteCustomer(customerId: int): Customer
+        +getAllCustomers(): List~Customer~
+        +getCustomerById(customerId: int): Customer
+        +topUpBalance(customerId: int, amount: Double)
+        +withdrawBalance(customerId: int, amount: Double)
+    }
+
+    class InvoiceService {
+        -invoiceRepo: InvoiceRepository
+        -customerRepo: CustomerRepository
+        +createInvoice(customerId: int): Invoice
+        +getInvoice(invoiceId: int): Invoice
+        +getInvoiceForCustomer(customerId: int): Invoice
+        +getAllInvoices(): List~Invoice~
+        +addChargingItem(invoiceId: int, duration: Double, pricePerKWh: Double): ChargingItem
+        +addBalanceItem(invoiceId: int, amount: Double): BalanceItem
+        +calculateTotal(invoiceId: int): Double
+    }
+
+    class LocationService {
+        -locationRepo: LocationRepository
+        +createLocation(address: String, description: String): Location
+        +updateLocation(locationId: int, address: String, description: String): Location
+        +deleteLocation(locationId: int): Location
+        +getAllLocations(): List~Location~
+        +getStationNetwork(): Map
+        +getLocation(locationId: int): Location
+    }
+
+    class ChargerService {
+        -chargerRepo: ChargerRepository
+        -locationRepo: LocationRepository
+        +createCharger(locationId: int, type: ChargerType, kwH: Double, pricePerKWh: Double): Charger
+        +updateChargerStatus(chargerId: int, status: Status): Charger
+        +deleteCharger(chargerId: int): Charger
+        +getChargersForLocation(locationId: int): List~Charger~
+        +getCharger(chargerId: int): Charger
+    }
+
+%% ============================================================
+%% =============== APPLICATION CONTEXT =========================
+%% ============================================================
+
+%% This class creates one shared instance of each repository
+%% and injects these instances into the services.
+%% This ensures all services work with the same runtime data.
+    class ApplicationContext {
+        -customerRepo: CustomerRepository
+        -invoiceRepo: InvoiceRepository
+        -locationRepo: LocationRepository
+        -chargerRepo: ChargerRepository
+
+        -customerService: CustomerService
+        -invoiceService: InvoiceService
+        -locationService: LocationService
+        -chargerService: ChargerService
+
+        +init(): void
+        +getCustomerService(): CustomerService
+        +getInvoiceService(): InvoiceService
+        +getLocationService(): LocationService
+        +getChargerService(): ChargerService
+    }
+
+%% ===== Wiring: ApplicationContext erzeugt Shared Repo Instanzen =====
+
+    ApplicationContext o-- CustomerRepository : creates 1 shared instance
+    ApplicationContext o-- InvoiceRepository  : creates 1 shared instance
+    ApplicationContext o-- LocationRepository : creates 1 shared instance
+    ApplicationContext o-- ChargerRepository  : creates 1 shared instance
+
+%% ===== Wiring: ApplicationContext injiziert Instanzen in Service-Layer =====
+
+    ApplicationContext o-- CustomerService
+    ApplicationContext o-- InvoiceService
+    ApplicationContext o-- LocationService
+    ApplicationContext o-- ChargerService
+
+%% ===== Services nutzen Repositories =====
+
+    CustomerService ..> CustomerRepository
+    CustomerService ..> InvoiceRepository
+
+    InvoiceService ..> InvoiceRepository
+    InvoiceService ..> CustomerRepository
+
+    LocationService ..> LocationRepository
+
+    ChargerService ..> ChargerRepository
+    ChargerService ..> LocationRepository
+
+%% ============================================================
+%% ========================== Main ============================
+%% ============================================================
+
+    class ElectricChargingStationApp {
+        +main(args: String[])
+    }
+
+    ElectricChargingStationApp ..> ApplicationContext : "uses 1 shared context"
