@@ -32,4 +32,13 @@ public class Customer {
     public double viewBalance(){
         return this.balance;
     }
+
+    public void setId(int newId) {
+        this.customerId = newId;
+    }
+
+    @Override
+    public String toString(){
+        return "Created Customer " + name + " " + customerId;
+    }
 }
