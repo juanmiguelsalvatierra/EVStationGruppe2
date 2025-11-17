@@ -39,6 +39,6 @@ public class Customer {
 
     @Override
     public String toString(){
-        return "Created Customer " + name + " " + customerId;
+        return "Created Customer " + name + " ID: " + customerId + " Balance: " + balance;
     }
 }
