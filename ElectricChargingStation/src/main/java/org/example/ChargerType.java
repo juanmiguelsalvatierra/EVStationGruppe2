@@ -1,5 +1,5 @@
 package org.example;
 
 public enum ChargerType {
-    AC, DC
+    AC(), DC();
 }

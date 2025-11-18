@@ -8,8 +8,7 @@ public class Charger {
     public double powerRate;
     public double pricePerHour;
 
-    public Charger(int locationId, ChargerType chargerType, Status status, double powerRate, double pricePerHour){
-        this.locationId = locationId;
+    public Charger(ChargerType chargerType, Status status, double powerRate, double pricePerHour){
         this.chargerType = chargerType;
         this.status = status;
         this.powerRate = powerRate;

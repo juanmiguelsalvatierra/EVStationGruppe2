@@ -30,7 +30,6 @@ public class ManageChargersStepDefs {
         int locationId = getLocationId(locationName);
 
         currentCharger = ac.chargerService.createCharger(
-                locationId,
                 type,
                 Status.FREE,
                 22.0,
@@ -74,7 +73,7 @@ public class ManageChargersStepDefs {
         int locationId = getLocationId(locationName);
 
         currentCharger = ac.chargerService.createCharger(
-                locationId, ChargerType.AC, Status.FREE, 22.0, 0.39
+                ChargerType.AC, Status.FREE, 22.0, 0.39
         );
 
         assertNotNull(ac.chargerService.getCharger(currentCharger.chargerId));
@@ -98,7 +97,7 @@ public class ManageChargersStepDefs {
     public void theChargerWithTheChargerIDCurrentlyHasType(String ignoredId, String typeStr) {
         ChargerType type = ChargerType.valueOf(typeStr.toUpperCase());
         currentCharger = ac.chargerService.createCharger(
-                1, type, Status.FREE, 22.0, 0.39
+                type, Status.FREE, 22.0, 0.39
         );
     }
 
@@ -119,7 +118,7 @@ public class ManageChargersStepDefs {
     public void theChargerWithTheChargerIDCurrentlyHasChargerStatus(String ignoredId, String statusStr) {
         Status status = mapStatus(statusStr);
         currentCharger = ac.chargerService.createCharger(
-                1, ChargerType.AC, status, 22.0, 0.39
+                ChargerType.AC, status, 22.0, 0.39
         );
     }
 
@@ -138,7 +137,7 @@ public class ManageChargersStepDefs {
     @Given("the charger with the charger ID {string} exists")
     public void theChargerWithTheChargerIDExists(String ignoredId) {
         currentCharger = ac.chargerService.createCharger(
-                1, ChargerType.AC, Status.FREE, 22.0, 0.39
+                ChargerType.AC, Status.FREE, 22.0, 0.39
         );
     }
 

@@ -10,8 +10,8 @@ public class ChargerService {
     }
 
 
-    public Charger createCharger(int locationId, ChargerType type, Status status, Double powerRate, Double pricePerHour) {
-        Charger charger = new Charger(locationId, type, status, powerRate, pricePerHour);
+    public Charger createCharger(ChargerType type, Status status, Double powerRate, Double pricePerHour) {
+        Charger charger = new Charger(type, status, powerRate, pricePerHour);
         chargerRepository.save(charger);
         return charger;
     }
