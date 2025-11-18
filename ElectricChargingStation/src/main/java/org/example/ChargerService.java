@@ -21,7 +21,7 @@ public class ChargerService {
     }
 
     public List<Charger> getChargers() {
-        return chargerRepository.getAllChargers(); 
+        return chargerRepository.getAllChargers();
     }
 
 }
