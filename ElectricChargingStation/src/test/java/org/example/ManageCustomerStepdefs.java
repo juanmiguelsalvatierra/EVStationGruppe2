@@ -36,7 +36,7 @@ public class ManageCustomerStepdefs {
 
     @And("my current username is {string}")
     public void myCurrentUsernameIs(String arg0) {
-        assertEquals(this.currentName, this.c.name);
+        assertEquals(arg0, this.currentName);
     }
 
     @When("I update my username to {string}")
