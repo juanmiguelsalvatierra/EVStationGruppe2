@@ -8,14 +8,14 @@ Feature: Manage customer account
   @US1.1
   Scenario Outline: Create a new customer account successfully
     Given I am a visitor without an existing account for "<email>"
-    When I register with email "<email>" , password "<password>" and username “Name”
+    When I create an account with name "<name>" , email "<email>"
     Then my account is created with a unique Customer ID
     And my initial balance is "0"
 
     Examples:
-      | email             | password    |
-      | alice@demo.com    | S3cur3!pass |
-      | bob@demo.com      | 1Password!  |
+      | name     | email          |
+      | alice    | alice@demo.com |
+      | bob      | bob@demo.com   |
 
   @US1.1 @negative
   Scenario: Prevent duplicate account creation
