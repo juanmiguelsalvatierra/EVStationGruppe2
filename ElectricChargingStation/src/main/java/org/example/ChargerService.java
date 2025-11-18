@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.List;
+
 public class ChargerService {
     private ChargerRepository chargerRepository;
 
@@ -16,6 +18,10 @@ public class ChargerService {
 
     public Charger getCharger(int chargerId) {
         return chargerRepository.findById(chargerId);
+    }
+
+    public List<Charger> getChargers() {
+        return chargerRepository.getAllChargers(); 
     }
 
 }

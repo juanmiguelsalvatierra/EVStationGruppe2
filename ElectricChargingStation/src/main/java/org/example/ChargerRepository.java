@@ -15,4 +15,8 @@ public class ChargerRepository {
     public Charger findById(int chargerId) {
         return chargers.get(chargerId);
     }
+
+    public List<Charger> getAllChargers() {
+        return new ArrayList<>(chargers.values());
+    }
 }

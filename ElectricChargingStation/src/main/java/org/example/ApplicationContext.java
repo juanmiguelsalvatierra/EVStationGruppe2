@@ -16,5 +16,8 @@ public class ApplicationContext {
 
         this.locationRepo = new LocationRepository();
         this.locationService = new LocationService(locationRepo);
+
+        this.chargerRepository = new ChargerRepository();
+        this.chargerService = new ChargerService(chargerRepository);
     }
 }
