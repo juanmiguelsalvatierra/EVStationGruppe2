@@ -14,6 +14,8 @@ public class ChargerService {
         return charger;
     }
 
-
+    public Charger getCharger(int chargerId) {
+        return chargerRepository.findById(chargerId);
+    }
 
 }

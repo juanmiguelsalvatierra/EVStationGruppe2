@@ -12,8 +12,7 @@ public class ChargerRepository {
         charger.chargerId = newId;
         chargers.put(newId, charger);
     }
-
-    public Charger getCharger(int chargerId) {
+    public Charger findById(int chargerId) {
         return chargers.get(chargerId);
     }
 }
