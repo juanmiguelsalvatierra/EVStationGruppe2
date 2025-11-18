@@ -23,7 +23,7 @@ Feature: Manage chargers
 
   @US7.3
   Scenario: Update charger location
-    Given the charger with the charger ID "1" exists at "Vienna West"
+    Given the charger with the charger ID "<chargerID>" exists at "Vienna West"
     When I move it to "Linz Center"
     Then it shows location "Linz Center"
 

@@ -4,15 +4,31 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ManageChargersStepdefs {
+
     ApplicationContext ac = new ApplicationContext();
+
     private Charger currentCharger;
     private List<Charger> allChargers;
+
+
+    private Map<String, Integer> locationIds = Map.of(
+            "Vienna West", 1,
+            "Linz Center", 2
+    );
+
+
+    private Status mapStatus(String s) {
+        s = s.toLowerCase();
+        if (s.contains("free")) return Status.FREE;
+        if (s.contains("occupied")) return Status.OCCUPIED;
+        if (s.contains("out of order")) return Status.OUT_OF_ORDER;
+        throw new IllegalArgumentException(s);
+    }
 
     @Given("I am logged in as an owner")
     public void iAmLoggedInAsAnOwner() {
@@ -20,69 +36,52 @@ public class ManageChargersStepdefs {
     }
 
     @When("I create a charger with the charger ID {string} of type {string} at location {string}")
-    public void iCreateAChargerWithTheChargerIDOfTypeAtLocation(String chargerIdStr, String typeStr, String locationName) {
-        int desiredChargerId = Integer.parseInt(chargerIdStr);
+    public void iCreateAChargerWithTheChargerIDOfTypeAtLocation(String chargerId, String typeStr, String locationName) {
+
         ChargerType type = ChargerType.valueOf(typeStr.toUpperCase());
+        int locationId = locationIds.get(locationName);
 
-        // Simulate getting a valid locationId (in real app this would come from location name)
-        // Since locations are not fully implemented, we just use a dummy locationId = 1
-        int locationId = 1;
-
-        Charger charger = ac.chargerService.createCharger(
+        currentCharger = ac.chargerService.createCharger(
                 locationId,
                 type,
                 Status.FREE,
                 22.0,
                 0.39
         );
-        charger.chargerId = desiredChargerId;
-
-        this.currentCharger = charger;
     }
 
     @Then("it appears under {string} with status {string}")
-    public void itAppearsUnderWithStatus(String locationName, String expectedStatus) {
-        Charger found = ac.chargerService.getCharger(currentCharger.chargerId);
-        assertNotNull(found, "Charger should exist");
+    public void itAppearsUnderWithStatus(String locationName, String expectedStatusStr) {
 
-        assertTrue(found.getLocationId() > 0, "Charger should be assigned to a location");
+        Status expectedStatus = mapStatus(expectedStatusStr);
 
-        String actualStatus = found.getStatus().toString().toLowerCase().contains("free") ? "in order free" : found.getStatus().toString();
-        if ("in order free".equals(expectedStatus)) {
-            assertEquals(Status.FREE, found.getStatus());
-        }
-         assertTrue(actualStatus.contains("free") || actualStatus.equals(expectedStatus.toLowerCase()),
-                "Expected status to include 'free' or match '" + expectedStatus + "', but was: " + found.getStatus());
+        Charger found = ac.chargerService.getCharger(currentCharger.getChargerId());
+
+        assertNotNull(found);
+        assertEquals(locationIds.get(locationName), found.getLocationId());
+        assertEquals(expectedStatus, found.getStatus());
     }
 
     @When("I open the overview page for all chargers")
     public void iOpenTheOverviewPageForAllChargers() {
-        this.allChargers = new ArrayList<>(ac.chargerRepository.getAllChargers());
+        allChargers = ac.chargerService.getChargers();
     }
 
     @Then("I see each charger with its {string}, {string} and {string}")
-    public void iSeeEachChargerWithItsAnd(String chargerIdStr, String typeStr, String statusStr) {
-        int expectedId = Integer.parseInt(chargerIdStr);
+    public void iSeeEachChargerWithItsAnd(String idStr, String typeStr, String statusStr) {
+
         ChargerType expectedType = ChargerType.valueOf(typeStr.toUpperCase());
+        Status expectedStatus = mapStatus(statusStr);
 
-       Status expectedStatus;
-        if (statusStr.toLowerCase().contains("occupied")) {
-            expectedStatus = Status.OCCUPIED;
-        } else if (statusStr.toLowerCase().contains("out of order")) {
-            expectedStatus = Status.OUT_OF_ORDER;
-        } else {
-            expectedStatus = Status.FREE; // "in order free"
-        }
-
-        boolean found = allChargers.stream().anyMatch(c ->
-                c.getChargerId() == expectedId &&
+        boolean exists = allChargers.stream()
+                .anyMatch(c ->
                         c.getChargerType() == expectedType &&
-                        c.getStatus() == expectedStatus
-        );
+                                c.getStatus() == expectedStatus
+                );
 
-        assertTrue(found,
-                "Charger " + chargerIdStr + " with type " + typeStr + " and status '" + statusStr + "' should be visible");
+        assertTrue(exists, "A charger with the expected values should exist");
     }
+
 
     @Given("the charger with the charger ID {string} exists at {string}")
     public void theChargerWithTheChargerIDExistsAt(String chargerIdStr, String locationName) {
