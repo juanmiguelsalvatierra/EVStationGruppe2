@@ -35,8 +35,8 @@ public class ManageChargersStepdefs {
         //
     }
 
-    @When("I create a charger with the charger ID {string} of type {string} at location {string}")
-    public void iCreateAChargerWithTheChargerIDOfTypeAtLocation(String chargerId, String typeStr, String locationName) {
+    @When("I create a charger of type {string} at location {string}")
+    public void iCreateAChargerWithTheChargerIDOfTypeAtLocation(String typeStr, String locationName) {
 
         ChargerType type = ChargerType.valueOf(typeStr.toUpperCase());
         int locationId = locationIds.get(locationName);
@@ -62,14 +62,16 @@ public class ManageChargersStepdefs {
         assertEquals(expectedStatus, found.getStatus());
     }
 
+
+
+
     @When("I open the overview page for all chargers")
     public void iOpenTheOverviewPageForAllChargers() {
         allChargers = ac.chargerService.getChargers();
     }
 
-    @Then("I see each charger with its {string}, {string} and {string}")
-    public void iSeeEachChargerWithItsAnd(String idStr, String typeStr, String statusStr) {
-
+    @Then("I see each charger with its {string} and {string}")
+    public void iSeeEachChargerWithItsAnd(String typeStr, String statusStr) {
         ChargerType expectedType = ChargerType.valueOf(typeStr.toUpperCase());
         Status expectedStatus = mapStatus(statusStr);
 
@@ -80,7 +82,9 @@ public class ManageChargersStepdefs {
                 );
 
         assertTrue(exists, "A charger with the expected values should exist");
+
     }
+
 
 
     @Given("the charger with the charger ID {string} exists at {string}")
@@ -139,6 +143,8 @@ public class ManageChargersStepdefs {
     public void itShowsChargerStatus(String chargerStatus) {
 
     }
+
+
 
     /*@Given("the charger with the charger ID {string} exists")
     public void theChargerWithTheChargerIDExists(String chargerIdStr) {

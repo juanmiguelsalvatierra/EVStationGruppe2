@@ -9,17 +9,17 @@ Feature: Manage chargers
 
   @US7.1
   Scenario: Create charger
-    When I create a charger with the charger ID "1" of type "AC" at location "Vienna West"
+    When I create a charger of type "AC" at location "Vienna West"
     Then it appears under "Vienna West" with status "in order free"
 
   @US7.2
   Scenario Outline: Read charger successfully
     When I open the overview page for all chargers
-    Then I see each charger with its "<chargerID>", "<chargerType>" and "<operationalStatus>"
+    Then I see each charger with its "<chargerType>" and "<operationalStatus>"
     Examples:
-      | chargerID    | chargerType | operationalStatus |
-      | 1           | AC           | occupied          |
-      | 20          | DC           | in order free     |
+     | chargerType  | operationalStatus |
+     | AC           | occupied          |
+     | DC           | in order free     |
 
   @US7.3
   Scenario: Update charger location
