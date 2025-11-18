@@ -16,6 +16,29 @@ public class Charger {
         this.pricePerHour = pricePerHour;
     }
 
+    public int getLocationId() {
+        return locationId;
+    }
+
+    public int getChargerId() {
+        return chargerId;
+    }
+
+    public ChargerType getChargerType() {
+        return chargerType;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public double getPowerRate() {
+        return powerRate;
+    }
+
+    public double getPricePerHour() {
+        return pricePerHour;
+    }
 
     public String toString(){
         return "Charger ID: " + chargerId +
