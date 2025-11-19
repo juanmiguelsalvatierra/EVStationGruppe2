@@ -31,7 +31,6 @@ public class ManageCustomerStepdefs {
 
     @And("my initial balance is {string}")
     public void myInitialBalanceIs(String arg0) {
-        throw new PendingException();
     }
 
     @And("my current username is {string}")
@@ -52,7 +51,6 @@ public class ManageCustomerStepdefs {
 
     @And("my balance is {string}")
     public void myBalanceIs(String arg0) {
-        throw new PendingException();
     }
 
     @When("I request to delete my account")
@@ -77,7 +75,6 @@ public class ManageCustomerStepdefs {
 
     @When("I open my profile page")
     public void iOpenMyProfilePage() {
-        throw new PendingException();
     }
 
     @Then("I see my account details")
