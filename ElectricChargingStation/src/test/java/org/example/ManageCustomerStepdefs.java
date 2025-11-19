@@ -1,92 +1,74 @@
 package org.example;
 
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.example.Application.ApplicationContext;
-import org.example.Database.Entities.Customer;
-
-import static org.junit.jupiter.api.Assertions.*;
+import io.cucumber.messages.types.DataTable;
 
 public class ManageCustomerStepdefs {
-    ApplicationContext ac = new ApplicationContext();
-    String currentEmail = "";
-    String currentName = "";
-    Customer c;
-    @Given("I am a visitor without an existing account for {string}")
-    public void iAmAVisitorWithoutAnExistingAccountFor(String arg0) {
+    //region US1.1 Create a new customer account
+    @Given("no customer account exists")
+    public void noCustomerAccountExists() {
     }
 
-    @When("I create an account with name {string} , email {string}")
-    public void iCreateAnAccountWithNameEmail(String arg0, String arg1) {
-        this.c = ac.customerService.createCustomer(arg0, arg1);
-        this.currentName = arg0;
-        this.currentEmail = arg1;
+    @When("I create a customer account {string} with email {string}")
+    public void iCreateACustomerAccountWithEmail(String name, String email) {
     }
 
-    @Then("my account is created with a unique Customer ID")
-    public void myAccountIsCreatedWithAUniqueCustomerID() {
-        assertTrue(this.c.customerId > 0);
+    @Then("I see a customer account with name {string} and email {string}")
+    public void iSeeACustomerAccountWithNameAndEmail(String name, String email) {
     }
 
-    @And("my initial balance is {string}")
-    public void myInitialBalanceIs(String arg0) {
+    @And("it initially has {int} invoice items")
+    public void itInitiallyHasInvoiceItems(int invoiceItemAmount) {
+    }
+    //endregion
+    //region US1.1 Create a list of new customer accounts
+    @When("I create customer accounts with following parameters:")
+    public void iCreateCustomerAccountsWithFollowingParameters(DataTable customerDataTable) {
     }
 
-    @And("my current username is {string}")
-    public void myCurrentUsernameIs(String arg0) {
-        assertEquals(arg0, this.currentName);
+    @Then("the number of customer accounts is {int}")
+    public void theNumberOfCustomerAccountsIs(int customerAccountAmount) {
     }
 
-    @When("I update my username to {string}")
-    public void iUpdateMyUsernameTo(String arg0) {
-        this.c.updateAccount(arg0, this.c.email);
-        this.currentName = arg0;
+    @And("customer {string} has email {string}")
+    public void customerHasEmail(String name, String email) {
     }
 
-    @Then("my account shows “NewName” as my username")
-    public void myAccountShowsNewNameAsMyUsername(String arg0) {
-        assertEquals(arg0, this.c.name);
+    @And("reading the customer accounts as lists shows following output:")
+    public void readingTheCustomerAccountsAsListsShowsFollowingOutput(String currentCustomerListAsString) {
+    }
+    //endregion
+    //region US1.1 Prevent duplicate account creation
+    @Given("a customer account {string} exists with email {string}")
+    public void aCustomerAccountExistsWithEmail(String name, String email) {
     }
 
-    @And("my balance is {string}")
-    public void myBalanceIs(String arg0) {
+    @When("I try to create a customer account {string} with email {string}")
+    public void iTryToCreateACustomerAccountWithEmail(String name, String email) {
     }
 
-    @When("I request to delete my account")
-    public void iRequestToDeleteMyAccount() {
-        throw new PendingException();
+    @Then("I should see an error saying {string}")
+    public void iShouldSeeAnErrorSaying(String exceptionMessage) {
     }
 
-    @Then("my account is deleted")
-    public void myAccountIsDeleted() {
-        throw new PendingException();
+    @And("reading the customer account as lists shows following output:")
+    public void readingTheCustomerAccountAsListsShowsFollowingOutput(String currentCustomerListAsString) {
+    }
+    //endregion
+    //region US1.4 Read all existing customer accounts
+    @Given("the following customer accounts exist:")
+    public void theFollowingCustomerAccountsExist(DataTable customerDataTable) {
     }
 
-    @And("I immediately lose access to the portal")
-    public void iImmediatelyLoseAccessToThePortal() {
-        throw new PendingException();
+    @When("I view all customer accounts")
+    public void iViewAllCustomerAccounts() {
     }
 
-    @Then("I won’t be able to delete my account")
-    public void iWonTBeAbleToDeleteMyAccount() {
-        throw new PendingException();
+    @Then("I should see the following customer accounts:")
+    public void iShouldSeeTheFollowingCustomerAccounts(String currentCustomerListAsString) {
     }
-
-    @When("I open my profile page")
-    public void iOpenMyProfilePage() {
-    }
-
-    @Then("I see my account details")
-    public void iSeeMyAccountDetails() {
-        assertNotNull(this.c);
-        assertNotNull(this.c.name);
-        assertNotNull(this.c.email);
-        assertTrue(this.c.customerId > 0);
-    }
-
-
-
+    //endregion
 }

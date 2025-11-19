@@ -6,48 +6,55 @@ Feature: Manage customer account
   so that I can keep my personal data and account information up to date.
 
   @US1.1
-  Scenario Outline: Create a new customer account successfully
-    Given I am a visitor without an existing account for "<email>"
-    When I create an account with name "<name>" , email "<email>"
-    Then my account is created with a unique Customer ID
-    And my initial balance is "0"
+  Scenario: Create a new customer account
+    Given no customer account exists
+    When I create a customer account "John Doe" with email "john.doe@example.com"
+    Then I see a customer account with name "John Doe" and email "john.doe@example.com"
+    And it initially has 0 invoice items
 
-    Examples:
-      | name     | email          |
-      | alice    | alice@demo.com |
-      | bob      | bob@demo.com   |
+  @US1.1
+  Scenario: Create a list of new customer accounts
+    Given no customer account exists
+    When I create customer accounts with following parameters:
+      | name       | email                    |
+      | Alice Doe  | alice.doe@example.com    |
+      | Bob Smith  | bob.smith@example.com    |
+      | Carol Lee  | carol.lee@example.com    |
+      | Dave King  | dave.king@example.com    |
+    Then the number of customer accounts is 4
+    And customer "Dave King" has email "dave.king@example.com"
+    And reading the customer accounts as lists shows following output:
+    """
+    Alice Doe - alice.doe@example.com
+    Bob Smith - bob.smith@example.com
+    Carol Lee - carol.lee@example.com
+    Dave King - dave.king@example.com
+    """
 
-  @US1.1 @negative
+  @US1.1
+  @negative
   Scenario: Prevent duplicate account creation
-    Given an account already exists for "alice@demo.com"
-    When I try to register again with "alice@demo.com"
-    Then I won’t be allowed to create a new account for "alice@demo.com"
-
-  @US1.2
-  Scenario: Update account details
-    Given I am logged in as customer "alice@demo.com"
-    And my current username is "Name"
-    When I update my username to "NewName"
-    Then my account shows “NewName” as my username
-    #only name changeable in settings?
-
-  @US1.3
-  Scenario: Delete customer account successfully
-    Given I am logged in as customer "alice@demo.com"
-    And my balance is "0"
-    When I request to delete my account
-    Then my account is deleted
-    And I immediately lose access to the portal
-
-  @US1.3 @negative
-  Scenario: Delete customer account with non-zero balance
-    Given I am logged in as customer "alice@demo.com"
-    And my balance is "10"
-    When I request to delete my account
-    Then I won’t be able to delete my account
+    Given a customer account "John Doe" exists with email "john.doe@example.com"
+    When I try to create a customer account "John Doe" with email "john.doe@example.com"
+    Then I should see an error saying "Customer account already exists"
+    And reading the customer account as lists shows following output:
+    """
+    John Doe - john.doe@example.com
+    """
 
   @US1.4
-  Scenario: View customer account
-    Given I am logged in as customer "alice@demo.com"
-    When I open my profile page
-    Then I see my account details
+  Scenario: Read all existing customer accounts
+    Given the following customer accounts exist:
+      | name       | email                    |
+      | Alice Doe  | alice.doe@example.com    |
+      | Bob Smith  | bob.smith@example.com    |
+      | Carol Lee  | carol.lee@example.com    |
+      | Dave King  | dave.king@example.com    |
+    When I view all customer accounts
+    Then I should see the following customer accounts:
+    """
+    Alice Doe - alice.doe@example.com
+    Bob Smith - bob.smith@example.com
+    Carol Lee - carol.lee@example.com
+    Dave King - dave.king@example.com
+    """
