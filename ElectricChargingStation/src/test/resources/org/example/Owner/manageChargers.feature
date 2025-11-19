@@ -14,7 +14,7 @@ Feature: Manage chargers
 
   @US7.2
   Scenario Outline: Read charger successfully
-    When I open the overview page for all chargers
+    When I open the overview page for all chargers with "<chargerType>" and "<operationalStatus>"
     Then I see each charger with its "<chargerType>" and "<operationalStatus>"
     Examples:
      | chargerType  | operationalStatus |

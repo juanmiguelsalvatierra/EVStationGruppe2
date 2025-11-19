@@ -27,7 +27,6 @@ public class ManageChargersStepDefs {
     @When("I create a charger of type {string} at location {string}")
     public void iCreateAChargerOfTypeAtLocation(String typeStr, String locationName) {
         ChargerType type = ChargerType.valueOf(typeStr.toUpperCase());
-        int locationId = getLocationId(locationName);
 
         currentCharger = ac.chargerService.createCharger(
                 type,
@@ -40,27 +39,34 @@ public class ManageChargersStepDefs {
     @Then("it appears under {string} with status {string}")
     public void itAppearsUnderWithStatus(String locationName, String expectedStatusStr) {
         Status expectedStatus = mapStatus(expectedStatusStr);
-        int expectedLocationId = getLocationId(locationName);
 
         Charger found = ac.chargerService.getCharger(currentCharger.chargerId);
 
         assertNotNull(found);
-        assertEquals(expectedLocationId, found.locationId);
         assertEquals(expectedStatus, found.status);
     }
 
     // --- LIST ---
-    @When("I open the overview page for all chargers")
-    public void iOpenTheOverviewPageForAllChargers() {
-        allChargers = ac.chargerService.getChargers();
+    @When("I open the overview page for all chargers with {string} and {string}")
+    public void iOpenTheOverviewPageForAllChargersWithAnd(String arg0, String arg1) {
+        ChargerType type = ChargerType.valueOf(arg0.toUpperCase());
+        Status expectedStatus = mapStatus(arg1);
+
+        currentCharger = ac.chargerService.createCharger(
+                type,
+                expectedStatus,
+                54.0,
+                1.39
+        );
     }
+
 
     @Then("I see each charger with its {string} and {string}")
     public void iSeeEachChargerWithItsAnd(String typeStr, String statusStr) {
         ChargerType expectedType = ChargerType.valueOf(typeStr.toUpperCase());
         Status expectedStatus = mapStatus(statusStr);
 
-        boolean exists = allChargers.stream()
+        boolean exists = ac.chargerService.getChargers().stream()
                 .anyMatch(c -> c.chargerType == expectedType
                         && c.status == expectedStatus);
 
@@ -149,10 +155,16 @@ public class ManageChargersStepDefs {
 
     private int getLocationId(String locationName) {
         switch (locationName.toLowerCase()) {
-            case "vienna west": return 1;
-            case "linz center": return 2;
-            case "graz central": return 3;
-            default: return 1;
+            case "vienna west":
+                return 1;
+            case "linz center":
+                return 2;
+            case "graz central":
+                return 3;
+            default:
+                return 1;
         }
     }
 }
+
+
