@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Database.Entities;
 
 public class Customer {
     public int customerId;

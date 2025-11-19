@@ -1,6 +1,6 @@
-package org.example;
+package org.example.Database.Entities;
 
-public class ChargingItem extends InvoiceItem{
+public class ChargingItem extends InvoiceItem {
     public double duration;
     public double pricePerKwh;
 

@@ -1,9 +1,14 @@
-package org.example;
+package org.example.Presentation;
 
-import static org.example.ChargerType.AC;
-import static org.example.ChargerType.DC;
-import static org.example.Status.FREE;
-import static org.example.Status.OCCUPIED;
+import org.example.Application.ApplicationContext;
+import org.example.Database.Entities.Charger;
+import org.example.Database.Entities.Customer;
+import org.example.Database.Entities.Location;
+
+import static org.example.Database.Entities.ChargerType.AC;
+import static org.example.Database.Entities.ChargerType.DC;
+import static org.example.Database.Entities.Status.FREE;
+import static org.example.Database.Entities.Status.OCCUPIED;
 
 public class ElectricChargingStationNetwork {
     public static void main(String[] args) {

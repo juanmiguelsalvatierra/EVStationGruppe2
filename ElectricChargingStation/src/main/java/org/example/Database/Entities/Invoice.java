@@ -1,6 +1,4 @@
-package org.example;
-
-import java.util.List;
+package org.example.Database.Entities;
 
 public class Invoice {
     public int invoiceId;

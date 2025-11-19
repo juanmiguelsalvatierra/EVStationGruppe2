@@ -1,4 +1,6 @@
-package org.example;
+package org.example.Database;
+
+import org.example.Database.Entities.Charger;
 
 import java.util.ArrayList;
 import java.util.HashMap;

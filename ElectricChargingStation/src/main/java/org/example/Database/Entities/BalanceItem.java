@@ -1,6 +1,6 @@
-package org.example;
+package org.example.Database.Entities;
 
-public class BalanceItem extends InvoiceItem{
+public class BalanceItem extends InvoiceItem {
     public double amount;
 
     public BalanceItem(String itemId, double amount){

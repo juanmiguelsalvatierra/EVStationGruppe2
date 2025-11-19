@@ -1,4 +1,6 @@
-package org.example;
+package org.example.Database;
+
+import org.example.Database.Entities.Customer;
 
 import java.util.HashMap;
 

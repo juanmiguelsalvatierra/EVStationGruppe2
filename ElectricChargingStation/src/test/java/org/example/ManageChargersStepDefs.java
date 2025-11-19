@@ -4,6 +4,10 @@ import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.example.Application.ApplicationContext;
+import org.example.Database.Entities.Charger;
+import org.example.Database.Entities.ChargerType;
+import org.example.Database.Entities.Status;
 
 import java.util.List;
 

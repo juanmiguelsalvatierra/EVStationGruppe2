@@ -1,4 +1,7 @@
-package org.example;
+package org.example.Application;
+
+import org.example.Database.Entities.Location;
+import org.example.Database.LocationRepository;
 
 import java.util.List;
 

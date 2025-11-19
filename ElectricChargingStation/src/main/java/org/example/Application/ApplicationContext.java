@@ -1,4 +1,8 @@
-package org.example;
+package org.example.Application;
+
+import org.example.Database.ChargerRepository;
+import org.example.Database.CustomerRepository;
+import org.example.Database.LocationRepository;
 
 public class ApplicationContext {
     public CustomerRepository customerRepo;

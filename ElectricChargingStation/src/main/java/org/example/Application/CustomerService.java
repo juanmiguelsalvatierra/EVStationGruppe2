@@ -1,4 +1,7 @@
-package org.example;
+package org.example.Application;
+
+import org.example.Database.Entities.Customer;
+import org.example.Database.CustomerRepository;
 
 public class CustomerService {
     public CustomerRepository repo;
@@ -12,4 +15,6 @@ public class CustomerService {
         repo.save(customer);
         return customer;
     }
+
+
 }

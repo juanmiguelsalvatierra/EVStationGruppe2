@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Database.Entities;
 
 public abstract class InvoiceItem {
     public String itemId;
@@ -6,6 +6,7 @@ public abstract class InvoiceItem {
 
     public InvoiceItem(String itemId, InvoiceItemType type){
         this.itemId = itemId;
+
         this.type = type;
     }
 
