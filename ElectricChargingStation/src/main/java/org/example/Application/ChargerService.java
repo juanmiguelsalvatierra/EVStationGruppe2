@@ -1,4 +1,9 @@
-package org.example;
+package org.example.Application;
+
+import org.example.Database.Entities.ChargerType;
+import org.example.Database.Entities.Charger;
+import org.example.Database.ChargerRepository;
+import org.example.Database.Entities.Status;
 
 import java.util.List;
 
@@ -17,6 +22,7 @@ public class ChargerService {
     }
 
     public Charger getCharger(int chargerId) {
+        int k = chargerId;
         return chargerRepository.findById(chargerId);
     }
 
