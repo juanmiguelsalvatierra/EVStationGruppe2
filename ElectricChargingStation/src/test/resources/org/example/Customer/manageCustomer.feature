@@ -39,7 +39,7 @@ Feature: Manage customer account
     Then I should see an error saying "Customer account already exists"
     And reading the customer account as lists shows following output:
     """
-    John Doe - john.doe@example.com
+    1 - John Doe - john.doe@example.com
     """
 
   @US1.4
