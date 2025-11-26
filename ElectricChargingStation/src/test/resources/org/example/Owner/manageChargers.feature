@@ -1,44 +1,63 @@
+
 # E7 – Manage Chargers
 @owner @chargers
 Feature: Manage chargers
-  As the owner, I want to manage chargers, so that I can ensure accurate setup,
-  maintenance, and availability of all charging stations.
-
-  Background:
-    Given I am logged in as an owner
+  As the owner, I want to manage all chargers at each location,
+  so that I can operate and monitor my station network effectively
 
   @US7.1
-  Scenario: Create charger
-    When I create a charger of type "AC" at location "Vienna West"
-    Then it appears under "Vienna West" with status "in order free"
+  Scenario: Create a new charger at a location
+    Given a location "Brigittenau, Wien" exists with address "Höchstädtplatz 6, 1200 Wien" to create a charger
+    And the location "Brigittenau, Wien" has no chargers
+    When I create a charger at location "Brigittenau, Wien" with type "AC" and status "FREE"
+    Then I see a charger at location "Brigittenau, Wien" with type "AC" and status "FREE"
+    And the location "Brigittenau, Wien" has 1 charger
+
+  @US7.1
+  Scenario: Create a list of chargers for a location
+    Given a location "Donauinsel" exists with address "Donauinsel 1, 1220 Wien"
+    And the location "Donauinsel" has no chargers
+    When I create chargers at location "Donauinsel" with following parameters:
+      | type | status         |
+      | AC   | FREE           |
+      | AC   | FREE           |
+      | DC   | OUT_OF_ORDER   |
+    Then the number of chargers at location "Donauinsel" is 3
+    And reading all the chargers at location "Donauinsel" as lists shows following output:
+    """
+    1 - AC - FREE
+    2 - AC - FREE
+    3 - DC - OUT_OF_ORDER
+    """
+
+  @US7.1
+  Scenario: Creating a charger with identical properties 
+    Given a location "Brigittenau, Wien" exists with address "Höchstädtplatz 6, 1200 Wien"
+    And the following chargers exist at location "Brigittenau, Wien":
+      | type | status |
+      | AC   | FREE   |
+    When I try to create a charger at location "Brigittenau, Wien" with type "AC" and status "FREE"
+    Then the number of chargers at location "Donauinsel" updates to 2
+    And reading the chargers at location "Brigittenau, Wien" as lists shows following output:
+    """
+    1 - AC - FREE
+    2 - AC - FREE
+    """
 
   @US7.2
-  Scenario Outline: Read charger successfully
-    When I open the overview page for all chargers with "<chargerType>" and "<operationalStatus>"
-    Then I see each charger with its "<chargerType>" and "<operationalStatus>"
-    Examples:
-     | chargerType  | operationalStatus |
-     | AC           | occupied          |
-     | DC           | in order free     |
-
-  @US7.3
-  Scenario: Update charger location
-    Given the charger with the charger ID "<chargerID>" exists at "Vienna West"
-    When I move it to "Linz Center"
-    Then it shows location "Linz Center"
-
-  Scenario: Update charger type
-    Given the charger with the charger ID "1" currently has type "AC"
-    When I assign it type "DC"
-    Then it shows charger-type "DC"
-
-  Scenario: Update charger status
-    Given the charger with the charger ID "1" currently has charger status "in operation free"
-    When I assign it charger status "out of order"
-    Then it shows charger status "out of order"
-
-  @US7.4
-  Scenario: Delete charger
-    Given the charger with the charger ID "1" exists
-    When I request to delete it
-    Then it disappears from the list
+  Scenario: Read all chargers for a location
+    Given a location "Karlsplatz Charging" exists with address "Karlsplatz 1, 1010 Wien"
+    And the following chargers exist at location "Karlsplatz Charging":
+      | type | status       |
+      | AC   | FREE         |
+      | AC   | OCCUPIED     |
+      | DC   | FREE         |
+      | DC   | OUT_OF_ORDER |
+    When I view all chargers at location "Karlsplatz Charging"
+    Then I should see the following chargers:
+    """
+    1 - AC - FREE
+    2 - AC - OCCUPIED
+    3 - DC - FREE
+    4 - DC - OUT_OF_ORDER
+    """
