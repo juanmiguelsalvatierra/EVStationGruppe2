@@ -6,11 +6,11 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 public class ManageLocationStepdefs {
     LocationService ls = new LocationService();
 
@@ -78,14 +78,10 @@ public class ManageLocationStepdefs {
 
     @And("reading the locations as lists shows following output:")
     public void readingTheLocationsAsListsShowsFollowingOutput(String currentLocationListAsString) {
-        StringBuilder actualOutput = new StringBuilder();
-
-        for (Location location : ls.locationRepo.values()) {
-            actualOutput.append(location.toString()).append("\n");
-        }
+        String actualOutput = ls.getAllLocations();
 
         // Remove the last newline and trim both for comparison
-        String actual = actualOutput.toString().trim();
+        String actual = actualOutput.trim();
         String expected = currentLocationListAsString.trim();
 
         assertEquals(expected, actual);
@@ -104,29 +100,48 @@ public class ManageLocationStepdefs {
 
     @When("I view all locations")
     public void iViewAllLocations() {
-        StringBuilder actualOutput = new StringBuilder();
-
-        for (Location location : ls.locationRepo.values()) {
-            actualOutput.append(location.toString()).append("\n");
-        }
+        String actualOutput = ls.getAllLocations();
 
         // Remove the last newline and trim both for comparison
-        actualOutput.toString().trim();
+        actualOutput.trim();
     }
 
     @Then("I should see the following locations:")
     public void iShouldSeeTheFollowingLocations(String currentLocationListAsString) {
-        StringBuilder actualOutput = new StringBuilder();
-
-        for (Location location : ls.locationRepo.values()) {
-            actualOutput.append(location.toString()).append("\n");
-        }
+        String actualOutput = ls.getAllLocations();
 
         // Remove the last newline and trim both for comparison
-        String actual = actualOutput.toString().trim();
+        String actual = actualOutput.trim();
         String expected = currentLocationListAsString.trim();
 
         assertEquals(expected, actual);
+    }
+
+    @When("I update location with ID {int} to name {string}")
+    public void iUpdateLocationWithIDWithNameAndAddress(int id, String name) {
+        ls.updateLocation(id, name);
+    }
+
+    @Then("the location with ID {int} should have name {string} and address {string}")
+    public void theLocationWithIDShouldHaveNameAndAddress(int id, String name, String address) {
+        assertEquals(ls.locationRepo.get(id).getName(), name);
+        assertEquals(ls.locationRepo.get(id).getAddress(), address);
+    }
+
+    @And("the location with ID {int} remains unchanged with name {string} and address {string}")
+    public void theLocationWithIDRemainsUnchangedWithNameAndAddress(int id, String name, String address) {
+        assertEquals(ls.locationRepo.get(id).getName(), name);
+        assertEquals(ls.locationRepo.get(id).getAddress(), address);
+    }
+
+    @When("I delete location with ID {int}")
+    public void iDeleteLocationWithID(int id) {
+        ls.deleteLocataion(id);
+    }
+
+    @And("location with ID {int} no longer exists")
+    public void locationWithIDNoLongerExists(int id) {
+        assertNull(ls.locationRepo.get(id));
     }
     //endregion
 }

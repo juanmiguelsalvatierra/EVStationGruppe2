@@ -32,16 +32,18 @@ public class LocationService {
     }
 
     public String getAllLocations(){
-        for (Map.Entry<Integer, Location> entry : locationRepo.entrySet()) {
-            Integer locationId = entry.getValue().locationId;
-            Location location = entry.getValue();
-
-            if(entry.getKey() == locationRepo.size() - 1){
-                allLocations += entry.getValue();
-            } else {
-                allLocations += entry.getValue() + "\n";
-            }
+        StringBuilder actualOutput = new StringBuilder();
+        for (Location location : locationRepo.values()) {
+            actualOutput.append(location.toString()).append("\n");
         }
-        return allLocations;
+        return actualOutput.toString();
+    }
+
+    public void updateLocation(int id, String name){
+        locationRepo.get(id).setName(name);
+    }
+
+    public void deleteLocataion(int id){
+        locationRepo.remove(id);
     }
 }

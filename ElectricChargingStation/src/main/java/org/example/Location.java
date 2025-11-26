@@ -22,6 +22,10 @@ public class Location {
         return name;
     }
 
+    public void setName(String name){
+        this.name = name;
+    }
+
     public int getLocationId() {
         return locationId;
     }

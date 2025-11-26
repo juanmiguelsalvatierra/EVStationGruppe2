@@ -58,4 +58,35 @@ Feature: Manage locations
     4 - Naschmarkt Charging - Naschmarkt 12, 1040 Wien
     """
 
+  @US6.3
+  Scenario: Update an existing location
+    Given the following locations exist:
+      | name          | address                          |
+      | Donauinsel    | Donauinsel 1, 1220 Wien          |
+      | Stephansplatz | Stephansplatz 3, 1010 Wien       |
+    When I update location with ID 1 to name "Donauinsel Parkplatz"
+    Then the location with ID 1 should have name "Donauinsel Parkplatz" and address "Donauinsel 1, 1220 Wien"
+    And the location with ID 2 remains unchanged with name "Stephansplatz" and address "Stephansplatz 3, 1010 Wien"
+    And reading the locations as lists shows following output:
+    """
+    1 - Donauinsel Parkplatz - Donauinsel 1, 1220 Wien
+    2 - Stephansplatz - Stephansplatz 3, 1010 Wien
+    """
+
+
+  @US6.4
+  Scenario: Delete an existing location
+    Given the following locations exist:
+      | name          | address                          |
+      | Donauinsel    | Donauinsel 1, 1220 Wien          |
+      | Stephansplatz | Stephansplatz 3, 1010 Wien       |
+      | Prater        | Praterstraße 10, 1020 Wien       |
+    When I delete location with ID 2
+    Then the number of locations is 2
+    And location with ID 2 no longer exists
+    And reading the locations as lists shows following output:
+    """
+    1 - Donauinsel - Donauinsel 1, 1220 Wien
+    3 - Prater - Praterstraße 10, 1020 Wien
+    """
 
