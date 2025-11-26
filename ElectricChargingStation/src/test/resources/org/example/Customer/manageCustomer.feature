@@ -25,10 +25,10 @@ Feature: Manage customer account
     And customer "Dave King" has email "dave.king@example.com"
     And reading the customer accounts as lists shows following output:
     """
-    Alice Doe - alice.doe@example.com
-    Bob Smith - bob.smith@example.com
-    Carol Lee - carol.lee@example.com
-    Dave King - dave.king@example.com
+    1 - Alice Doe - alice.doe@example.com
+    2 - Bob Smith - bob.smith@example.com
+    3 - Carol Lee - carol.lee@example.com
+    4 - Dave King - dave.king@example.com
     """
 
   @US1.1
@@ -53,8 +53,8 @@ Feature: Manage customer account
     When I view all customer accounts
     Then I should see the following customer accounts:
     """
-    Alice Doe - alice.doe@example.com
-    Bob Smith - bob.smith@example.com
-    Carol Lee - carol.lee@example.com
-    Dave King - dave.king@example.com
+    1 - Alice Doe - alice.doe@example.com
+    2 - Bob Smith - bob.smith@example.com
+    3 - Carol Lee - carol.lee@example.com
+    4 - Dave King - dave.king@example.com
     """
