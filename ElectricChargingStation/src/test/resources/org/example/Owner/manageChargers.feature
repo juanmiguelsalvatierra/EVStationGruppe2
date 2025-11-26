@@ -21,27 +21,27 @@ Feature: Manage chargers
       | type | status         |
       | AC   | FREE           |
       | AC   | FREE           |
-      | DV   | OUT_OF_ORDER   |
+      | DC   | OUT_OF_ORDER   |
     Then the number of chargers at location "Donauinsel" is 3
     And reading all the chargers at location "Donauinsel" as lists shows following output:
     """
-    Charger (AC) - FREE
-    Charger (AC) - FREE
-    Charger (DV) - OUT_OF_ORDER
+    1 - AC - FREE
+    2 - AC - FREE
+    3 - DC - OUT_OF_ORDER
     """
 
   @US7.1
-  @negative
-  Scenario: Creating a charger with identical properties (duplicate charger)
+  Scenario: Creating a charger with identical properties 
     Given a location "Brigittenau, Wien" exists with address "Höchstädtplatz 6, 1200 Wien"
     And the following chargers exist at location "Brigittenau, Wien":
       | type | status |
       | AC   | FREE   |
     When I try to create a charger at location "Brigittenau, Wien" with type "AC" and status "FREE"
-    Then I should see an error message saying "Charger already exists at this location"
+    Then the number of chargers at location "Donauinsel" updates to 2
     And reading the chargers at location "Brigittenau, Wien" as lists shows following output:
     """
-    Charger (AC) - FREE
+    1 - AC - FREE
+    2 - AC - FREE
     """
 
   @US7.2
@@ -51,13 +51,13 @@ Feature: Manage chargers
       | type | status       |
       | AC   | FREE         |
       | AC   | OCCUPIED     |
-      | DV   | FREE         |
-      | DV   | OUT_OF_ORDER |
+      | DC   | FREE         |
+      | DC   | OUT_OF_ORDER |
     When I view all chargers at location "Karlsplatz Charging"
     Then I should see the following chargers:
     """
-    Charger (AC) - FREE
-    Charger (AC) - OCCUPIED
-    Charger (DV) - FREE
-    Charger (DV) - OUT_OF_ORDER
+    1 - AC - FREE
+    2 - AC - OCCUPIED
+    3 - DC - FREE
+    4 - DC - OUT_OF_ORDER
     """
