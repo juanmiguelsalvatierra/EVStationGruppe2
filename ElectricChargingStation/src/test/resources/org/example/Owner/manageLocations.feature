@@ -7,9 +7,9 @@ Feature: Manage locations
   @US6.1
   Scenario: Create a new location
     Given no location exists
-    When I create a location "Brigittenau, Wien" with address "Höchstädtplatz 6, 1200 Wien"
-    Then I see a location with name "Brigittenau, Wien" with address "Höchstädtplatz 6, 1200 Wien"
-    And it initially has 0 chargers
+    When I create the location "Brigittenau, Wien" with address "Höchstädtplatz 6, 1200 Wien"
+    Then I see at ID 1 the location with name "Brigittenau, Wien" with address "Höchstädtplatz 6, 1200 Wien"
+    And the location with ID 1 initially has 0 chargers
 
   @US6.1
   Scenario: Create a list of new locations
@@ -21,13 +21,13 @@ Feature: Manage locations
       | Prater        | Praterstraße 10, 1020 Wien       |
       | Mariahilf     | Mariahilfer Straße 50, 1060 Wien |
     Then the number of locations is 4
-    And location "Mariahilf" has the address "Mariahilfer Straße 50, 1060 Wien"
-    And reading the locations als lists shows following output:
+    And location with ID 4 has the address "Mariahilfer Straße 50, 1060 Wien"
+    And reading the locations as lists shows following output:
     """
-    1 - Donauinsel Charging - Donauinsel 1, 1220 Wien
-    2 - Stephansplatz Charging - Stephansplatz 3, 1010 Wien
-    3 - Prater Charging - Praterstraße 10, 1020 Wien
-    4 - Mariahilf Charging - Mariahilfer Straße 50, 1060 Wien
+    1 - Donauinsel - Donauinsel 1, 1220 Wien
+    2 - Stephansplatz - Stephansplatz 3, 1010 Wien
+    3 - Prater - Praterstraße 10, 1020 Wien
+    4 - Mariahilf - Mariahilfer Straße 50, 1060 Wien
     """
 
   @US6.1
