@@ -24,10 +24,10 @@ Feature: Manage locations
     And location "Mariahilf" has the address "Mariahilfer Straße 50, 1060 Wien"
     And reading the locations als lists shows following output:
     """
-    Donauinsel Charging - Donauinsel 1, 1220 Wien
-    Stephansplatz Charging - Stephansplatz 3, 1010 Wien
-    Prater Charging - Praterstraße 10, 1020 Wien
-    Mariahilf Charging - Mariahilfer Straße 50, 1060 Wien
+    1 - Donauinsel Charging - Donauinsel 1, 1220 Wien
+    2 - Stephansplatz Charging - Stephansplatz 3, 1010 Wien
+    3 - Prater Charging - Praterstraße 10, 1020 Wien
+    4 - Mariahilf Charging - Mariahilfer Straße 50, 1060 Wien
     """
 
   @US6.1
@@ -38,7 +38,7 @@ Feature: Manage locations
     Then I should get an error saying "Location already exists"
     And reading the locations as lists shows following output:
     """
-    Brigittenau, Wien - Höchstädtplatz 6, 1200 Wien
+    1 - Brigittenau, Wien - Höchstädtplatz 6, 1200 Wien
     """
 
   @US6.2
@@ -52,10 +52,10 @@ Feature: Manage locations
     When I view all locations
     Then I should see the following locations:
     """
-    Karlsplatz Charging - Karlsplatz 1, 1010 Wien
-    MuseumsQuartier Charging - Museumsplatz 5, 1070 Wien
-    Belvedere Charging - Rennweg 1, 1030 Wien
-    Naschmarkt Charging - Naschmarkt 12, 1040 Wien
+    1 - Karlsplatz Charging - Karlsplatz 1, 1010 Wien
+    2 - MuseumsQuartier Charging - Museumsplatz 5, 1070 Wien
+    3 - Belvedere Charging - Rennweg 1, 1030 Wien
+    4 - Naschmarkt Charging - Naschmarkt 12, 1040 Wien
     """
 
 
