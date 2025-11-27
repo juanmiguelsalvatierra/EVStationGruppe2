@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Location {
-    public int locationId;
+    private int locationId;
     private String name;
     private String address;
     public HashMap<Integer, Charger> chargers = new HashMap<>();
@@ -16,6 +16,10 @@ public class Location {
 
     public String getAddress() {
         return address;
+    }
+
+    public void setAddress(String address){
+        this.address = address;
     }
 
     public String getName() {
@@ -30,11 +34,15 @@ public class Location {
         return locationId;
     }
 
+    public void setId(int id){
+        this.locationId = id;
+    }
+
     public void CreateCharger(){
         chargers.put(chargers.size() + 1, new Charger());
     }
 
-    public void ReadCharger(){
+    public void ReadChargers(){
         System.out.println(chargers);
     }
 

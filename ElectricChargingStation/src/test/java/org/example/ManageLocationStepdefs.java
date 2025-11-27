@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ManageLocationStepdefs {
     LocationService ls = new LocationService();
+    private String lastExceptionMessage = "";
 
     //region @US6.1 Create a new location
     @Given("no location exists")
@@ -22,7 +23,7 @@ public class ManageLocationStepdefs {
 
     //names of parameters have to be changed manually, they can not be set in the gherkin syntax
     @When("I create the location {string} with address {string}")
-    public void iCreateALocationWithAddress(String name, String address) {
+    public void iCreateALocationWithAddress(String name, String address) throws Exception {
         ls.createLocation(name, address);
     }
 
@@ -37,10 +38,10 @@ public class ManageLocationStepdefs {
         assertEquals(ls.locationRepo.get(id).chargers.size(), chargerAmount);
     }
     //endregion
-    //region @US6.1 Create a list of new locations
+    //region @US6.2 Create a list of new locations
     //Datatable has to be created manually
     @When("I create locations with following parameters:")
-    public void iCreateLocationsWithFollowingParameters(DataTable locationsDataTable) {
+    public void iCreateLocationsWithFollowingParameters(DataTable locationsDataTable) throws Exception {
         List<Map<String, String>> locations = locationsDataTable.asMaps(String.class, String.class);
         for (Map<String, String> locationMap : locations) {
                 String name = locationMap.get("name");
@@ -60,25 +61,31 @@ public class ManageLocationStepdefs {
     }
 
     //endregion
-    //region @US6.1 Creating a location with a duplicate name
+    //region @US6.3 Creating a location with a duplicate name
     @Given("a location {string} exists with address {string}")
-    public void aLocationExistsWithAddress(String name, String address) {
+    public void aLocationExistsWithAddress(String name, String address) throws Exception {
         ls.createLocation(name, address);
     }
 
     @When("I try to create a location {string} with address {string}")
-    public void iTryToCreateALocationWithAddress(String name, String address) {
-        ls.createLocation(name, address);
+    public void iTryToCreateALocationWithAddress(String name, String address) throws Exception {
+        try {
+            ls.createLocation(name, address);
+            lastExceptionMessage = null; // No exception thrown
+        } catch (Exception e) {
+            lastExceptionMessage = e.getMessage(); // Store the exception message
+        }
     }
 
     @Then("I should get an error saying {string}")
     public void iShouldGetAnErrorSaying(String exceptionMessage) {
-        assertEquals(exceptionMessage, ls.dupesStatus);
+        assertNotNull(lastExceptionMessage, "Expected an exception but none was thrown");
+        assertEquals(exceptionMessage, lastExceptionMessage);
     }
 
     @And("reading the locations as lists shows following output:")
     public void readingTheLocationsAsListsShowsFollowingOutput(String currentLocationListAsString) {
-        String actualOutput = ls.getAllLocations();
+        String actualOutput = ls.getAllLocationsAsString();
 
         // Remove the last newline and trim both for comparison
         String actual = actualOutput.trim();
@@ -87,9 +94,9 @@ public class ManageLocationStepdefs {
         assertEquals(expected, actual);
     }
     //endregion
-    //region @US6.2 Read all existing locations
+    //region @US6.4 Read all existing locations
     @Given("the following locations exist:")
-    public void theFollowingLocationsExist(DataTable locationsDataTable) {
+    public void theFollowingLocationsExist(DataTable locationsDataTable) throws Exception {
         List<Map<String, String>> locations = locationsDataTable.asMaps(String.class, String.class);
         for (Map<String, String> locationMap : locations) {
             String name = locationMap.get("name");
@@ -100,7 +107,7 @@ public class ManageLocationStepdefs {
 
     @When("I view all locations")
     public void iViewAllLocations() {
-        String actualOutput = ls.getAllLocations();
+        String actualOutput = ls.getAllLocationsAsString();
 
         // Remove the last newline and trim both for comparison
         actualOutput.trim();
@@ -108,7 +115,7 @@ public class ManageLocationStepdefs {
 
     @Then("I should see the following locations:")
     public void iShouldSeeTheFollowingLocations(String currentLocationListAsString) {
-        String actualOutput = ls.getAllLocations();
+        String actualOutput = ls.getAllLocationsAsString();
 
         // Remove the last newline and trim both for comparison
         String actual = actualOutput.trim();
@@ -116,10 +123,12 @@ public class ManageLocationStepdefs {
 
         assertEquals(expected, actual);
     }
+    //endregion
 
+    //region @US6.5 Update the name of an existing location
     @When("I update location with ID {int} to name {string}")
     public void iUpdateLocationWithIDWithNameAndAddress(int id, String name) {
-        ls.updateLocation(id, name);
+        ls.updateLocationName(id, name);
     }
 
     @Then("the location with ID {int} should have name {string} and address {string}")
@@ -133,15 +142,36 @@ public class ManageLocationStepdefs {
         assertEquals(ls.locationRepo.get(id).getName(), name);
         assertEquals(ls.locationRepo.get(id).getAddress(), address);
     }
+    //endregion
 
-    @When("I delete location with ID {int}")
-    public void iDeleteLocationWithID(int id) {
-        ls.deleteLocataion(id);
+
+    //region @US6.6 Update the address of an existing location
+    @When("I update location with ID {int} to address {string}")
+    public void iUpdateLocationWithIDToAddress(int id, String address) {
+        ls.updateLocationAddress(id, address);
     }
+    //endregion
 
+
+    //region @US6.7 Delete an existing location @US6.8 Delete a non-existent location
     @And("location with ID {int} no longer exists")
     public void locationWithIDNoLongerExists(int id) {
         assertNull(ls.locationRepo.get(id));
+    }
+
+    @When("I try to delete location with ID {int}")
+    public void iTryToDeleteLocationWithID(int id) {
+        try {
+            ls.deleteLocataion(id);
+            lastExceptionMessage = null; // No exception thrown
+        } catch (Exception e) {
+            lastExceptionMessage = e.getMessage(); // Store the exception message
+        }
+    }
+
+    @And("the number of locations remains {int}")
+    public void theNumberOfLocationsRemains(int count) {
+        assertEquals(ls.locationRepo.size(), count);
     }
     //endregion
 }
