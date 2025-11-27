@@ -5,8 +5,6 @@ import java.util.Map;
 
 public class LocationService {
     public Map<Integer, Location> locationRepo = new HashMap<>();
-    public String allLocations = "";
-    public boolean duplicates = false;
 
     public void createLocation(String name, String address) {
         if(!checkDupes(name, address)){
@@ -14,17 +12,11 @@ public class LocationService {
             locationRepo.put(newId, new Location(name, address));
             locationRepo.get(newId).setId(newId);
         }
-
     }
 
     public boolean checkDupes(String name, String address) {
-        for (Map.Entry<Integer, Location> entry: locationRepo.entrySet()){
-            if(entry.getValue().getName().equals(name)){
-                System.out.println("Location already exists");
-                return true;
-            }
-            if(entry.getValue().getAddress().equals(address)){
-                System.out.println("Location already exists");
+        for (Map.Entry<Integer, Location> entry : locationRepo.entrySet()) {
+            if (entry.getValue().getName().equals(name) || entry.getValue().getAddress().equals(address)) {
                 return true;
             }
         }
