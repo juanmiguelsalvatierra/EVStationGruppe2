@@ -8,9 +8,8 @@ public class LocationService {
     public String allLocations = "";
     public boolean duplicates = false;
 
-    public void createLocation(String name, String address) throws Exception {
-        checkDupes(name, address);
-        if(!duplicates){
+    public void createLocation(String name, String address) {
+        if(!checkDupes(name, address)){
             int newId = locationRepo.size() + 1;
             locationRepo.put(newId, new Location(name, address));
             locationRepo.get(newId).setId(newId);
@@ -18,17 +17,18 @@ public class LocationService {
 
     }
 
-    public void checkDupes(String name, String address) throws Exception {
+    public boolean checkDupes(String name, String address) {
         for (Map.Entry<Integer, Location> entry: locationRepo.entrySet()){
             if(entry.getValue().getName().equals(name)){
-                duplicates = true;
-                throw new Exception("Location already exists");
+                System.out.println("Location already exists");
+                return true;
             }
             if(entry.getValue().getAddress().equals(address)){
-                duplicates = true;
-                throw new Exception("Location already exists");
+                System.out.println("Location already exists");
+                return true;
             }
         }
+        return false;
     }
 
     public String getAllLocationsAsString(){
@@ -47,11 +47,11 @@ public class LocationService {
         locationRepo.get(id).setAddress(address);
     }
 
-    public void deleteLocataion(int id) throws Exception {
+    public void deleteLocation(int id) {
         if (locationRepo.containsKey(id)){
             locationRepo.remove(id);
         } else{
-            throw new Exception("Location not found");
+            System.out.println("Location not found");
         }
     }
 }

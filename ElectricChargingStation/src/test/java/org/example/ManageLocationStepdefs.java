@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ManageLocationStepdefs {
     LocationService ls = new LocationService();
-    private String lastExceptionMessage = "";
 
     //region @US6.1 Create a new location
     @Given("no location exists")
@@ -23,7 +22,7 @@ public class ManageLocationStepdefs {
 
     //names of parameters have to be changed manually, they can not be set in the gherkin syntax
     @When("I create the location {string} with address {string}")
-    public void iCreateALocationWithAddress(String name, String address) throws Exception {
+    public void iCreateALocationWithAddress(String name, String address) {
         ls.createLocation(name, address);
     }
 
@@ -41,7 +40,7 @@ public class ManageLocationStepdefs {
     //region @US6.2 Create a list of new locations
     //Datatable has to be created manually
     @When("I create locations with following parameters:")
-    public void iCreateLocationsWithFollowingParameters(DataTable locationsDataTable) throws Exception {
+    public void iCreateLocationsWithFollowingParameters(DataTable locationsDataTable) {
         List<Map<String, String>> locations = locationsDataTable.asMaps(String.class, String.class);
         for (Map<String, String> locationMap : locations) {
                 String name = locationMap.get("name");
@@ -63,24 +62,13 @@ public class ManageLocationStepdefs {
     //endregion
     //region @US6.3 Creating a location with a duplicate name
     @Given("a location {string} exists with address {string}")
-    public void aLocationExistsWithAddress(String name, String address) throws Exception {
+    public void aLocationExistsWithAddress(String name, String address) {
         ls.createLocation(name, address);
     }
 
     @When("I try to create a location {string} with address {string}")
-    public void iTryToCreateALocationWithAddress(String name, String address) throws Exception {
-        try {
-            ls.createLocation(name, address);
-            lastExceptionMessage = null; // No exception thrown
-        } catch (Exception e) {
-            lastExceptionMessage = e.getMessage(); // Store the exception message
-        }
-    }
-
-    @Then("I should get an error saying {string}")
-    public void iShouldGetAnErrorSaying(String exceptionMessage) {
-        assertNotNull(lastExceptionMessage, "Expected an exception but none was thrown");
-        assertEquals(exceptionMessage, lastExceptionMessage);
+    public void iTryToCreateALocationWithAddress(String name, String address) {
+        ls.createLocation(name, address);
     }
 
     @And("reading the locations as lists shows following output:")
@@ -96,7 +84,7 @@ public class ManageLocationStepdefs {
     //endregion
     //region @US6.4 Read all existing locations
     @Given("the following locations exist:")
-    public void theFollowingLocationsExist(DataTable locationsDataTable) throws Exception {
+    public void theFollowingLocationsExist(DataTable locationsDataTable) {
         List<Map<String, String>> locations = locationsDataTable.asMaps(String.class, String.class);
         for (Map<String, String> locationMap : locations) {
             String name = locationMap.get("name");
@@ -161,12 +149,7 @@ public class ManageLocationStepdefs {
 
     @When("I try to delete location with ID {int}")
     public void iTryToDeleteLocationWithID(int id) {
-        try {
-            ls.deleteLocataion(id);
-            lastExceptionMessage = null; // No exception thrown
-        } catch (Exception e) {
-            lastExceptionMessage = e.getMessage(); // Store the exception message
-        }
+        ls.deleteLocation(id);
     }
 
     @And("the number of locations remains {int}")

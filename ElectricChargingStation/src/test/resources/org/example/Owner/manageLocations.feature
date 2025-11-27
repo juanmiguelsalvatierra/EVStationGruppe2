@@ -35,7 +35,7 @@ Feature: Manage locations
   Scenario: Creating a location with a duplicate name
     Given a location "Brigittenau, Wien" exists with address "Höchstädtplatz 6, 1200 Wien"
     When I try to create a location "Brigittenau, Wien" with address "Höchstädtplatz 6, 1200 Wien"
-    Then I should get an error saying "Location already exists"
+    Then the number of locations remains 1
     And reading the locations as lists shows following output:
     """
     1 - Brigittenau, Wien - Höchstädtplatz 6, 1200 Wien
@@ -112,8 +112,7 @@ Feature: Manage locations
       | name       | address                   |
       | Donauinsel | Donauinsel 1, 1220 Wien   |
     When I try to delete location with ID 5
-    Then I should get an error saying "Location not found"
-    And the number of locations remains 1
+    Then the number of locations remains 1
     And reading the locations as lists shows following output:
     """
     1 - Donauinsel - Donauinsel 1, 1220 Wien
