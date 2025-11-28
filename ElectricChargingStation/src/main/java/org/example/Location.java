@@ -29,10 +29,6 @@ public class Location {
         this.name = name;
     }
 
-    public int getLocationId() {
-        return locationId;
-    }
-
     public void setId(int id){
         this.locationId = id;
     }
