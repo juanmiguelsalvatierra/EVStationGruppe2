@@ -98,12 +98,14 @@ public class ManageChargersStepdefs {
     public void iTryToCreateAChargerAtLocationWithTypeAndStatus(String locationName, String type, String status) {
         Location loc = ls.getLocationByName(locationName);
 
-        loc.createCharger(type, status);    }
+        loc.createCharger(type, status);
+    }
 
     @Then("the number of chargers at location {string} updates to {int}")
     public void theNumberOfChargersAtLocationUpdatesTo(String locationName, int chargerAmount) {
         Location loc = ls.getLocationByName(locationName);
-        assertEquals(chargerAmount, loc.chargersRepo.size());    }
+        assertEquals(chargerAmount, loc.chargersRepo.size());
+    }
 
     @And("reading the chargers at location {string} as lists shows following output:")
     public void readingTheChargersAtLocationAsListsShowsFollowingOutputDuplicate(String locationName, String currentChargerListAsString) {
@@ -113,7 +115,8 @@ public class ManageChargersStepdefs {
         String actual = actualOutput.trim();
         String expected = currentChargerListAsString.trim();
 
-        assertEquals(expected, actual);    }
+        assertEquals(expected, actual);
+    }
     //endregion
     //region @US7.2 Read all chargers for a location
     @When("I view all chargers at location {string}")
