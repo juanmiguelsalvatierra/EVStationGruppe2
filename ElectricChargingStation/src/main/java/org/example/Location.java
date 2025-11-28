@@ -1,13 +1,12 @@
 package org.example;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Location {
     private int locationId;
     private String name;
     private String address;
-    public HashMap<Integer, Charger> chargers = new HashMap<>();
+    public HashMap<Integer, Charger> chargersRepo = new HashMap<>();
 
     public Location(String name, String address){
         this.name = name;
@@ -38,13 +37,22 @@ public class Location {
         this.locationId = id;
     }
 
-    public void CreateCharger(){
-        chargers.put(chargers.size() + 1, new Charger());
+    public Charger createCharger(String chargerType, String status){
+        int newId = chargersRepo.size() + 1;
+        chargersRepo.put(newId, new Charger(chargerType, status));
+        chargersRepo.get(newId).setId(newId);
+
+        return chargersRepo.get(newId);
     }
 
-    public void ReadChargers(){
-        System.out.println(chargers);
+    public String getAllChargersAsString(){
+        StringBuilder actualOutput = new StringBuilder();
+        for (Charger charger : chargersRepo.values()) {
+           actualOutput.append(charger.toString()).append("\n");
+        }
+        return actualOutput.toString();
     }
+
 
     @Override
     public String toString() {

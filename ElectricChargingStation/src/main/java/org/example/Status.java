@@ -1,7 +1,5 @@
-package org.example.Database.Entities;
+package org.example;
 
 public enum Status {
     FREE, OCCUPIED, OUT_OF_ORDER;
-
-
 }

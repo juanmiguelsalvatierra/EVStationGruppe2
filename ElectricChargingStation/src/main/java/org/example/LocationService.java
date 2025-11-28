@@ -35,8 +35,12 @@ public class LocationService {
         locationRepo.get(id).setName(name);
     }
 
-    public void updateLocationAddress(int id, String address){
-        locationRepo.get(id).setAddress(address);
+    public Location getLocationByName(String name){
+        return locationRepo.values()
+                .stream()
+                .filter(loc -> loc.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
     public void deleteLocation(int id) {
