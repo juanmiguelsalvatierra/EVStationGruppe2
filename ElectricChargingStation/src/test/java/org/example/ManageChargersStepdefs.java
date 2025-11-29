@@ -123,19 +123,19 @@ public class ManageChargersStepdefs {
 
     //region @US7.2 Read all chargers for a location
 
-    private String chargerList;
+
 
     @When("I view all chargers at location {string}")
     public void iViewAllChargersAtLocation(String locationName) {
         Location loc = ls.getLocationByName(locationName);
-        chargerList = loc.getAllChargersAsString();
+        String chargerList = loc.getAllChargersAsString();
 
     }
 
-    @Then("I should see the following chargers:")
-    public void iShouldSeeTheFollowingChargers(String currentChargerListAsString) {
-
-        String actual = chargerList.trim();
+    @Then("I see at location {string} the following chargers:")
+    public void iShouldSeeTheFollowingChargers(String locationName, String currentChargerListAsString) {
+        Location loc = ls.getLocationByName(locationName);
+        String actual = loc.getAllChargersAsString().trim();
         String expected = currentChargerListAsString.trim();
 
         assertEquals(expected, actual);
