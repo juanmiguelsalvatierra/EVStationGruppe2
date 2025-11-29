@@ -43,7 +43,7 @@ public class CustomerManager {
         if (customerRepo.containsKey(id)){
             customerRepo.remove(id);
         } else{
-            System.out.println("Location not found");
+            System.out.println("Customer account not found");
         }
     }
 }
