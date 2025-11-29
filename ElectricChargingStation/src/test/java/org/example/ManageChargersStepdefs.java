@@ -8,11 +8,13 @@ import io.cucumber.java.en.When;
 import io.cucumber.datatable.DataTable;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class ManageChargersStepdefs {
     LocationService ls = new LocationService();
+
 
     //region @US7.1 Create a new charger at a location
     @Given("a location {string} exists with address {string} for chargers")
@@ -118,15 +120,26 @@ public class ManageChargersStepdefs {
         assertEquals(expected, actual);
     }
     //endregion
+
     //region @US7.2 Read all chargers for a location
+
+    private String chargerList;
+
     @When("I view all chargers at location {string}")
     public void iViewAllChargersAtLocation(String locationName) {
-        throw new PendingException();
+        Location loc = ls.getLocationByName(locationName);
+        chargerList = loc.getAllChargersAsString();
+
     }
 
     @Then("I should see the following chargers:")
     public void iShouldSeeTheFollowingChargers(String currentChargerListAsString) {
-        throw new PendingException();
+
+        String actual = chargerList.trim();
+        String expected = currentChargerListAsString.trim();
+
+        assertEquals(expected, actual);
+
     }
     //endregion
 }
