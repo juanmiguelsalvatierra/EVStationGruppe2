@@ -1,4 +1,4 @@
-package org.example.Database.Entities;
+package org.example;
 
 public enum ChargerType {
     AC(), DC();
