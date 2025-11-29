@@ -6,29 +6,23 @@ Feature: Manage prepaid account balance
   so that I can control how much credit is available for charging sessions.
 
   Background:
-    Given I am logged in as a customer
+    Given customer "Hans Hubert" with the email "hansi@gmail.com" exists
+    And the customer "Hans Huber" hast id 1
 
   @US2.1
-  Scenario: View current balance
-    When I open my profile page
-    Then I see my current balance
-
+  Scenario: View initial balance
+    Given customer with id 1 hasn't don any top ups
+    When customer with id 1 gets his balance
+    Then the customer with id 1 has a balance of 0 €
 
   @US2.2
-  Scenario Outline: Top up balance successfully
-    Given my current balance is "<startbalance>"
-    When I top up "<amount>"
-    Then my balance becomes "<endbalance>"
-    And I receive a receipt in my invoices
+  Scenario: Top up balance successfully
+    When customer with id 1 tops up his balance with 50 €
+    Then the customer with id 1 has a balance of 50 €
 
-    Examples:
-      | startbalance | amount | endbalance   |
-      | 0.00         | 20.00  |        20.00 |
-      | 5.00         | 30.00  |        35.00 |
+  @US2.2 @negative
+  Scenario: Negative top up does not work
+    Given customer with id 1 has a balance of 50 €
+    When customer with id 1 tops up his balance with -10 €
+    Then the customer with id 1 has a balance of 50 €
 
-  @US2.3
-  Scenario: Withdraw balance
-    Given my current balance is "12.50"
-    When I request a withdrawal of "12.50"
-    Then my available balance becomes "0.00"
-    And I receive a receipt in my invoices
