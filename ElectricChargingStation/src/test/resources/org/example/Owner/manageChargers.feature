@@ -54,7 +54,7 @@ Feature: Manage chargers
       | DC   | FREE         |
       | DC   | OUT_OF_ORDER |
     When I view all chargers at location "Karlsplatz Charging"
-    Then I should see the following chargers:
+    Then I see at location "Karlsplatz Charging" the following chargers:
     """
     1 - AC - FREE
     2 - AC - OCCUPIED
