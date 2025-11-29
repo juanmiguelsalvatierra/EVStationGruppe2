@@ -22,4 +22,28 @@ public class CustomerManager {
         }
         return false;
     }
+
+    public String getAllCustomersAsString(){
+        StringBuilder actualOutput = new StringBuilder();
+        for (Customer customer : customerRepo.values()) {
+            actualOutput.append(customer.toString()).append("\n");
+        }
+        return actualOutput.toString();
+    }
+
+    public void updateCustomerName(int id, String name){
+        customerRepo.get(id).setName(name);
+    }
+
+    public void updateCustomerEmail(int id, String email){
+        customerRepo.get(id).setEmail(email);
+    }
+
+    public void deleteCustomer(int id) {
+        if (customerRepo.containsKey(id)){
+            customerRepo.remove(id);
+        } else{
+            System.out.println("Location not found");
+        }
+    }
 }
