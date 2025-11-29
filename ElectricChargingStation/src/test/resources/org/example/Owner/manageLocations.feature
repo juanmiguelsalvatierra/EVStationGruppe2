@@ -11,7 +11,7 @@ Feature: Manage locations
     Then I see at ID 1 the location with name "Brigittenau, Wien" with address "Höchstädtplatz 6, 1200 Wien"
     And the location with ID 1 initially has 0 chargers
 
-  @US6.2
+  @US6.1
   Scenario: Create a list of new locations
     Given no location exists
     When I create locations with following parameters:
@@ -30,7 +30,7 @@ Feature: Manage locations
     4 - Mariahilf - Mariahilfer Straße 50, 1060 Wien
     """
 
-  @US6.3
+  @US6.1
   @negative
   Scenario: Creating a location with a duplicate name
     Given a location "Brigittenau, Wien" exists with address "Höchstädtplatz 6, 1200 Wien"
@@ -41,7 +41,7 @@ Feature: Manage locations
     1 - Brigittenau, Wien - Höchstädtplatz 6, 1200 Wien
     """
 
-  @US6.4
+  @US6.2
   Scenario: Read all existing locations
     Given the following locations exist:
       | name                  | address                          |
@@ -58,7 +58,7 @@ Feature: Manage locations
     4 - Naschmarkt Charging - Naschmarkt 12, 1040 Wien
     """
 
-  @US6.5
+  @US6.3
   Scenario: Update the name of an existing location
     Given the following locations exist:
       | name          | address                          |
@@ -73,7 +73,7 @@ Feature: Manage locations
     2 - Stephansplatz - Stephansplatz 3, 1010 Wien
     """
 
-  @US6.6
+  @US6.3
   Scenario: Update the address of an existing location
     Given the following locations exist:
       | name          | address                          |
@@ -89,7 +89,7 @@ Feature: Manage locations
     """
 
 
-  @US6.7
+  @US6.4
   Scenario: Delete an existing location
     Given the following locations exist:
       | name          | address                          |
@@ -105,7 +105,7 @@ Feature: Manage locations
     3 - Prater - Praterstraße 10, 1020 Wien
     """
 
-  @US6.8
+  @US6.4
   @negative
   Scenario: Delete a non-existent location
     Given the following locations exist:
