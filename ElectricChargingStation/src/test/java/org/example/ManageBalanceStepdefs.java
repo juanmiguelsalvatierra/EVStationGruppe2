@@ -17,14 +17,14 @@ public class ManageBalanceStepdefs {
     public void theCustomerHastId(String name, int id) {
         throw new PendingException();
     }
-    //endregion
-    @Given("customer with id {int} hasn't don any top ups")
+
+    @Given("customer with id {int} has {int} invoices")
     public void customerWithIdHasnTDonAnyTopUps(int id) {
         throw new PendingException();
     }
 
-    @When("customer with id {int} gets his balance")
-    public void customerWithIdGetsHisBalance(int id) {
+    @When("customer with id {int} reads his balance")
+    public void customerWithIdReadsHisBalance(int id) {
         throw new PendingException();
     }
 

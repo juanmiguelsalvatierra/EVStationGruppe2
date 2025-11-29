@@ -11,12 +11,13 @@ Feature: Manage prepaid account balance
 
   @US2.1
   Scenario: View initial balance
-    Given customer with id 1 hasn't don any top ups
-    When customer with id 1 gets his balance
+    Given customer with id 1 has 0 invoices
+    When customer with id 1 reads his balance
     Then the customer with id 1 has a balance of 0 €
 
   @US2.2
   Scenario: Top up balance successfully
+    Given customer with id 1 has a balance of 0 €
     When customer with id 1 tops up his balance with 50 €
     Then the customer with id 1 has a balance of 50 €
 
