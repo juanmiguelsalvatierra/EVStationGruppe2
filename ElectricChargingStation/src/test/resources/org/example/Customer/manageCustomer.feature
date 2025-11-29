@@ -33,7 +33,7 @@ Feature: Manage customer account
 
   @US1.1
   @negative
-  Scenario: Prevent duplicate account creation
+  Scenario: Creating a customer with a duplicate name
     Given a customer account "John Doe" exists with email "john.doe@example.com"
     When I try to create a customer account "John Doe" with email "john.doe@example.com"
     Then I should see an error saying "Customer account already exists"

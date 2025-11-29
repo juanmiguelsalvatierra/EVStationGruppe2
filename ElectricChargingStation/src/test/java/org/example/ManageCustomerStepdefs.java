@@ -7,16 +7,19 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.messages.types.DataTable;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class ManageCustomerStepdefs {
+    CustomerManager cm = new CustomerManager();
     //region US1.1 Create a new customer account
     @Given("no customer account exists")
     public void noCustomerAccountExists() {
-        throw new PendingException();
+        assertTrue(cm.customerRepo.isEmpty());
     }
 
     @When("I create a customer account {string} with email {string}")
     public void iCreateACustomerAccountWithEmail(String name, String email) {
-        throw new PendingException();
+        cm.createCustomer(name, email);
     }
 
     @Then("I see a customer account with name {string} and email {string}")
