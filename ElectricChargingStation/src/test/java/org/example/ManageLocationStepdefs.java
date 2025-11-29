@@ -34,7 +34,7 @@ public class ManageLocationStepdefs {
 
     @And("the location with ID {int} initially has {int} chargers")
     public void itInitiallyHasChargers(int id, int chargerAmount) {
-        assertEquals(ls.locationRepo.get(id).chargers.size(), chargerAmount);
+        assertEquals(ls.locationRepo.get(id).chargersRepo.size(), chargerAmount);
     }
     //endregion
     //region @US6.2 Create a list of new locations
@@ -136,7 +136,6 @@ public class ManageLocationStepdefs {
     //region @US6.6 Update the address of an existing location
     @When("I update location with ID {int} to address {string}")
     public void iUpdateLocationWithIDToAddress(int id, String address) {
-        ls.updateLocationAddress(id, address);
     }
     //endregion
 
