@@ -39,22 +39,21 @@ Feature: View Invoices
     And customer "Alice" top-ups the amount 50
     And customer "Bob" top-ups the amount 100
     And a location "Prater" at "Praterallee 1, 1020 Wien" exists with rates:
-      | type | price_per_kwh |
-      | AC   | 0.35          |
-      | DC   | 0.55          |
+      | type | price_per_kwh | parking_price_per_hour |
+      | AC   | 0.35          | 0.10                   |
+      | DC   | 0.55          | 0.20                   |
     And location "Prater" has a charger of type "AC" with status "available"
     And customer "Bob" performs a charging session at charger ID 1 of location "Prater" with:
-      | start_time | duration_minutes | energy_kwh |
-      | 18:00      | 20               | 8          |
+      | start_time | duration_minutes |
+      | 18:00      | 20               |
     When I view all invoices
     Then I see the following invoice overview:
-    """
-    Customer: Alice
-    1 - TOPUP - amount: 50 - balance after: 50
+  """
+  Customer: Alice
+  1 - TOPUP - amount: 50 - balance after: 50
 
-    Customer: Bob
-    1 - TOPUP - amount: 100 - balance after: 100
-    2 - CHARGE - start: 18:00 - duration: 20min - energy: 8kWh - rate: 0.35 - amount: 2.8 - balance after: 97.2
-    """
-
+  Customer: Bob
+  1 - TOPUP - amount: 100 - balance after: 100
+  2 - CHARGE - start: 18:00 - duration: 20min - energy: 3.67kWh - rate: 0.35 - parking_rate: 0.10 - energy_cost: 1.28 - parking_cost: 0.03 - total: 1.31 - balance after: 98.69
+  """
 
