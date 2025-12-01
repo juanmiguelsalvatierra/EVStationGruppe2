@@ -10,6 +10,7 @@ public class ManageBalanceStepdefs {
     //region background
     @Given("customer {string} with the email {string} exists")
     public void customerWithTheEmailExists(String name, String email) {
+        
         throw new PendingException();
     }
 
