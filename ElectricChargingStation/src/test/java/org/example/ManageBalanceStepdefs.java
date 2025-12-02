@@ -7,15 +7,21 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class ManageBalanceStepdefs {
+    CustomerManager customerManager = new CustomerManager();
     //region background
     @Given("customer {string} with the email {string} exists")
     public void customerWithTheEmailExists(String name, String email) {
-        throw new PendingException();
+        customerManager.createCustomer(name, email);
     }
 
     @And("the customer {string} hast id {int}")
     public void theCustomerHastId(String name, int id) {
-        throw new PendingException();
+        Customer foundCustomer = customerManager.customerRepo.values()
+                    .stream()
+                    .filter(customer -> customer.getName().equals(name))
+                    .findFirst()
+                    .orElse(null);
+
     }
 
     @Given("customer with id {int} has {int} invoices")
