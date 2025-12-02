@@ -6,8 +6,8 @@ Feature: Manage prepaid account balance
   so that I can control how much credit is available for charging sessions.
 
   Background:
-    Given customer "Hans Hubert" with the email "hansi@gmail.com" exists
-    And the customer "Hans Huber" hast id 1
+    Given customer "Hans Huber" with the email "hansi@gmail.com" exists
+    And the customer "Hans Huber" has id 1
 
   @US2.1
   Scenario: View initial balance
@@ -19,7 +19,8 @@ Feature: Manage prepaid account balance
   Scenario: Top up balance successfully
     Given customer with id 1 has a balance of 0 €
     When customer with id 1 tops up his balance with 50 €
-    Then the customer with id 1 has a balance of 50 €
+    When customer with id 1 tops up his balance with 17.23 €
+    Then the customer with id 1 has a balance of 67.23 €
 
   @US2.2 @negative
   Scenario: Negative top up does not work

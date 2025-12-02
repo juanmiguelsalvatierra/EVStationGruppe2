@@ -2,12 +2,17 @@ package org.example;
 
 import java.time.LocalDate;
 
-public class BalanceItem extends  InvoiceItem{
+public class BalanceItem extends InvoiceItem{
     private double balanceAmount;
 
-    public BalanceItem(LocalDate invoiceDate, double balanceAmount) {
-        super(invoiceDate);
+    public BalanceItem(int id, double balanceAmount) {
+        super(id);
 
         this.balanceAmount = balanceAmount;
+    }
+
+    @Override
+    public double getInvoiceValue() {
+        return balanceAmount;
     }
 }
