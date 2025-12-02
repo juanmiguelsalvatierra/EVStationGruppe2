@@ -13,6 +13,7 @@ public class Location {
         this.address = address;
     }
 
+
     public String getAddress() {
         return address;
     }
@@ -37,7 +38,6 @@ public class Location {
         int newId = chargersRepo.size() + 1;
         chargersRepo.put(newId, new Charger(chargerType, status));
         chargersRepo.get(newId).setId(newId);
-
         return chargersRepo.get(newId);
     }
 
