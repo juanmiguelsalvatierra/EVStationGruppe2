@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Customer {
     private int customerId;
@@ -31,6 +32,29 @@ public class Customer {
 
     public void setId(int id){
         this.customerId = id;
+    }
+
+    public int getId(){
+        return this.customerId;
+    }
+
+    public double getBalance(){
+        return this.invoiceItems
+                .values()
+                .stream()
+                .mapToDouble(InvoiceItem::getInvoiceValue)
+                .sum();
+    }
+
+    public void topUp(double topUpValue){
+        if(topUpValue < 0) {
+            return;
+        }
+
+        int newId = this.invoiceItems.size() + 1;
+
+        InvoiceItem invoiceItem = new BalanceItem(newId, topUpValue);
+        this.invoiceItems.put(newId, invoiceItem);
     }
 
     @Override
