@@ -58,7 +58,6 @@ public class ManageLocationStepdefs {
     public void locationHasTheAddress(int id, String address) {
         assertEquals(ls.locationRepo.get(id).getAddress(), address);
     }
-
     //endregion
     //region @US6.3 Creating a location with a duplicate name
     @Given("a location {string} exists with address {string}")
@@ -112,7 +111,6 @@ public class ManageLocationStepdefs {
         assertEquals(expected, actual);
     }
     //endregion
-
     //region @US6.5 Update the name of an existing location
     @When("I update location with ID {int} to name {string}")
     public void iUpdateLocationWithIDWithNameAndAddress(int id, String name) {
@@ -131,15 +129,11 @@ public class ManageLocationStepdefs {
         assertEquals(ls.locationRepo.get(id).getAddress(), address);
     }
     //endregion
-
-
     //region @US6.6 Update the address of an existing location
     @When("I update location with ID {int} to address {string}")
     public void iUpdateLocationWithIDToAddress(int id, String address) {
     }
     //endregion
-
-
     //region @US6.7 Delete an existing location @US6.8 Delete a non-existent location
     @And("location with ID {int} no longer exists")
     public void locationWithIDNoLongerExists(int id) {
