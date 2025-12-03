@@ -5,15 +5,15 @@ Feature: Monitor station network
   so that I can find available chargers and check their current status before arriving.
 
   Background:
-    Given the map shows all locations and chargers with live status
+    Given a location "Karlsplatz charging" exists
+
 
   @US3.1
-  Scenario Outline: View operational status by location
-    When I open location "<location>"
-    Then I see all "<chargerId>" at the location
-    And I can see the type "<type>" and "<status>"
-
-    Examples:
-      | chargerId | type | status     |
-      | 1         | AC   | Available  |
-      | 2         | DC   | Occupied   |
+  Scenario: View operational status by location
+    When I open location "Karlsplatz charging"
+    Then I see a list of the chargers at location "Karlsplatz charging" with the following output:
+    """
+    1 - AC - FREE
+    2 - AC - OCCUPIED
+    3 - DC - OUT_OF_ORDER
+    """
