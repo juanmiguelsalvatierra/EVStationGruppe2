@@ -5,7 +5,7 @@ Feature: Monitor station network
   so that I can find available chargers and check their current status before arriving.
 
   Background:
-    Given A map shows all locations with their live status
+    Given A map shows all locations with their chargers and live statuses
 
 
   @US3.1
