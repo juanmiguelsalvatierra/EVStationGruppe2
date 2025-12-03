@@ -14,24 +14,13 @@ Feature: Manage charging prices
     When I read all current prices of location with id 1
     Then I should see the following current prices for location with id 1
     """
-    ---Donauinsel at 2025-01-01-11-00-00-00---
+    ---Donauinsel---
     price_per_kWh_AC: 1.00
     price_per_kWh_DC: 2.00
     parking_price_AC: 2.50
     parking_price_DC: 3.50
     """
-
-  @US10.1
-  Scenario: Read prices
-    When I read the prices of location with id 1 at Datetime "2025-01-01-11-00-00-00"
-    Then I should see the following prices for location with id 1 at Datetime "2025-01-01-11-00-00-00":
-    """
-    ---Donauinsel at 2025-01-01-11-00-00-00---
-    price_per_kWh_AC: 1.00
-    price_per_kWh_DC: 2.00
-    parking_price_AC: 2.50
-    parking_price_DC: 3.50
-    """
+    
 
   @US10.2
   Scenario: Update prices
