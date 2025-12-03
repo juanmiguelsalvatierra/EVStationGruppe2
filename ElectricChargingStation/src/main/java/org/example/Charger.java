@@ -24,6 +24,14 @@ public class Charger {
         return this.chargerType;
     }
 
+    public int getChargerId() {
+        return chargerId;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public Status getStatus(){
         return this.status;
     }

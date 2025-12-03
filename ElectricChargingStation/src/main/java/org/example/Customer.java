@@ -57,6 +57,50 @@ public class Customer {
         this.invoiceItems.put(newId, invoiceItem);
     }
 
+    public void chargeEVSession(Location location, int chargerId, int minutes){
+        double pricePerMinute = 0.50; // BEISPIELHAFT BIS PREIS LOGIK IMPLEMENTIERT IST
+        double totalCost = pricePerMinute * minutes; // BEISPIELHAFT BIS PREIS LOGIK IMPLEMENTIERT IST
+        Charger charger = location.getChargersRepo().get(chargerId);
+
+        if (charger == null) {
+            System.out.println("Invalid chargerId — please insert correct chargerId");
+            return;
+        }
+
+        if (charger.getStatus() == Status.OCCUPIED) {
+            return;
+        }
+
+        if(getBalance() < totalCost ){
+           System.out.println("Insufficient balance — please top up");
+           return;
+       }
+        if(minutes <= 0) {
+            System.out.println("Invalid time — please insert correct time");
+            return;
+        }
+
+        //If checks are successful:
+        charger.setStatus(Status.OCCUPIED);
+        System.out.println("Charging started on charger " + chargerId + " for " + minutes + " minutes.");
+
+        int newId = invoiceItems.size() + 1;
+        invoiceItems.put(newId, new ChargingItem(newId, -totalCost));
+
+        new Thread(() -> {
+            try {
+                Thread.sleep((long) minutes * 60 * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            charger.setStatus(Status.FREE);
+            System.out.println("Charging completed — charger " + chargerId + " is now FREE.");
+        }).start();
+    }
+
+
+
     @Override
     public String toString() {
         return customerId + " - " + name + " - " + email;

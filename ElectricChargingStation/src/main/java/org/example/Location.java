@@ -41,6 +41,10 @@ public class Location {
         return chargersRepo.get(newId);
     }
 
+    public HashMap<Integer, Charger> getChargersRepo() {
+        return chargersRepo;
+    }
+
     public String getAllChargersAsString(){
         StringBuilder actualOutput = new StringBuilder();
         for (Charger charger : chargersRepo.values()) {
