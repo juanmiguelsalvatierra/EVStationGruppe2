@@ -20,7 +20,6 @@ Feature: Manage charging prices
     parking_price_AC: 2.50
     parking_price_DC: 3.50
     """
-    
 
   @US10.2
   Scenario: Update prices
@@ -43,7 +42,6 @@ Feature: Manage charging prices
     parking_price_AC: 3.50
     parking_price_DC: 4.50
     """
-
 
   @US10.2
   Scenario: Update prices - wrong price
