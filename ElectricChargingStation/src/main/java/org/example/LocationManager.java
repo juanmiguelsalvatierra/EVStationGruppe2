@@ -3,7 +3,7 @@ package org.example;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LocationService {
+public class LocationManager {
     public Map<Integer, Location> locationRepo = new HashMap<>();
 
     public void createLocation(String name, String address) {
