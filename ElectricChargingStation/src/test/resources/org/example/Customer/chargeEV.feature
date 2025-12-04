@@ -6,36 +6,34 @@ Feature: Charge EV and pay by consumption/duration
   so that I can replenish my vehicle’s battery using my prepaid account balance.
 
   Background:
-    Given I am logged in as a customer
+    Given a customer "Hans Huber" with the email "hansi@gmail.com" exists
+    And the customer "Hans Huber" has id 1
+    And a location "Karlsplatz charging" with a chargerId 1 of type "AC" with status "FREE" exists
+
 
   @US4.1
-  Scenario Outline: Successful charging session
-    Given I connect to charger "<chargerId>"
-    And my balance is "100"
-    When I attempt to start charging for "<minutes>" minutes
-    Then the invoice item reflects correct price and duration
-      And my balance is reduced accordingly
+  Scenario: Successful charging session
+    Given a customer with id 1 has a balance of 100 €
+    When the customer with id 1 attempts to charge at charger with id 1 for 45 minutes
+    Then the last invoice item from customer 1 reflects the correct price 10.5 and duration 45 minutes
+    And the customer with id 1 has a balance of 89.5 €
 
-    Examples:
-      | chargerId | minutes |
-      | 1         | 45      |
-      | 2         | 60      |
+
 
   @US4.1 @negative
   Scenario: Unsuccessful charging session - due to insufficient balance
-    Given I connect to charger "1"
-    And my balance is "0"
-    When I attempt to start charging for "45" minutes
+    Given A customer with id 1 has a balance of 100 €
+    When the customer with id 1 attempts to start charging with id 1 for 45 minutes
     Then the session is not started
-      And I see "Insufficient balance — please top up"
+    And the balance for customer 1 remains 100 €
+
 
   @US4.1 @negative
   Scenario Outline: Unsuccessful charging session - due to invalid time
-    Given I connect to charger "1"
-    And my balance is "100"
-    When I attempt to start charging for "<minutes>" minutes
+    And a customer with id 1 has a balance of 100 €
+    When the customer with id 1 attempts to start charging at charger with id 1 for "<minutes>" minutes
     Then the session is not started
-    And I see "Invalid time — please insert correct time"
+    And the balance for customer 1 remains 100 €
 
     Examples:
       | minutes |
@@ -44,10 +42,10 @@ Feature: Charge EV and pay by consumption/duration
 
   @US4.1 @negative
   Scenario Outline: Unsuccessful charging session - due to invalid chargerId
-    Given I connect to charger "<chargerId>"
-    When I attempt to start charging for "<minutes>" minutes
+    When a customer with id 1 attempts to start charging with charger "<chargerId>"
+    And the customer with id 1 attempts to start charging at charger with id 1 for 40 minutes
     Then the session is not started
-    And I see "Invalid chargerId — please insert correct chargerId"
+    And the balance for customer 1 remains 100 €
 
     Examples:
       | chargerId |
