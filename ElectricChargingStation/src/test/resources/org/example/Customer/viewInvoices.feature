@@ -7,6 +7,8 @@ Feature: View invoices
   Background:
     Given the customer "Alice" with email "alice@test.at" exists
     And the customer "Alice" has ID 1
+    And the invoice item count for the customer with the ID 1 is 0
+    And the balance of the customer with the ID 1 is 0
 
   @US5.1
   Scenario: View an empty invoice list
@@ -23,7 +25,7 @@ Feature: View invoices
     Then the invoice item count for the customer with the ID 1 is 1
     And the invoice items for the customer with the ID 1 show the following:
     """
-    1 - TOPUP - amount: 50
+    1 - TOPUP - amount: 50 - balance after: 50
     """
 
   @US5.1
@@ -35,9 +37,9 @@ Feature: View invoices
     Then the invoice item count for the customer with the ID 1 is 3
     And the invoice items for the customer with the ID 1 show the following:
     """
-    1 - TOPUP - amount: 30
-    2 - TOPUP - amount: 20
-    3 - TOPUP - amount: 50
+    1 - TOPUP - amount: 30 - balance after: 30
+    2 - TOPUP - amount: 20 - balance after: 50
+    3 - TOPUP - amount: 50 - balance after: 100
     """
 
   @US5.1
@@ -54,6 +56,6 @@ Feature: View invoices
     Then the invoice item count for the customer with the ID 1 is 2
     And the invoice items for the customer with the ID 1 show the following:
   """
-  1 - TOPUP - amount: 50
-  2 - CHARGE - Date: HOW DO I TEST THIS???? (I can never know the exact date and time a InvItem is created through charigng) - duration: 30min - energy: watt of AC (needs to be implemented)x duration = kWh - price_per_kWh_AC - parking_price_AC - energy_cost: kWh * price_per_kWh_AC - parking_cost: duration * parking_price_AC - total: sum(ek + pc)
+  1 - TOPUP - amount: 50 - balance after: 50
+  2 - CHARGE - duration: 30min - energy: watt of AC (needs to be implemented)x duration = kWh - price_per_kWh_AC - parking_price_AC - energy_cost: kWh * price_per_kWh_AC - parking_cost: duration * parking_price_AC - total: sum(ek + pc) - balance after: x
   """
