@@ -5,20 +5,30 @@ Feature: Monitor station network
   so that I can find available chargers and check their current status before arriving.
 
   Background:
-    Given A map shows all locations with their chargers and live statuses
+    Given A location "Karlsplatz charging" exists with the adress "Karlsplatz 1, 1010 Wien "
+    And  a location "Donauinsel charging" exists with the adress "An der Neuen Donau, 1210 Wien"
 
 
   @US3.1
   Scenario: View operational status by location
-    Given a location "Karlsplatz charging" exists
-    And the following chargers exist at location "Karlsplatz charging":
+    Given the following chargers exist at location "Karlsplatz charging":
      | chargerId | type | status       |
      | 1         | AC   | FREE         |
      | 2         | AC   | OCCUPIED     |
      | 3         | DC   | OUT_OF_ORDER |
-    Then I see a list of the chargers at location "Karlsplatz charging" with the following output:
+    And the following chargers exist at location "Donauinsel charging":
+      | chargerId | type | status       |
+      | 1         | DC   | FREE         |
+      | 2         | DC   | OCCUPIED     |
+    When I attempt to access the locations information
+    Then I see a list of every locations and their chargers:
     """
+    --- Karlsplatz charging ---
     1 - AC - FREE
     2 - AC - OCCUPIED
     3 - DC - OUT_OF_ORDER
+
+    --- Donauinsel charging ---
+    1 - DC - FREE
+    2 - dc - OCCUPIED
     """

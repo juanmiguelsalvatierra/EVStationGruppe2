@@ -14,8 +14,7 @@ Feature: Charge EV and pay by consumption/duration
   @US4.1
   Scenario: Successful charging session
     Given a customer with id 1 has a balance of 100 €
-    When the customer with id 1 attempts to connect to charger 1
-    And the customer with id 1 starts charging for 45 minutes
+    When the customer with id 1 attempts to charge at charger with id 1 for 45 minutes
     Then the last invoice item from customer 1 reflects the correct price 10.5 and duration 45 minutes
     And the customer with id 1 has a balance of 89.5 €
 
@@ -24,15 +23,17 @@ Feature: Charge EV and pay by consumption/duration
   @US4.1 @negative
   Scenario: Unsuccessful charging session - due to insufficient balance
     Given A customer with id 1 has a balance of 100 €
-    When the customer with id 1 attempts to start charging for 45 minutes
+    When the customer with id 1 attempts to start charging with id 1 for 45 minutes
     Then the session is not started
+    And the balance remains 100 €
 
 
   @US4.1 @negative
   Scenario Outline: Unsuccessful charging session - due to invalid time
     And a customer with id 1 has a balance of 100 €
-    When the customer with id 1 attempts to start charging for "<minutes>" minutes
+    When the customer with id 1 attempts to start charging at charger with id 1 for "<minutes>" minutes
     Then the session is not started
+    And the balance remains 100 €
 
     Examples:
       | minutes |
@@ -42,8 +43,9 @@ Feature: Charge EV and pay by consumption/duration
   @US4.1 @negative
   Scenario Outline: Unsuccessful charging session - due to invalid chargerId
     When a customer with id 1 attempts to start charging with charger "<chargerId>"
-    And the customer with id 1 wants to charge for 40 minutes
+    And the customer with id 1 attempts to start charging at charger with id 1 for 40 minutes
     Then the session is not started
+    And the balance remains 100 €
 
     Examples:
       | chargerId |
