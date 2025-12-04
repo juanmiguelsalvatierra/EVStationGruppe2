@@ -25,7 +25,7 @@ Feature: Charge EV and pay by consumption/duration
     Given A customer with id 1 has a balance of 100 €
     When the customer with id 1 attempts to start charging with id 1 for 45 minutes
     Then the session is not started
-    And the balance remains 100 €
+    And the balance for customer 1 remains 100 €
 
 
   @US4.1 @negative
@@ -33,7 +33,7 @@ Feature: Charge EV and pay by consumption/duration
     And a customer with id 1 has a balance of 100 €
     When the customer with id 1 attempts to start charging at charger with id 1 for "<minutes>" minutes
     Then the session is not started
-    And the balance remains 100 €
+    And the balance for customer 1 remains 100 €
 
     Examples:
       | minutes |
@@ -45,7 +45,7 @@ Feature: Charge EV and pay by consumption/duration
     When a customer with id 1 attempts to start charging with charger "<chargerId>"
     And the customer with id 1 attempts to start charging at charger with id 1 for 40 minutes
     Then the session is not started
-    And the balance remains 100 €
+    And the balance for customer 1 remains 100 €
 
     Examples:
       | chargerId |
