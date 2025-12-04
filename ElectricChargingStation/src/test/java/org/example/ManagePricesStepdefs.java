@@ -1,7 +1,6 @@
 package org.example;
 
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -47,12 +46,12 @@ public class ManagePricesStepdefs {
 
     @When("I read all current prices of location with id {int}")
     public void iReadAllCurrentPricesOfLocationWithId(int id) {
-        lm.locationRepo.get(id).getPrices();
+        lm.locationRepo.get(id).getPricesAsString();
     }
 
     @Then("I should see the following current prices for location with id {int}:")
     public void iShouldSeeTheFollowingCurrentPricesForLocationWithId(int id, String expectedPrices) {
-        String actual = lm.locationRepo.get(id).getPrices();
+        String actual = lm.locationRepo.get(id).getPricesAsString();
 
         // Normalisierung: CRLF -> LF, NBSP -> normal space, trim
         java.util.function.UnaryOperator<String> norm = s -> {

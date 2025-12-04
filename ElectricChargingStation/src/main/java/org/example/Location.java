@@ -1,7 +1,6 @@
 package org.example;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -64,23 +63,15 @@ public class Location {
         priceList.put(newId, new Price(price_per_kWh_AC, price_per_kWh_DC, parking_price_AC, parking_price_DC, valid_From));
     }
 
-    public String getPrices() {
+    public String getPricesAsString() {
         Price mostRecentPrice = priceList.get(priceList.size());
-        String output = String.format(Locale.US,
-                "---%s---%n" +
-                        "price_per_kWh_AC: %.2f%n" +
-                        "price_per_kWh_DC: %.2f%n" +
-                        "parking_price_AC: %.2f%n" +
-                        "parking_price_DC: %.2f",
-                this.name,
-                mostRecentPrice.price_per_kWh_AC,
-                mostRecentPrice.price_per_kWh_DC,
-                mostRecentPrice.parking_price_AC,
-                mostRecentPrice.parking_price_DC
-        );
-        return output;
-    }
+        StringBuilder actualOutput = new StringBuilder();
 
+        actualOutput.append(mostRecentPrice.toString());
+        actualOutput.insert(0, "---"+this.getName()+"---\n");
+
+        return actualOutput.toString();
+    }
 
     @Override
     public String toString() {
