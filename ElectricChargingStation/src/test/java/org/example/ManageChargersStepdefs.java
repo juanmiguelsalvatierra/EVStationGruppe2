@@ -17,6 +17,7 @@ public class ManageChargersStepdefs {
     //region @US7.1 Create a new charger at a location
     @Given("a location {string} exists with address {string} for chargers")
     public void aLocationExistsWithAddressToCreateACharger(String name, String address) {
+        LocationManager.locationRepo.clear();
         lm.createLocation(name, address);
     }
 

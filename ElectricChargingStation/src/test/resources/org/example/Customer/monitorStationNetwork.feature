@@ -12,23 +12,23 @@ Feature: Monitor station network
   @US3.1
   Scenario: View operational status by location
     Given the following chargers exist at location "Karlsplatz charging":
-     | chargerId | type | status       |
-     | 1         | AC   | FREE         |
-     | 2         | AC   | OCCUPIED     |
-     | 3         | DC   | OUT_OF_ORDER |
+     | chargerId | type | status            |
+     | 1         | AC   | IN_OPERATION_FREE |
+     | 2         | AC   | OCCUPIED          |
+     | 3         | DC   | OUT_OF_ORDER      |
     And the following chargers exist at location "Donauinsel charging":
-      | chargerId | type | status       |
-      | 1         | DC   | FREE         |
-      | 2         | DC   | OCCUPIED     |
+      | chargerId | type | status             |
+      | 1         | DC   | IN_OPERATION_FREE  |
+      | 2         | DC   | OCCUPIED           |
     When I attempt to access the locations information
     Then I see a list of every locations and their chargers:
     """
     --- Karlsplatz charging ---
-    1 - AC - FREE
+    1 - AC - IN_OPERATION_FREE
     2 - AC - OCCUPIED
     3 - DC - OUT_OF_ORDER
 
     --- Donauinsel charging ---
-    1 - DC - FREE
+    1 - DC - IN_OPERATION_FREE
     2 - dc - OCCUPIED
     """

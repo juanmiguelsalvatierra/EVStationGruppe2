@@ -57,6 +57,43 @@ public class Customer {
         this.invoiceItems.put(newId, invoiceItem);
     }
 
+    public InvoiceItem getLatestInvoiceItem(){
+        return invoiceItems.get(invoiceItems.size());
+    }
+
+    public void chargeEv(int locationId, int chargerId, int minutes, String type){
+        Location location = LocationManager.locationRepo.get(locationId);
+        Price price = location.getCurrentPrice();
+        Charger charger = location.chargersRepo.get(chargerId);
+        ChargerType chargerType = ChargerType.valueOf(type);
+
+        if (charger == null) {
+            return;
+        }
+
+        if (charger.getStatus() != Status.IN_OPERATION_FREE) {
+            return;
+        }
+
+        if(minutes <= 0) {
+            return;
+        }
+
+        int newChargingItemId = invoiceItems.size()+1;
+        ChargingItem chargingItem = new ChargingItem(newChargingItemId, minutes, price.getId(), locationId, chargerId, chargerType);
+
+        double balanceOfCustomer = getBalance();
+        double chargingPrice = chargingItem.getInvoiceValue();
+
+        if(balanceOfCustomer < Math.abs(chargingPrice)){
+           return;
+        }
+
+        invoiceItems.put(newChargingItemId, chargingItem);
+    }
+
+
+
     @Override
     public String toString() {
         return customerId + " - " + name + " - " + email;

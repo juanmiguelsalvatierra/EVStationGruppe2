@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LocationManager {
-    public Map<Integer, Location> locationRepo = new HashMap<>();
+    public static Map<Integer, Location> locationRepo = new HashMap<>();
 
     public void createLocation(String name, String address) {
         if(!checkDupes(name, address)){
@@ -35,7 +35,12 @@ public class LocationManager {
         locationRepo.get(id).setName(name);
     }
 
-    public Location getLocationByName(String name){
+    public void updateLocationAddress(int id, String address){
+        locationRepo.get(id).setAddress(address);
+    }
+
+
+    public static Location getLocationByName(String name){
         return locationRepo.values()
                 .stream()
                 .filter(loc -> loc.getName().equals(name))

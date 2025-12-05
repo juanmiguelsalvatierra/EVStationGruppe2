@@ -14,6 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ManageLocationStepdefs {
     LocationManager lm = new LocationManager();
 
+    public ManageLocationStepdefs(){
+        LocationManager.locationRepo.clear();
+    }
+
     //region @US6.1 Create a new location
     @Given("no location exists")
     public void noLocationExists() {
@@ -111,7 +115,7 @@ public class ManageLocationStepdefs {
         assertEquals(expected, actual);
     }
     //endregion
-    //region @US6.5 Update the name of an existing location
+    //region @US6.3 Update the name of an existing location
     @When("I update location with ID {int} to name {string}")
     public void iUpdateLocationWithIDWithNameAndAddress(int id, String name) {
         lm.updateLocationName(id, name);
@@ -132,6 +136,7 @@ public class ManageLocationStepdefs {
     //region @US6.6 Update the address of an existing location
     @When("I update location with ID {int} to address {string}")
     public void iUpdateLocationWithIDToAddress(int id, String address) {
+        lm.updateLocationAddress(id, address);
     }
     //endregion
     //region @US6.7 Delete an existing location @US6.8 Delete a non-existent location

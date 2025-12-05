@@ -19,6 +19,7 @@ public class ManageCustomerStepdefs {
     //region US1.1 Create a new customer account
     @Given("no customer account exists")
     public void noCustomerAccountExists() {
+        LocationManager.locationRepo.clear();
         assertTrue(cm.customerRepo.isEmpty());
     }
 
