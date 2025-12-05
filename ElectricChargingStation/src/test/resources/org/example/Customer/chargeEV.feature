@@ -14,7 +14,6 @@ Feature: Charge EV and pay by consumption/duration
       | price_per_kWh_AC | price_per_kWh_DC| parking_price_AC|parking_price_DC|
       | 1.00             | 2.00            | 2               | 4              |
 
-
   @US4.1
   Scenario: Successful charging session
     Given a customer with id 1 has a balance of 100 €
@@ -28,7 +27,6 @@ Feature: Charge EV and pay by consumption/duration
     When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "DC" mode for 45 minutes
     When the customer with id 1 tops up his balance with 50 €
     And the balance of customer with id 1 is 72 €
-
 
   @US4.1 @negative
   Scenario: Unsuccessful charging session - due to insufficient balance
