@@ -15,4 +15,13 @@ public class BalanceItem extends InvoiceItem{
     public double getInvoiceValue() {
         return balanceAmount;
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "%d - TOPUP - amount: %.2f",
+                getInvoiceItemId(),
+                balanceAmount
+        );
+    }
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomerManager {
-    public Map<Integer, Customer> customerRepo = new HashMap<>();
+    public static Map<Integer, Customer> customerRepo = new HashMap<>();
 
     public void createCustomer(String name, String email) {
         if(!checkDupes(name, email)){
@@ -45,5 +45,22 @@ public class CustomerManager {
         } else{
             System.out.println("Customer account not found");
         }
+    }
+
+    public String viewAllInvoices() {
+        StringBuilder sb = new StringBuilder();
+
+        boolean first = true;
+        for (Customer customer : CustomerManager.customerRepo.values()) {
+            if (!first) {
+                sb.append("\n"); // nur ein Zeilenumbruch zwischen Kunden
+            }
+            first = false;
+
+            sb.append("Customer: ").append(customer.getName()).append("\n");
+            sb.append(customer.getAllInvoiceItemsAsString());
+        }
+
+        return sb.toString().trim();
     }
 }

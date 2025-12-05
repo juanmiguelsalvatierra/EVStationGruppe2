@@ -57,4 +57,35 @@ public class ChargingItem extends InvoiceItem {
 
         return  chargingcost;
     }
+
+    @Override
+    public String toString() {
+        Location location = LocationManager.locationRepo.get(locationId);
+        Price price = location.priceList.get(priceId);
+        Charger charger = location.chargersRepo.get(chargerId);
+
+        double energyKwh = (duration / 60.0) *
+                (chargerType == ChargerType.AC ? charger.getAC_Kw() : charger.getDC_Kw());
+
+        double energyPrice = chargerType == ChargerType.AC ? price.price_per_kWh_AC : price.price_per_kWh_DC;
+        double parkingPrice = chargerType == ChargerType.AC ? price.parking_pricePerHour_AC : price.parking_pricePerHour_DC;
+
+        double energyCost = energyKwh * energyPrice;
+        double parkingCost = (duration / 60.0) * parkingPrice;
+        double total = -(energyCost + parkingCost);
+
+        return String.format(
+                "%d - CHARGE - duration: %dmin - energy: %.2fkWh - price_per_kWh_%s: %.2f - parking_price_%s: %.2f - energy_cost: %.2f - parking_cost: %.2f - total: %.2f",
+                getInvoiceItemId(),
+                duration,
+                energyKwh,
+                chargerType.name(),
+                energyPrice,
+                chargerType.name(),
+                parkingPrice,
+                energyCost,
+                parkingCost,
+                total
+        );
+    }
 }
