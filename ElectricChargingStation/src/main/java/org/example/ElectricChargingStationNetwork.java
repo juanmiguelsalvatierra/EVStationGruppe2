@@ -3,7 +3,7 @@ package org.example;
 
 public class ElectricChargingStationNetwork {
     public static void main(String[] args) {
-        LocationService locationService = new LocationService();
+        LocationManager locationService = new LocationManager();
         CustomerManager customerManager = new CustomerManager();
         locationService.createLocation("Karlsplatz Charging", "Karlsplatz 1, 1010 Wien");
         Location location = locationService.getLocationByName("Karlsplatz Charging");
