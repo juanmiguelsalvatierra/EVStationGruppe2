@@ -15,6 +15,7 @@ public class ManagePricesStepdefs {
     LocationManager lm = new LocationManager();
     @Given("the location {string} with address {string} exists")
     public void theLocationWithAddressExists(String name, String address) {
+        LocationManager.locationRepo.clear();
         lm.createLocation(name, address);
     }
 

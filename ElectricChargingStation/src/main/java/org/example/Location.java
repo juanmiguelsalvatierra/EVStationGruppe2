@@ -60,8 +60,13 @@ public class Location {
             return;
         }
         int newId = priceList.size() + 1;
-        priceList.put(newId, new Price(price_per_kWh_AC, price_per_kWh_DC, parking_price_AC, parking_price_DC, valid_From));
+        priceList.put(newId, new Price(newId, price_per_kWh_AC, price_per_kWh_DC, parking_price_AC, parking_price_DC, valid_From));
     }
+
+    public Price getCurrentPrice() {
+        return priceList.get(priceList.size());
+    }
+
 
     public String getPricesAsString() {
         Price mostRecentPrice = priceList.get(priceList.size());

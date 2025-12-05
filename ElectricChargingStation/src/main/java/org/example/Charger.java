@@ -6,6 +6,8 @@ public class Charger {
     private int chargerId;
     private ChargerType chargerType;
     private Status status;
+    private int DC_Kw = 50;
+    private int AC_Kw = 10;
 
     public Charger(String chargerType, String status){
         ChargerType chargerTypeParsed = ChargerType.valueOf(chargerType);
@@ -34,6 +36,14 @@ public class Charger {
 
     public Status getStatus(){
         return this.status;
+    }
+
+    public int getDC_Kw(){
+        return this.DC_Kw;
+    }
+
+    public int getAC_Kw(){
+        return this.AC_Kw;
     }
 
     @Override

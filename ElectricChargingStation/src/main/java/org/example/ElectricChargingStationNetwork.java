@@ -8,7 +8,7 @@ public class ElectricChargingStationNetwork {
         locationService.createLocation("Karlsplatz Charging", "Karlsplatz 1, 1010 Wien");
         Location location = locationService.getLocationByName("Karlsplatz Charging");
 
-        location.createCharger("AC", "FREE");
+        location.createCharger("AC", "IN_OPERATION_FREE");
         System.out.println(location.getAllChargersAsString());
 
         customerManager.createCustomer("Hansi", "Huberti");

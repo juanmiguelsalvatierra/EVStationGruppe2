@@ -61,46 +61,35 @@ public class Customer {
         return invoiceItems.get(invoiceItems.size());
     }
 
-    public void chargeEv(Location location, int chargerId, int minutes){
-        double pricePerMinute = 0.50; // BEISPIELHAFT BIS PREIS LOGIK IMPLEMENTIERT IST
-        double totalCost = pricePerMinute * minutes; // BEISPIELHAFT BIS PREIS LOGIK IMPLEMENTIERT IST
+    public void chargeEv(int locationId, int chargerId, int minutes, String type){
+        Location location = LocationManager.locationRepo.get(locationId);
+        Price price = location.getCurrentPrice();
         Charger charger = location.chargersRepo.get(chargerId);
+        ChargerType chargerType = ChargerType.valueOf(type);
 
         if (charger == null) {
-            System.out.println("Invalid chargerId — please insert correct chargerId");
             return;
         }
 
-        if (charger.getStatus() == Status.OCCUPIED) {
+        if (charger.getStatus() != Status.IN_OPERATION_FREE) {
             return;
         }
 
-        if(getBalance() < totalCost ){
-           System.out.println("Insufficient balance — please top up");
-           return;
-       }
         if(minutes <= 0) {
-            System.out.println("Invalid time — please insert correct time");
             return;
         }
 
-        //If checks are successful:
-        charger.setStatus(Status.OCCUPIED);
-        System.out.println("Charging started on charger " + chargerId + " for " + minutes + " minutes.");
+        int newChargingItemId = invoiceItems.size()+1;
+        ChargingItem chargingItem = new ChargingItem(newChargingItemId, minutes, price.getId(), locationId, chargerId, chargerType);
 
-        int newId = invoiceItems.size() + 1;
-        invoiceItems.put(newId, new ChargingItem(newId, -totalCost));
+        double balanceOfCustomer = getBalance();
+        double chargingPrice = chargingItem.getInvoiceValue();
 
-        new Thread(() -> {
-            try {
-                Thread.sleep((long) minutes * 60 * 1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if(balanceOfCustomer < Math.abs(chargingPrice)){
+           return;
+        }
 
-            charger.setStatus(Status.IN_OPERATION_FREE);
-            System.out.println("Charging completed — charger " + chargerId + " is now FREE.");
-        }).start();
+        invoiceItems.put(newChargingItemId, chargingItem);
     }
 
 
