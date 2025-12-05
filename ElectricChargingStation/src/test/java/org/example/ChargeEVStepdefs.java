@@ -96,6 +96,13 @@ public class ChargeEVStepdefs {
         assertEquals(minutes, chargingItem.getChargingTime());
     }
 
+    @When("the customer with id {int} tops up his balance with {double} €")
+    public void theCustomerWithIdTopsUpHisBalanceWith€(int customerId, double topUpValue) {
+        Customer foundCustomer = customerManager.customerRepo.get(customerId);
+
+        foundCustomer.topUp(topUpValue);
+    }
+
     @And("at location {string} exists a charger with id {int} of type {string} and status {string}")
     public void atLocationExistsAChargerWithIdOfTypeAndStatus(String locationName, int chargerId, String type, String status) {
         Location location = locationManager.getLocationByName(locationName);
@@ -121,5 +128,6 @@ public class ChargeEVStepdefs {
 
         assertEquals(expectedBalance, actuelBalance);
     }
+
 
 }
