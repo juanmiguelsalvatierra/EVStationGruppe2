@@ -57,10 +57,14 @@ public class Customer {
         this.invoiceItems.put(newId, invoiceItem);
     }
 
-    public void chargeEVSession(Location location, int chargerId, int minutes){
+    public InvoiceItem getLatestInvoiceItem(){
+        return invoiceItems.get(invoiceItems.size());
+    }
+
+    public void chargeEv(Location location, int chargerId, int minutes){
         double pricePerMinute = 0.50; // BEISPIELHAFT BIS PREIS LOGIK IMPLEMENTIERT IST
         double totalCost = pricePerMinute * minutes; // BEISPIELHAFT BIS PREIS LOGIK IMPLEMENTIERT IST
-        Charger charger = location.getChargersRepo().get(chargerId);
+        Charger charger = location.chargersRepo.get(chargerId);
 
         if (charger == null) {
             System.out.println("Invalid chargerId — please insert correct chargerId");
@@ -94,7 +98,7 @@ public class Customer {
                 e.printStackTrace();
             }
 
-            charger.setStatus(Status.FREE);
+            charger.setStatus(Status.IN_OPERATION_FREE);
             System.out.println("Charging completed — charger " + chargerId + " is now FREE.");
         }).start();
     }
