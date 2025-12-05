@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomerManager {
-    public static Map<Integer, Customer> customerRepo = new HashMap<>();
+    public Map<Integer, Customer> customerRepo = new HashMap<>();
 
     public void createCustomer(String name, String email) {
         if(!checkDupes(name, email)){
@@ -51,7 +51,7 @@ public class CustomerManager {
         StringBuilder sb = new StringBuilder();
 
         boolean first = true;
-        for (Customer customer : CustomerManager.customerRepo.values()) {
+        for (Customer customer : customerRepo.values()) {
             if (!first) {
                 sb.append("\n"); // nur ein Zeilenumbruch zwischen Kunden
             }

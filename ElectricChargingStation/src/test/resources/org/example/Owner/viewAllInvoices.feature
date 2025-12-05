@@ -53,9 +53,9 @@ Feature: View Invoices
   """
   Customer: Alice
   1 - TOPUP - amount: 50,00 - balance after: 50,00
+  2 - CHARGE - duration: 30min - energy: 5,00kWh - price_per_kWh_AC: 1,00 - parking_price_AC: 2,50 - energy_cost: 5,00 - parking_cost: 1,25 - total: -6,25 - balance after: 43,75
 
   Customer: Bob
   1 - TOPUP - amount: 100,00 - balance after: 100,00
-  2 - CHARGE - duration: 30min - energy: 5,00kWh - price_per_kWh_AC: 1,00 - parking_price_AC: 2,50 - energy_cost: 5,00 - parking_cost: 1,25 - total: -6,25 - balance after: 93,75
   """
 

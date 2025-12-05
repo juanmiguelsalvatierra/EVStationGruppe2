@@ -4,14 +4,14 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ViewInvoicesStepdefs {
     CustomerManager customerManager = new CustomerManager();
@@ -107,6 +107,27 @@ public class ViewInvoicesStepdefs {
         Location location = locationManager.locationRepo.get(locationId);
 
         foundCustomer.chargeEv(location.getId(), chargerId, duration, type);
+    }
+
+    //---------------------------view all invoices----------------------------
+
+    @Given("no customers exist")
+    public void noCustomersExist() {
+        assertTrue(customerManager.customerRepo.isEmpty());
+    }
+
+    @When("I view all invoices")
+    public void iViewAllInvoices() {
+        String actualOutput = customerManager.viewAllInvoices();
+    }
+
+    @Then("I see the following invoice overview:")
+    public void iSeeTheFollowingInvoiceOverview(String expectedOutput) {
+        String actualOutput = customerManager.viewAllInvoices();
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n").trim(),
+                actualOutput.replace("\r\n", "\n").trim()
+        );
     }
 
 }
