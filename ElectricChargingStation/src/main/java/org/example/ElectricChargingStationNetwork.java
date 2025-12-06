@@ -16,5 +16,8 @@ public class ElectricChargingStationNetwork {
         Customer hansi = customerManager.customerRepo.get(1);
         hansi.topUp(200.45);
         System.out.println("Actual Balance: " + hansi.getBalance());
+
+        String locInformation = locationService.viewLocationsInformation();
+        System.out.println(locInformation);
     }
 }
