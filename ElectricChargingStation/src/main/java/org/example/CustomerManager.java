@@ -46,4 +46,21 @@ public class CustomerManager {
             System.out.println("Customer account not found");
         }
     }
+
+    public String viewAllInvoices() {
+        StringBuilder sb = new StringBuilder();
+
+        boolean first = true;
+        for (Customer customer : customerRepo.values()) {
+            if (!first) {
+                sb.append("\n"); // nur ein Zeilenumbruch zwischen Kunden
+            }
+            first = false;
+
+            sb.append("Customer: ").append(customer.getName()).append("\n");
+            sb.append(customer.getAllInvoiceItemsAsString());
+        }
+
+        return sb.toString().trim();
+    }
 }

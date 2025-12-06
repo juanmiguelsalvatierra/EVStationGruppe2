@@ -25,7 +25,7 @@ Feature: View invoices
     Then the invoice item count for the customer with the ID 1 is 1
     And the invoice items for the customer with the ID 1 show the following:
     """
-    1 - TOPUP - amount: 50 - balance after: 50
+    1 - TOPUP - amount: 50,00 - balance after: 50,00
     """
 
   @US5.1
@@ -37,25 +37,24 @@ Feature: View invoices
     Then the invoice item count for the customer with the ID 1 is 3
     And the invoice items for the customer with the ID 1 show the following:
     """
-    1 - TOPUP - amount: 30 - balance after: 30
-    2 - TOPUP - amount: 20 - balance after: 50
-    3 - TOPUP - amount: 50 - balance after: 100
+    1 - TOPUP - amount: 30,00 - balance after: 30,00
+    2 - TOPUP - amount: 20,00 - balance after: 50,00
+    3 - TOPUP - amount: 50,00 - balance after: 100,00
     """
 
   @US5.1
   Scenario: View invoice items containing top-ups and charges mixed
     Given the customer with the ID 1 top-ups the amount 100
     And a location "Prater" with address "Praterallee 1, 1020 Wien" exists
-    And the location "Prater" has ID 1
     And the location with ID 1 has the following current prices:
       | price_per_kWh_AC | price_per_kWh_DC| parking_price_AC|parking_price_DC|
       | 1.00             | 2.00            | 2.50            | 3.50           |
-    And the location with the ID 1 has a charger of type "AC" with status "IN_ORDER_FREE"
-    And the customer with the ID 1 performs a charging session of 30 minutes at charger ID 1 of the location with the ID 1
+    And the location with the ID 1 has a charger of type "AC" with status "IN_OPERATION_FREE"
+    And the customer with the ID 1 performs a charging session of 30 minutes using "AC" mode at charger ID 1 of the location with the ID 1
     When I view the invoice items of the customer with the ID 1
     Then the invoice item count for the customer with the ID 1 is 2
     And the invoice items for the customer with the ID 1 show the following:
   """
-  1 - TOPUP - amount: 50 - balance after: 50
-  2 - CHARGE - duration: 30min - energy: watt of AC (needs to be implemented)x duration = kWh - price_per_kWh_AC - parking_price_AC - energy_cost: kWh * price_per_kWh_AC - parking_cost: duration * parking_price_AC - total: sum(ek + pc) - balance after: x
+  1 - TOPUP - amount: 100,00 - balance after: 100,00
+  2 - CHARGE - duration: 30min - energy: 5,00kWh - price_per_kWh_AC: 1,00 - parking_price_AC: 2,50 - energy_cost: 5,00 - parking_cost: 1,25 - total: -6,25 - balance after: 93,75
   """

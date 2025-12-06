@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -97,5 +99,25 @@ public class Customer {
     @Override
     public String toString() {
         return customerId + " - " + name + " - " + email;
+    }
+
+    public String getAllInvoiceItemsAsString() {
+        StringBuilder sb = new StringBuilder();
+        double runningBalance = 0;
+
+        // Sortieren nach ID, damit 1, 2, 3 … korrekt ausgegeben werden
+        List<Integer> keys = new ArrayList<>(invoiceItems.keySet());
+        Collections.sort(keys);
+
+        for (Integer id : keys) {
+            InvoiceItem item = invoiceItems.get(id);
+            double value = item.getInvoiceValue();
+            runningBalance += value;
+
+            sb.append(item.toString());
+            sb.append(String.format(" - balance after: %.2f%n", runningBalance));
+        }
+
+        return sb.toString();
     }
 }

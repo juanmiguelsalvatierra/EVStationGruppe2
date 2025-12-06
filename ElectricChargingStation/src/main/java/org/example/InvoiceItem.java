@@ -13,5 +13,13 @@ public abstract class InvoiceItem {
         this.invoiceDate = LocalDate.now();
     }
 
+    public LocalDate getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public int getInvoiceItemId() {
+        return invoiceItemId;
+    }
+
     public abstract double getInvoiceValue();
 }
