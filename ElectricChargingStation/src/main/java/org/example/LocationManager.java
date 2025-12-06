@@ -55,4 +55,28 @@ public class LocationManager {
             System.out.println("Location not found");
         }
     }
+
+    public String viewLocationsInformation(){
+        StringBuilder actualOutput = new StringBuilder();
+        for (Location location : locationRepo.values()) {
+            actualOutput.append("--- ")
+                    .append(location.getName())
+                    .append(" ---\n");
+
+
+            if(location.chargersRepo.isEmpty()) {
+                actualOutput.append("No chargers available.\n");
+            }
+            else {
+                for (Charger charger : location.chargersRepo.values()) {
+                    actualOutput.append(charger.toString())
+                            .append("\n");
+                }
+                actualOutput.append("\n");
+            }
+        }
+        return actualOutput.toString();
+    }
+
+
 }
