@@ -6,7 +6,7 @@ Feature: Monitor station network
 
   Background:
     Given A location "Karlsplatz charging" exists with the address "Karlsplatz 1, 1010 Wien "
-    And  a second location "Donauinsel charging" exists with the address "An der Neuen Donau, 1210 Wien"
+    And A location "Donauinsel charging" exists with the address "An der Neuen Donau, 1210 Wien"
 
 
   @US3.1
@@ -16,7 +16,7 @@ Feature: Monitor station network
      | 1         | AC   | IN_OPERATION_FREE |
      | 2         | AC   | OCCUPIED          |
      | 3         | DC   | OUT_OF_ORDER      |
-    And the following chargers exist at the second location "Donauinsel charging":
+    And the following chargers exist at the location "Donauinsel charging":
       | chargerId | type | status             |
       | 1         | DC   | IN_OPERATION_FREE  |
       | 2         | DC   | OCCUPIED           |
