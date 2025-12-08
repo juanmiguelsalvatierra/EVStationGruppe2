@@ -95,9 +95,7 @@ public class ElectricChargingStationNetwork {
         System.out.println(location2.getCurrentPrice());
 
         //US11.1 View All Invoices
-        System.out.println("---------All Invoices for Hansi---------");
-        System.out.println(hansi.getAllInvoiceItemsAsString());
-        System.out.println("---------All Invoices for Franz---------");
-        System.out.println(franz.getAllInvoiceItemsAsString());
+        System.out.println("\n---------All Invoices in the system---------");
+        System.out.println(customerManager.viewAllInvoices());
     }
 }
