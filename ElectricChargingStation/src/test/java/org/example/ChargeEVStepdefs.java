@@ -128,6 +128,4 @@ public class ChargeEVStepdefs {
 
         assertEquals(expectedBalance, actuelBalance);
     }
-
-
 }

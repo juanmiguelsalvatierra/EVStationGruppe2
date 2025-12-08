@@ -147,8 +147,5 @@ public class ManageCustomerStepdefs {
     public void theCustomerAccountWithTheIDNoLongerExists(int id) {
         assertNull(cm.customerRepo.get(id));
     }
-
-
-
     //endregion
 }

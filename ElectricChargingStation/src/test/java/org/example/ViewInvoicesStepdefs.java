@@ -17,6 +17,10 @@ public class ViewInvoicesStepdefs {
     CustomerManager customerManager = new CustomerManager();
     LocationManager locationManager = new LocationManager();
 
+    public ViewInvoicesStepdefs (){
+        LocationManager.locationRepo.clear();
+    }
+
     @Given("the customer {string} with email {string} exists")
     public void theCustomerWithEmailExists(String name, String email) {
         customerManager.createCustomer(name, email);

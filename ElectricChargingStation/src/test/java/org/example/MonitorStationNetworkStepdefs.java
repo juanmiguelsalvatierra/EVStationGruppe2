@@ -14,9 +14,7 @@ public class MonitorStationNetworkStepdefs {
 
     @Given("A location {string} exists with the address {string}")
     public void aLocationExistsWithTheAddress(String name, String address) {
-
         lm.createLocation(name, address);
-
     }
 
 
@@ -29,9 +27,6 @@ public class MonitorStationNetworkStepdefs {
             String status = row.get("status");
             location.createCharger(type, status);
         }
-
-
-
     }
 
     @When("I attempt to access the locations information")

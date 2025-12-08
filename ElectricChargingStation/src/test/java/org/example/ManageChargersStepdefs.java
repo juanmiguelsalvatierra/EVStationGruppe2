@@ -13,7 +13,6 @@ import java.util.Map;
 public class ManageChargersStepdefs {
     LocationManager lm = new LocationManager();
 
-
     //region @US7.1 Create a new charger at a location
     @Given("a location {string} exists with address {string} for chargers")
     public void aLocationExistsWithAddressToCreateACharger(String name, String address) {
@@ -121,9 +120,6 @@ public class ManageChargersStepdefs {
     //endregion
 
     //region @US7.2 Read all chargers for a location
-
-
-
     @When("I view all chargers at location {string}")
     public void iViewAllChargersAtLocation(String locationName) {
         Location loc = lm.getLocationByName(locationName);
@@ -138,7 +134,6 @@ public class ManageChargersStepdefs {
         String expected = currentChargerListAsString.trim();
 
         assertEquals(expected, actual);
-
     }
     //endregion
 }
