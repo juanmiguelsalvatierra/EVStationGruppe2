@@ -1,13 +1,12 @@
 package org.example;
 
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ManageBalanceStepdefs {
+public class ManageTransactionsStepdefs {
     CustomerManager customerManager = new CustomerManager();
     //region background
     @Given("customer {string} with the email {string} exists")
@@ -47,8 +46,9 @@ public class ManageBalanceStepdefs {
         assertEquals(expectedBalance, actuelBalance);
     }
 
-    @When("customer with id {int} tops up his balance with {double} €")
+    @When("customer with id {int} tops up {double} €")
     public void customerWithIdTopsUpHisBalanceWith€(int id, double topUpValue) {
+        assertTrue(topUpValue >= 0);
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
         foundCustomer.topUp(topUpValue);
@@ -56,6 +56,7 @@ public class ManageBalanceStepdefs {
     //region @US2.2 negativ top up does not worknegativ top up does not work
     @Given("customer with id {int} has a balance of {double} €")
     public void customerWithIdHasABalanceOf€(int id, double expectedBalance) {
+        assertTrue(expectedBalance >= 0);
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
         foundCustomer.topUp(expectedBalance);
@@ -64,5 +65,14 @@ public class ManageBalanceStepdefs {
 
         assertEquals(expectedBalance, actuelBalance);
     }
+
+    @When("customer with id {int} does a top up with minus {double} €")
+    public void customerWithIdReducesHisBalanceWith€(int id, double topUpValue) {
+        assertTrue(topUpValue >= 0);
+        Customer foundCustomer = customerManager.customerRepo.get(id);
+
+        foundCustomer.topUp(topUpValue * -1);
+    }
+
     //endregion
 }
