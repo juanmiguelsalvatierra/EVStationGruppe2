@@ -25,13 +25,6 @@ public class ManageTransactionsStepdefs {
         assertEquals(name, foundCustomer.getName());
     }
     //endregion
-    @Given("customer with id {int} has {int} invoices")
-    public void customerWithIdHasnTDonAnyTopUps(int id, int invoiceAmount) {
-        Customer foundCustomer = customerManager.customerRepo.get(id);
-
-        assertEquals(invoiceAmount, foundCustomer.invoiceItems.size());
-    }
-
     @When("customer with id {int} reads his balance")
     public void customerWithIdReadsHisBalance(int id) {
         Customer foundCustomer = customerManager.customerRepo.get(id);
@@ -62,7 +55,13 @@ public class ManageTransactionsStepdefs {
         assertTrue(expectedBalance >= 0);
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
-        foundCustomer.topUp(expectedBalance, LocalDateTime.now());
+        assertTrue(foundCustomer.invoiceItems.isEmpty());
+
+        if(expectedBalance == 0){
+            return;
+        }
+
+        foundCustomer.topUp(expectedBalance, LocalDateTime.MIN);
 
         double actuelBalance = foundCustomer.getBalance();
 

@@ -69,22 +69,31 @@ public class ChargeEVStepdefs {
     }
     //endregion
     @Given("a customer with id {int} has a balance of {int} €")
-    public void aCustomerWithIdHasABalanceOf€(int customerId, int expectedBalance) {
+    public void aCustomerWithIdHasABalanceOf(int customerId, int expectedBalance) {
+        assertTrue(expectedBalance >= 0);
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
 
-        foundCustomer.topUp(expectedBalance, LocalDateTime.now());
+        assertTrue(foundCustomer.invoiceItems.isEmpty());
+
+        if(expectedBalance == 0){
+            return;
+        }
+
+        foundCustomer.topUp(expectedBalance, LocalDateTime.MIN);
 
         double actuelBalance = foundCustomer.getBalance();
 
         assertEquals(expectedBalance, actuelBalance);
     }
 
-    @When("the customer with id {int} charges at location {string} at the charger with id {int} using {string} mode for {int} minutes")
-    public void theCustomerWithIdAttemptsToChargeAtLocationAtTheChargerWithIdForMinutes(int customerId, String locationName, int chargerId, String type, int minutes) {
+    @When("the customer with id {int} charges at location {string} at the charger with id {int} using {string} mode for {int} minutes at {string}")
+    public void theCustomerWithIdAttemptsToChargeAtLocationAtTheChargerWithIdForMinutes(int customerId, String locationName, int chargerId, String type, int minutes, String stringChargingDate) {
+        LocalDateTime chargingDate = LocalDateTime.parse(stringChargingDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
         Location location = locationManager.getLocationByName(locationName);
 
-        foundCustomer.chargeEv(location.getId(), chargerId, minutes, type, LocalDateTime.now());
+        foundCustomer.chargeEv(location.getId(), chargerId, minutes, type, chargingDate);
     }
 
     @Then("the last invoice item from customer {int} reflects the correct price {double} and duration {int} minutes")

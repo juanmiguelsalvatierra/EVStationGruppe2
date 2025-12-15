@@ -104,6 +104,10 @@ public class Customer {
     }
 
     private boolean isOlderThanNewest(LocalDateTime newInvoiceDate) {
+        if (invoiceItems.isEmpty()) {
+            return false;
+        }
+
         LocalDateTime newestExisting = invoiceItems.values().stream()
                 .map(InvoiceItem::getInvoiceDate)
                 .max(LocalDateTime::compareTo)
