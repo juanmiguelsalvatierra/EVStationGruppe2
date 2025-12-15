@@ -5,6 +5,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import static org.junit.jupiter.api.Assertions.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ManageTransactionsStepdefs {
     CustomerManager customerManager = new CustomerManager();
@@ -38,7 +40,7 @@ public class ManageTransactionsStepdefs {
     }
 
     @Then("the customer with id {int} has a balance of {double} €")
-    public void theCustomerWithIdHasABalanceOf€(int id, double expectedBalance) {
+    public void theCustomerWithIdHasABalanceOf(int id, double expectedBalance) {
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
         double actuelBalance = foundCustomer.getBalance();
@@ -46,32 +48,35 @@ public class ManageTransactionsStepdefs {
         assertEquals(expectedBalance, actuelBalance);
     }
 
-    @When("customer with id {int} tops up {double} €")
-    public void customerWithIdTopsUpHisBalanceWith€(int id, double topUpValue) {
+    @When("customer with id {int} tops up {double} € at {string}")
+    public void customerWithIdTopsUpHisBalanceWithAt(int id, double topUpValue, String dateTime) {
         assertTrue(topUpValue >= 0);
+        LocalDateTime topUpDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
-        foundCustomer.topUp(topUpValue);
+        foundCustomer.topUp(topUpValue, topUpDateTime);
     }
     //region @US2.2 negativ top up does not worknegativ top up does not work
     @Given("customer with id {int} has a balance of {double} €")
-    public void customerWithIdHasABalanceOf€(int id, double expectedBalance) {
+    public void customerWithIdHasABalanceOf(int id, double expectedBalance) {
         assertTrue(expectedBalance >= 0);
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
-        foundCustomer.topUp(expectedBalance);
+        foundCustomer.topUp(expectedBalance, LocalDateTime.now());
 
         double actuelBalance = foundCustomer.getBalance();
 
         assertEquals(expectedBalance, actuelBalance);
     }
 
-    @When("customer with id {int} does a top up with minus {double} €")
-    public void customerWithIdReducesHisBalanceWith€(int id, double topUpValue) {
+    @When("customer with id {int} does a top up with minus {double} € at {string}")
+    public void customerWithIdReducesHisBalanceWith(int id, double topUpValue, String dateTime) {
         assertTrue(topUpValue >= 0);
+        LocalDateTime topUpDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
-        foundCustomer.topUp(topUpValue * -1);
+        foundCustomer.topUp(topUpValue * -1, topUpDateTime);
     }
 
     //endregion

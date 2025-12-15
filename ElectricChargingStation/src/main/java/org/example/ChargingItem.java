@@ -1,5 +1,7 @@
 package org.example;
 
+import java.time.LocalDateTime;
+
 public class ChargingItem extends InvoiceItem {
     private int duration;
     private int priceId;
@@ -7,8 +9,8 @@ public class ChargingItem extends InvoiceItem {
     private int chargerId;
     private ChargerType chargerType;
 
-    public ChargingItem(int id, int duration, int priceId, int locationId, int chargerId, ChargerType chargerType) {
-        super(id);
+    public ChargingItem(int id, int duration, int priceId, int locationId, int chargerId, ChargerType chargerType, LocalDateTime invoiceDate) {
+        super(id, invoiceDate);
         this.duration = duration;
         this.priceId = priceId;
         this.locationId = locationId;

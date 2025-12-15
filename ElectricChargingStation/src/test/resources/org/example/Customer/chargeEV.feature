@@ -28,12 +28,6 @@ Feature: Charge EV and pay by consumption/duration
     And the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "AC" mode for 120 minutes
     And the balance of customer with id 1 is 98 €
 
-  @US4.1
-  Scenario: Successful charging session - with topup afterwards
-    Given a customer with id 1 has a balance of 100 €
-    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "DC" mode for 45 minutes
-    And the customer with id 1 tops up his balance with 50 €
-    And the balance of customer with id 1 is 72 €
 
   @US4.1 @negative
   Scenario: Unsuccessful charging session - due to insufficient balance

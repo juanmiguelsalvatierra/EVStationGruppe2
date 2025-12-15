@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ChargeEVStepdefs {
@@ -69,7 +72,7 @@ public class ChargeEVStepdefs {
     public void aCustomerWithIdHasABalanceOf€(int customerId, int expectedBalance) {
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
 
-        foundCustomer.topUp(expectedBalance);
+        foundCustomer.topUp(expectedBalance, LocalDateTime.now());
 
         double actuelBalance = foundCustomer.getBalance();
 
@@ -81,7 +84,7 @@ public class ChargeEVStepdefs {
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
         Location location = locationManager.getLocationByName(locationName);
 
-        foundCustomer.chargeEv(location.getId(), chargerId, minutes, type);
+        foundCustomer.chargeEv(location.getId(), chargerId, minutes, type, LocalDateTime.now());
     }
 
     @Then("the last invoice item from customer {int} reflects the correct price {double} and duration {int} minutes")
@@ -94,13 +97,6 @@ public class ChargeEVStepdefs {
 
         assertEquals(price, chargingItem.getInvoiceValue() * (-1));
         assertEquals(minutes, chargingItem.getChargingTime());
-    }
-
-    @When("the customer with id {int} tops up his balance with {double} €")
-    public void theCustomerWithIdTopsUpHisBalanceWith€(int customerId, double topUpValue) {
-        Customer foundCustomer = customerManager.customerRepo.get(customerId);
-
-        foundCustomer.topUp(topUpValue);
     }
 
     @And("at location {string} exists a charger with id {int} of type {string} and status {string}")

@@ -20,7 +20,7 @@ Feature: View invoices
 
   @US5.1
   Scenario: View invoice items after a top-up
-    Given the customer with the ID 1 top-ups the amount 50
+    Given the customer with the ID 1 top-ups the amount 50 at "2025-03-15T14:30:00"
     When I view the invoice items of the customer with the ID 1
     Then the invoice item count for the customer with the ID 1 is 1
     And the invoice items for the customer with the ID 1 show the following:
@@ -30,9 +30,9 @@ Feature: View invoices
 
   @US5.1
   Scenario: View invoice items after multiple top-ups
-    Given the customer with the ID 1 top-ups the amount 30
-    And the customer with the ID 1 top-ups the amount 20
-    And the customer with the ID 1 top-ups the amount 50
+    Given the customer with the ID 1 top-ups the amount 30 at "2025-03-15T14:30:00"
+    And the customer with the ID 1 top-ups the amount 20 at "2025-03-15T14:30:00"
+    And the customer with the ID 1 top-ups the amount 50 at "2025-03-15T14:30:00"
     When I view the invoice items of the customer with the ID 1
     Then the invoice item count for the customer with the ID 1 is 3
     And the invoice items for the customer with the ID 1 show the following:
@@ -44,7 +44,7 @@ Feature: View invoices
 
   @US5.1
   Scenario: View invoice items containing top-ups and charges mixed
-    Given the customer with the ID 1 top-ups the amount 100
+    Given the customer with the ID 1 top-ups the amount 100 at "2025-03-15T14:30:00"
     And a location "Prater" with address "Praterallee 1, 1020 Wien" exists
     And the location with ID 1 has the following current prices:
       | price_per_kWh_AC | price_per_kWh_DC| parking_price_AC|parking_price_DC|
