@@ -9,7 +9,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ManageTransactionsStepdefs {
-    CustomerManager customerManager = new CustomerManager();
+    CustomerManager customerManager;
+    String thrownExceptionMessage;
+
+    public ManageTransactionsStepdefs(){
+        customerManager = new CustomerManager();
+        thrownExceptionMessage = "";
+    }
     //region background
     @Given("customer {string} with the email {string} exists")
     public void customerWithTheEmailExists(String name, String email) {
@@ -47,7 +53,16 @@ public class ManageTransactionsStepdefs {
         LocalDateTime topUpDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
-        foundCustomer.topUp(topUpValue, topUpDateTime);
+        try{
+            foundCustomer.topUp(topUpValue, topUpDateTime);
+        }catch (Exception e){
+            thrownExceptionMessage = e.getMessage();
+        }
+    }
+
+    @And("following Exception Message will be displayed {string}")
+    public void followingExceptionMessageWillBeDisplayed(String exceptionMessage) {
+        assertEquals(exceptionMessage, thrownExceptionMessage);
     }
     //region @US2.2 negativ top up does not worknegativ top up does not work
     @Given("customer with id {int} has a balance of {double} €")
@@ -77,6 +92,8 @@ public class ManageTransactionsStepdefs {
 
         foundCustomer.topUp(topUpValue * -1, topUpDateTime);
     }
+
+
 
     //endregion
 }

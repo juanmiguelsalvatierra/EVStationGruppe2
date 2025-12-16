@@ -28,6 +28,7 @@ Feature: Manage account transactions
     Given customer with id 1 has a balance of 50 €
     When customer with id 1 does a top up with minus 10 € at "2025-03-15T14:30:00"
     Then the customer with id 1 has a balance of 50 €
+    And following Exception Message will be displayed "Exception - negativ top up value is not allowed"
 
   @US2.2 @negative
   Scenario: Top up with Date bevor other Invoice Item
