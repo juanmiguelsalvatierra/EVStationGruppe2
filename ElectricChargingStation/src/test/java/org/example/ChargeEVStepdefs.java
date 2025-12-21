@@ -16,8 +16,15 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ChargeEVStepdefs {
-    CustomerManager customerManager = new CustomerManager();
-    LocationManager locationManager = new LocationManager();
+    LocationManager locationManager;
+    CustomerManager customerManager;
+    String thrownExceptionMessage;
+
+    public ChargeEVStepdefs(){
+        customerManager = new CustomerManager();
+        locationManager = new LocationManager();
+        thrownExceptionMessage = "";
+    }
     //region Background
     @Given("a customer {string} with the email {string} exists")
     public void aCustomerWithTheEmailExists(String name, String email) {
@@ -93,7 +100,11 @@ public class ChargeEVStepdefs {
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
         Location location = locationManager.getLocationByName(locationName);
 
-        foundCustomer.chargeEv(location.getId(), chargerId, minutes, type, chargingDate);
+        try{
+            foundCustomer.chargeEv(location.getId(), chargerId, minutes, type, chargingDate);
+        } catch (Exception e) {
+            thrownExceptionMessage = e.getMessage();
+        }
     }
 
     @Then("the last invoice item from customer {int} reflects the correct price {double} and duration {int} minutes")
@@ -132,5 +143,10 @@ public class ChargeEVStepdefs {
         double actuelBalance = foundCustomer.getBalance();
 
         assertEquals(expectedBalance, actuelBalance);
+    }
+
+    @And("the user is seeing following Exception {string}")
+    public void theUserIsSeeingFollowingException(String exceptionMessage) {
+        assertEquals(exceptionMessage, thrownExceptionMessage);
     }
 }

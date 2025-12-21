@@ -75,19 +75,19 @@ public class Customer {
         ChargerType chargerType = ChargerType.valueOf(type);
 
         if (charger == null) {
-            return;
+            throw new IllegalArgumentException("Exception - invalid Charger Id");
         }
 
         if (charger.getStatus() != Status.IN_OPERATION_FREE) {
-            return;
+            throw new IllegalArgumentException("Exception - invalid charging status");
         }
 
         if(minutes <= 0) {
-            return;
+            throw new IllegalArgumentException("Exception - invalid charging time");
         }
 
         if(isOlderThanNewest(chargeDateTime)){
-            return;
+            throw new IllegalArgumentException("Exception - invalid Date");
         }
 
         int newChargingItemId = invoiceItems.size()+1;
@@ -97,7 +97,7 @@ public class Customer {
         double chargingPrice = chargingItem.getInvoiceValue();
 
         if(balanceOfCustomer < Math.abs(chargingPrice)){
-           return;
+            throw new IllegalArgumentException("Exception - insufficient balance");
         }
 
         invoiceItems.put(newChargingItemId, chargingItem);
