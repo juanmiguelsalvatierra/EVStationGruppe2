@@ -51,11 +51,11 @@ public class Customer {
 
     public void topUp(double topUpValue, LocalDateTime topUpDateTime){
         if(topUpValue < 0) {
-            return;
+            throw new IllegalArgumentException("Exception - negativ top up value is not allowed");
         }
 
         if(isOlderThanNewest(topUpDateTime)){
-            return;
+            throw new IllegalArgumentException("Exception - invalid Date");
         }
 
         int newId = this.invoiceItems.size() + 1;

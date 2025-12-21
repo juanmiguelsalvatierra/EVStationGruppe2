@@ -36,3 +36,5 @@ Feature: Manage account transactions
     When customer with id 1 tops up 50 € at "2025-12-15T14:30:00"
     And customer with id 1 tops up 27.23 € at "2025-12-14T16:30:00"
     Then the customer with id 1 has a balance of 50 €
+    And following Exception Message will be displayed "Exception - invalid Date"
+

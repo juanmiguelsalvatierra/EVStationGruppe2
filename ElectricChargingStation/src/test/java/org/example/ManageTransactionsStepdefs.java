@@ -90,7 +90,11 @@ public class ManageTransactionsStepdefs {
 
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
-        foundCustomer.topUp(topUpValue * -1, topUpDateTime);
+        try{
+            foundCustomer.topUp(topUpValue * -1, topUpDateTime);
+        }catch (Exception e){
+            thrownExceptionMessage = e.getMessage();
+        }
     }
 
 
