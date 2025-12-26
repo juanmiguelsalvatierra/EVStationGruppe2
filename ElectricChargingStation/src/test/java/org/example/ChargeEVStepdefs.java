@@ -82,15 +82,11 @@ public class ChargeEVStepdefs {
 
         assertTrue(foundCustomer.invoiceItems.isEmpty());
 
-        if(expectedBalance == 0){
-            return;
-        }
-
         foundCustomer.topUp(expectedBalance, LocalDateTime.MIN);
 
-        double actuelBalance = foundCustomer.getBalance();
+        double aktualBalance = foundCustomer.getBalance();
 
-        assertEquals(expectedBalance, actuelBalance);
+        assertEquals(expectedBalance,aktualBalance);
     }
 
     @When("the customer with id {int} charges at location {string} at the charger with id {int} using {string} mode for {int} minutes at {string}")
