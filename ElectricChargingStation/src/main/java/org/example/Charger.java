@@ -34,6 +34,9 @@ public class Charger {
         this.status = status;
     }
 
+    public void setType(ChargerType chargertype){
+        this.chargerType = chargertype;
+    }
     public Status getStatus(){
         return this.status;
     }

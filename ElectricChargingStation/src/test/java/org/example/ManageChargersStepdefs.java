@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class ManageChargersStepdefs {
     LocationManager lm = new LocationManager();
+    String thrownExceptionMessage;
 
     //region @US7.1 Create a new charger at a location
     @Given("a location {string} exists with address {string} for chargers")
@@ -134,6 +135,31 @@ public class ManageChargersStepdefs {
         String expected = currentChargerListAsString.trim();
 
         assertEquals(expected, actual);
+    }
+
+    @When("I update the charger with ID {int} at location {string} to Type {string} Status {string}")
+    public void iUpdateTheChargerWithIDAtLocationToTypeStatus(int id, String location, String type, String status) {
+        ChargerType chargertype = ChargerType.valueOf(type);
+        Status statusenum = Status.valueOf(status);
+        try{
+            lm.locationRepo.get(id).updateCharger(id, chargertype, statusenum);
+        }catch (Exception e){
+            thrownExceptionMessage = e.getMessage();
+        }
+    }
+
+    @When("I delete the charger with ID {int} at location {string}")
+    public void iDeleteTheChargerWithIDAtLocation(int id, String location) {
+        try{
+            lm.locationRepo.get(id).deleteCharger(id);
+        }catch (Exception e){
+            thrownExceptionMessage = e.getMessage();
+        }
+    }
+
+    @Then("the Exception Message will be displayed with {string}")
+    public void theExceptionMessageWillBeDisplayedWith(String exceptionMessage) {
+        assertEquals(exceptionMessage, thrownExceptionMessage);
     }
     //endregion
 }
