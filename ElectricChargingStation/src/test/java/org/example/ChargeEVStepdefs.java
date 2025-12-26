@@ -84,9 +84,9 @@ public class ChargeEVStepdefs {
 
         foundCustomer.topUp(expectedBalance, LocalDateTime.MIN);
 
-        double aktualBalance = foundCustomer.getBalance();
+        double actualBalance = foundCustomer.getBalance();
 
-        assertEquals(expectedBalance,aktualBalance);
+        assertEquals(expectedBalance,actualBalance);
     }
 
     @When("the customer with id {int} charges at location {string} at the charger with id {int} using {string} mode for {int} minutes at {string}")
