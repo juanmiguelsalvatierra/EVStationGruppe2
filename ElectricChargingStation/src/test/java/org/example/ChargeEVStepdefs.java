@@ -10,11 +10,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ChargeEVStepdefs {
-    CustomerManager customerManager = new CustomerManager();
-    LocationManager locationManager = new LocationManager();
+    LocationManager locationManager;
+    CustomerManager customerManager;
+    String thrownExceptionMessage;
+
+    public ChargeEVStepdefs(){
+        customerManager = new CustomerManager();
+        locationManager = new LocationManager();
+        thrownExceptionMessage = "";
+    }
     //region Background
     @Given("a customer {string} with the email {string} exists")
     public void aCustomerWithTheEmailExists(String name, String email) {
@@ -66,22 +76,31 @@ public class ChargeEVStepdefs {
     }
     //endregion
     @Given("a customer with id {int} has a balance of {int} €")
-    public void aCustomerWithIdHasABalanceOf€(int customerId, int expectedBalance) {
+    public void aCustomerWithIdHasABalanceOf(int customerId, int expectedBalance) {
+        assertTrue(expectedBalance >= 0);
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
 
-        foundCustomer.topUp(expectedBalance);
+        assertTrue(foundCustomer.invoiceItems.isEmpty());
 
-        double actuelBalance = foundCustomer.getBalance();
+        foundCustomer.topUp(expectedBalance, LocalDateTime.MIN);
 
-        assertEquals(expectedBalance, actuelBalance);
+        double actualBalance = foundCustomer.getBalance();
+
+        assertEquals(expectedBalance,actualBalance);
     }
 
-    @When("the customer with id {int} charges at location {string} at the charger with id {int} using {string} mode for {int} minutes")
-    public void theCustomerWithIdAttemptsToChargeAtLocationAtTheChargerWithIdForMinutes(int customerId, String locationName, int chargerId, String type, int minutes) {
+    @When("the customer with id {int} charges at location {string} at the charger with id {int} using {string} mode for {int} minutes at {string}")
+    public void theCustomerWithIdAttemptsToChargeAtLocationAtTheChargerWithIdForMinutes(int customerId, String locationName, int chargerId, String type, int minutes, String stringChargingDate) {
+        LocalDateTime chargingDate = LocalDateTime.parse(stringChargingDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
         Location location = locationManager.getLocationByName(locationName);
 
-        foundCustomer.chargeEv(location.getId(), chargerId, minutes, type);
+        try{
+            foundCustomer.chargeEv(location.getId(), chargerId, minutes, type, chargingDate);
+        } catch (Exception e) {
+            thrownExceptionMessage = e.getMessage();
+        }
     }
 
     @Then("the last invoice item from customer {int} reflects the correct price {double} and duration {int} minutes")
@@ -94,13 +113,6 @@ public class ChargeEVStepdefs {
 
         assertEquals(price, chargingItem.getInvoiceValue() * (-1));
         assertEquals(minutes, chargingItem.getChargingTime());
-    }
-
-    @When("the customer with id {int} tops up his balance with {double} €")
-    public void theCustomerWithIdTopsUpHisBalanceWith€(int customerId, double topUpValue) {
-        Customer foundCustomer = customerManager.customerRepo.get(customerId);
-
-        foundCustomer.topUp(topUpValue);
     }
 
     @And("at location {string} exists a charger with id {int} of type {string} and status {string}")
@@ -127,5 +139,10 @@ public class ChargeEVStepdefs {
         double actuelBalance = foundCustomer.getBalance();
 
         assertEquals(expectedBalance, actuelBalance);
+    }
+
+    @And("the user is seeing following Exception {string}")
+    public void theUserIsSeeingFollowingException(String exceptionMessage) {
+        assertEquals(exceptionMessage, thrownExceptionMessage);
     }
 }

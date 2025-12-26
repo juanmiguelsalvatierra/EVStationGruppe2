@@ -4,16 +4,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public abstract class InvoiceItem {
-    private LocalDate invoiceDate;
+    private LocalDateTime invoiceDate;
     private int invoiceItemId;
 
 
-    public  InvoiceItem(int id){
+    public  InvoiceItem(int id, LocalDateTime invoiceDate){
         this.invoiceItemId = id;
-        this.invoiceDate = LocalDate.now();
+        this.invoiceDate = invoiceDate;
     }
 
-    public LocalDate getInvoiceDate() {
+    public LocalDateTime getInvoiceDate() {
         return invoiceDate;
     }
 

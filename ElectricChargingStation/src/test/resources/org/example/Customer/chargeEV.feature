@@ -17,37 +17,34 @@ Feature: Charge EV and pay by consumption/duration
   @US4.1
   Scenario: Successful charging session
     Given a customer with id 1 has a balance of 100 €
-    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "DC" mode for 45 minutes
+    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "DC" mode for 45 minutes at "2025-03-15T14:30:00"
     Then the last invoice item from customer 1 reflects the correct price 78 and duration 45 minutes
     And the balance of customer with id 1 is 22 €
 
   @US4.1
   Scenario: Successful multiple charging sessions
     Given a customer with id 1 has a balance of 200 €
-    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "DC" mode for 45 minutes
-    And the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "AC" mode for 120 minutes
+    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "DC" mode for 45 minutes at "2025-03-14T14:30:00"
+    And the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "AC" mode for 120 minutes at "2025-03-15T14:30:00"
     And the balance of customer with id 1 is 98 €
 
-  @US4.1
-  Scenario: Successful charging session - with topup afterwards
-    Given a customer with id 1 has a balance of 100 €
-    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "DC" mode for 45 minutes
-    And the customer with id 1 tops up his balance with 50 €
-    And the balance of customer with id 1 is 72 €
 
   @US4.1 @negative
   Scenario: Unsuccessful charging session - due to insufficient balance
     Given a customer with id 1 has a balance of 5 €
-    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "AC" mode for 45 minutes
+    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "AC" mode for 45 minutes at "2025-03-15T14:30:00"
     Then  the balance for customer 1 remains 5 €
+    And the user is seeing following Exception "Exception - insufficient balance"
 
 
   @US4.1 @negative
   Scenario Outline: Unsuccessful charging session - due to wrong charger status
     Given a customer with id 1 has a balance of 100 €
     And at location "Karlsplatz charging" exists a charger with id 2 of type "DC" and status "<status>"
-    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 2 using "DC" mode for 45 minutes
+    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 2 using "DC" mode for 45 minutes at "2025-03-15T14:30:00"
     Then the balance for customer 1 remains 100 €
+    And the user is seeing following Exception "Exception - invalid charging status"
+
     Examples:
       | status        |
       | OCCUPIED      |
@@ -57,8 +54,9 @@ Feature: Charge EV and pay by consumption/duration
   @US4.1 @negative
   Scenario Outline: Unsuccessful charging session - due to invalid time
     Given a customer with id 1 has a balance of 100 €
-    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "DC" mode for <minutes> minutes
+    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "DC" mode for <minutes> minutes at "2025-03-15T14:30:00"
     Then the balance for customer 1 remains 100 €
+    And the user is seeing following Exception "Exception - invalid charging time"
 
     Examples:
       | minutes |
@@ -68,10 +66,22 @@ Feature: Charge EV and pay by consumption/duration
   @US4.1 @negative
   Scenario Outline: Unsuccessful charging session - due to invalid chargerId
     Given a customer with id 1 has a balance of 100 €
-    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id <chargerId> using "DC" mode for 45 minutes
+    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id <chargerId> using "DC" mode for 45 minutes at "2025-03-15T14:30:00"
     Then the balance for customer 1 remains 100 €
+    And the user is seeing following Exception "Exception - invalid Charger Id"
 
     Examples:
       | chargerId |
       | -1        |
       | 0         |
+
+
+
+  @US4.1 @negative
+  Scenario: Unsuccessful charging session - charge before an existing charge
+    Given a customer with id 1 has a balance of 200 €
+    When the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "DC" mode for 45 minutes at "2025-03-15T14:30:00"
+    And the customer with id 1 charges at location "Karlsplatz charging" at the charger with id 1 using "AC" mode for 120 minutes at "2025-03-14T14:30:00"
+    And the balance of customer with id 1 is 122 €
+    And the user is seeing following Exception "Exception - invalid Date"
+

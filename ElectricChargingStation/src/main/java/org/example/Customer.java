@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.time.LocalDateTime;
 
 public class Customer {
     private int customerId;
@@ -48,14 +49,18 @@ public class Customer {
                 .sum();
     }
 
-    public void topUp(double topUpValue){
+    public void topUp(double topUpValue, LocalDateTime topUpDateTime){
         if(topUpValue < 0) {
-            return;
+            throw new IllegalArgumentException("Exception - negativ top up value is not allowed");
+        }
+
+        if(isOlderThanNewest(topUpDateTime)){
+            throw new IllegalArgumentException("Exception - invalid Date");
         }
 
         int newId = this.invoiceItems.size() + 1;
 
-        InvoiceItem invoiceItem = new BalanceItem(newId, topUpValue);
+        InvoiceItem invoiceItem = new TransactionItem(newId, topUpValue, topUpDateTime);
         this.invoiceItems.put(newId, invoiceItem);
     }
 
@@ -63,37 +68,53 @@ public class Customer {
         return invoiceItems.get(invoiceItems.size());
     }
 
-    public void chargeEv(int locationId, int chargerId, int minutes, String type){
+    public void chargeEv(int locationId, int chargerId, int minutes, String type, LocalDateTime chargeDateTime){
         Location location = LocationManager.locationRepo.get(locationId);
         Price price = location.getCurrentPrice();
         Charger charger = location.chargersRepo.get(chargerId);
         ChargerType chargerType = ChargerType.valueOf(type);
 
         if (charger == null) {
-            return;
+            throw new IllegalArgumentException("Exception - invalid Charger Id");
         }
 
         if (charger.getStatus() != Status.IN_OPERATION_FREE) {
-            return;
+            throw new IllegalArgumentException("Exception - invalid charging status");
         }
 
         if(minutes <= 0) {
-            return;
+            throw new IllegalArgumentException("Exception - invalid charging time");
+        }
+
+        if(isOlderThanNewest(chargeDateTime)){
+            throw new IllegalArgumentException("Exception - invalid Date");
         }
 
         int newChargingItemId = invoiceItems.size()+1;
-        ChargingItem chargingItem = new ChargingItem(newChargingItemId, minutes, price.getId(), locationId, chargerId, chargerType);
+        ChargingItem chargingItem = new ChargingItem(newChargingItemId, minutes, price.getId(), locationId, chargerId, chargerType, chargeDateTime);
 
         double balanceOfCustomer = getBalance();
         double chargingPrice = chargingItem.getInvoiceValue();
 
         if(balanceOfCustomer < Math.abs(chargingPrice)){
-           return;
+            throw new IllegalArgumentException("Exception - insufficient balance");
         }
 
         invoiceItems.put(newChargingItemId, chargingItem);
     }
 
+    private boolean isOlderThanNewest(LocalDateTime newInvoiceDate) {
+        if (invoiceItems.isEmpty()) {
+            return false;
+        }
+
+        LocalDateTime newestExisting = invoiceItems.values().stream()
+                .map(InvoiceItem::getInvoiceDate)
+                .max(LocalDateTime::compareTo)
+                .orElseThrow();
+
+        return newInvoiceDate.isBefore(newestExisting);
+    }
 
 
     @Override

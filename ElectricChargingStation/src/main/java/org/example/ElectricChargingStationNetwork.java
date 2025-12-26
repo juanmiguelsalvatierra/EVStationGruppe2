@@ -19,11 +19,11 @@ public class ElectricChargingStationNetwork {
         //US2.2 TopUp Balance
         //Customer Hansi tops up 200.45 €
         Customer hansi = customerManager.customerRepo.get(1);
-        hansi.topUp(200.45);
+        hansi.topUp(200.45, LocalDateTime.now());
 
         //Customer Franz tops up 300.99 €
         Customer franz = customerManager.customerRepo.get(2);
-        franz.topUp(300.99);
+        franz.topUp(300.99, LocalDateTime.now());
 
         //US2.1 View Balance
         System.out.println("---------Balances---------");
@@ -75,9 +75,9 @@ public class ElectricChargingStationNetwork {
 
         //US4.1 Charge EV
         //Hansi charges his EV for 60 minutes at location 1 Karlsplatz Charging, charger 1 (AC)
-        hansi.chargeEv(1, 1, 60, "AC");
+        hansi.chargeEv(1, 1, 60, "AC", LocalDateTime.now());
         //Franz charges his EV for 30 minutes at location 2 Prater Charging, charger 1 (DC)
-        franz.chargeEv(2, 1, 30, "DC");
+        franz.chargeEv(2, 1, 30, "DC", LocalDateTime.now());
 
 
         //US4.2 View Invoice Items

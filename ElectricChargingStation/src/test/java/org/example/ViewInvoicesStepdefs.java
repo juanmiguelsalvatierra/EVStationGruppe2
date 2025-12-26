@@ -8,6 +8,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -59,10 +60,13 @@ public class ViewInvoicesStepdefs {
         );
     }
 
-    @Given("the customer with the ID {int} top-ups the amount {int}")
-    public void theCustomerWithTheIDTopUpsTheAmount(int id, int topup) {
+    @Given("the customer with the ID {int} top-ups the amount {double} at {string}")
+    public void customerWithIdTopsUpHisBalanceWithAt(int id, double topUpValue, String dateTime) {
+        assertTrue(topUpValue >= 0);
+        LocalDateTime topUpDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Customer foundCustomer = customerManager.customerRepo.get(id);
-        foundCustomer.topUp(topup);
+
+        foundCustomer.topUp(topUpValue, topUpDateTime);
     }
 
     @And("a location {string} with address {string} exists")
@@ -110,7 +114,7 @@ public class ViewInvoicesStepdefs {
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
         Location location = locationManager.locationRepo.get(locationId);
 
-        foundCustomer.chargeEv(location.getId(), chargerId, duration, type);
+        foundCustomer.chargeEv(location.getId(), chargerId, duration, type, LocalDateTime.now());
     }
 
     //---------------------------view all invoices----------------------------
