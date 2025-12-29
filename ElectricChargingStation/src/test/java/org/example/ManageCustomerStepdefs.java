@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ManageCustomerStepdefs {
     CustomerManager cm = new CustomerManager();
+    String thrownExceptionMessage = "";
     //region US1.1 Create a new customer account
     @Given("no customer account exists")
     public void noCustomerAccountExists() {
@@ -118,7 +119,11 @@ public class ManageCustomerStepdefs {
 
     @When("I update the customer account with the ID {int} to name {string}")
     public void iUpdateTheCustomerAccountWithTheIDToName(int id, String newname) {
-        cm.updateCustomerName(id, newname);
+        try{
+            cm.updateCustomerName(id, newname);
+        }catch(Exception e){
+            this.thrownExceptionMessage = e.getMessage();
+        }
     }
 
     @Then("the customer account with the ID {int} should have name {string} and email {string}")
@@ -135,17 +140,30 @@ public class ManageCustomerStepdefs {
 
     @When("I update the customer account with the ID {int} to email {string}")
     public void iUpdateTheCustomerAccountWithTheIDToEmail(int id, String newemail) {
-        cm.updateCustomerEmail(id, newemail);
+        try{
+            cm.updateCustomerEmail(id, newemail);
+        }catch(Exception e){
+            this.thrownExceptionMessage = e.getMessage();
+        }
     }
 
     @When("I try to delete the customer account with the ID {int}")
     public void iTryToDeleteTheCustomerAccountWithTheID(int id) {
-        cm.deleteCustomer(id);
+        try{
+            cm.deleteCustomer(id);
+        }catch(Exception e){
+            this.thrownExceptionMessage = e.getMessage();
+        }
     }
 
     @And("the customer account with the ID {int} no longer exists")
     public void theCustomerAccountWithTheIDNoLongerExists(int id) {
         assertNull(cm.customerRepo.get(id));
+    }
+
+    @And("the exception message {string} is displayed")
+    public void theExceptionMessageIsDisplayed(String exceptionMessage) {
+        assertEquals(exceptionMessage, thrownExceptionMessage);
     }
     //endregion
 }

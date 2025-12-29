@@ -71,7 +71,22 @@ Feature: Manage customer account
     2 - Bob Smith - bob.smith@example.com
     """
 
-  @US1.3 @positive
+  @US1.2 @negativ
+  Scenario: Update the email of an non existing customer
+    Given the following customer accounts exist:
+      | name       | email                    |
+      | Alice Doe  | alice.doe@example.com    |
+      | Bob Smith  | bob.smith@example.com    |
+    When I update the customer account with the ID 3 to email "test@test.com"
+    Then the number of customer accounts is 2
+    And the exception message "Exception - Customer not found" is displayed
+    And reading the customer accounts as lists shows following output:
+    """
+    1 - Alice Doe - alice.doe@example.com
+    2 - Bob Smith - bob.smith@example.com
+    """
+
+  @US1.3
   Scenario: Delete an existing customer account
     Given the following customer accounts exist:
       | name       | email                    |
@@ -94,6 +109,7 @@ Feature: Manage customer account
       | Alice Doe  | alice.doe@example.com    |
     When I try to delete the customer account with the ID 5
     Then the number of customer accounts remains 1
+    And the exception message "Exception - Customer not found" is displayed
     And reading the customer accounts as lists shows following output:
     """
     1 - Alice Doe - alice.doe@example.com
