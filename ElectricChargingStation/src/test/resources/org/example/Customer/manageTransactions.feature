@@ -38,3 +38,25 @@ Feature: Manage account transactions
     Then the customer with id 1 has a balance of 50 €
     And following Exception Message will be displayed "Exception - invalid Date"
 
+  @US2.3
+  Scenario: Withdraw Transaction successfully
+    Given customer with id 1 has a balance of 50 €
+    When customer with id 1 withdraws 20 € at "2025-03-15T14:30:00"
+    And customer with id 1 withdraws 1.45 € at "2025-12-15T14:30:00"
+    Then the customer with id 1 has a balance of 28.55 €
+
+  @US2.2 @negative
+  Scenario: Negative withdraw does not work
+    Given customer with id 1 has a balance of 50 €
+    When customer with id 1 does a withdraw with minus 10 € at "2025-03-15T14:30:00"
+    Then the customer with id 1 has a balance of 50 €
+    And following Exception Message will be displayed "Exception - negativ withdraw value is not allowed"
+
+  @US2.2 @negative
+  Scenario: Top up with Date bevor other Invoice Item
+    Given customer with id 1 has a balance of 50 €
+    When customer with id 1 withdraws 20 € at "2025-03-15T14:30:00"
+    And customer with id 1 withdraws 1.45 € at "2025-02-15T14:30:00"
+    Then the customer with id 1 has a balance of 30 €
+    And following Exception Message will be displayed "Exception - invalid Date"
+

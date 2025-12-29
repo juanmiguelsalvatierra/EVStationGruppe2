@@ -97,6 +97,33 @@ public class ManageTransactionsStepdefs {
         }
     }
 
+    @When("customer with id {int} withdraws {double} € at {string}")
+    public void customerWithIdWithdrawsAt(int customerId, double withdrawValue, String dateTime) {
+        assertTrue(withdrawValue >= 0);
+        LocalDateTime topUpDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        Customer foundCustomer = customerManager.customerRepo.get(customerId);
+
+        try{
+            foundCustomer.topUp(withdrawValue, topUpDateTime);
+        }catch (Exception e){
+            thrownExceptionMessage = e.getMessage();
+        }
+    }
+
+
+    @When("customer with id {int} does a withdraw with minus {double} € at {string}")
+    public void customerWithIdDoesAWithdrawWithMinusAt(int customerId, double withdrawValue, String dateTime) {
+        assertTrue(withdrawValue >= 0);
+        LocalDateTime topUpDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        Customer foundCustomer = customerManager.customerRepo.get(customerId);
+
+        try{
+            foundCustomer.topUp(withdrawValue * -1, topUpDateTime);
+        }catch (Exception e){
+            thrownExceptionMessage = e.getMessage();
+        }
+    }
 
 
     //endregion
