@@ -109,12 +109,14 @@ public class ViewInvoicesStepdefs {
         LocationManager.locationRepo.get(id).createCharger(type, status);
     }
 
-    @And("the customer with the ID {int} performs a charging session of {int} minutes using {string} mode at charger ID {int} of the location with the ID {int}")
-    public void theCustomerWithTheIDPerformsAChargingSessionOfMinutesUsingModeAtChargerIDOfTheLocationWithTheID(int customerId, int duration, String type, int chargerId, int locationId) {
+    @And("the customer with the ID {int} performs a charging session of {int} minutes using {string} mode at charger ID {int} of the location with the ID {int} at {string}")
+    public void theCustomerWithTheIDPerformsAChargingSessionOfMinutesUsingModeAtChargerIDOfTheLocationWithTheIDAt(int customerId, int duration, String type, int chargerId, int locationId, String stringChargingDate) {
+        LocalDateTime chargingDate = LocalDateTime.parse(stringChargingDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
         Location location = locationManager.locationRepo.get(locationId);
 
-        foundCustomer.chargeEv(location.getId(), chargerId, duration, type, LocalDateTime.now());
+        foundCustomer.chargeEv(location.getId(), chargerId, duration, type, chargingDate);
     }
 
     //---------------------------view all invoices----------------------------
@@ -137,5 +139,6 @@ public class ViewInvoicesStepdefs {
                 actualOutput.replace("\r\n", "\n").trim()
         );
     }
+
 
 }
