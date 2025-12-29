@@ -64,6 +64,21 @@ public class Customer {
         this.invoiceItems.put(newId, invoiceItem);
     }
 
+    public void withdraw(double withdrawValue, LocalDateTime withdrawDateTime){
+        if(withdrawValue < 0) {
+            throw new IllegalArgumentException("Exception - negativ withdraw value is not allowed");
+        }
+
+        if(isOlderThanNewest(withdrawDateTime)){
+            throw new IllegalArgumentException("Exception - invalid Date");
+        }
+
+        int newId = this.invoiceItems.size() + 1;
+
+        InvoiceItem invoiceItem = new TransactionItem(newId, withdrawValue * -1, withdrawDateTime);
+        this.invoiceItems.put(newId, invoiceItem);
+    }
+
     public InvoiceItem getLatestInvoiceItem(){
         return invoiceItems.get(invoiceItems.size());
     }
