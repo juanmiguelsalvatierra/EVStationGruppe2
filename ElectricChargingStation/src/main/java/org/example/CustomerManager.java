@@ -32,18 +32,26 @@ public class CustomerManager {
     }
 
     public void updateCustomerName(int id, String name){
-        customerRepo.get(id).setName(name);
+        if (customerRepo.containsKey(id)){
+            customerRepo.get(id).setName(name);
+        } else{
+            throw new IllegalArgumentException("Exception - Customer not found");
+        }
     }
 
     public void updateCustomerEmail(int id, String email){
-        customerRepo.get(id).setEmail(email);
+        if (customerRepo.containsKey(id)){
+            customerRepo.get(id).setEmail(email);
+        } else{
+            throw new IllegalArgumentException("Exception - Customer not found");
+        }
     }
 
     public void deleteCustomer(int id) {
         if (customerRepo.containsKey(id)){
             customerRepo.remove(id);
         } else{
-            System.out.println("Customer account not found");
+            throw new IllegalArgumentException("Exception - Customer not found");
         }
     }
 
