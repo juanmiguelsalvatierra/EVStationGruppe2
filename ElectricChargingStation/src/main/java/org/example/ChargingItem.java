@@ -76,8 +76,9 @@ public class ChargingItem extends InvoiceItem {
         double total = getInvoiceValue();
 
         return String.format(
-                "%d - CHARGE - duration: %dmin - energy: %.2fkWh - price_per_kWh_%s: %.2f - parking_price_%s: %.2f - energy_cost: %.2f - parking_cost: %.2f - total: %.2f",
+                "%d - CHARGE - %s - duration: %dmin - energy: %.2fkWh - price_per_kWh_%s: %.2f - parking_price_%s: %.2f - energy_cost: %.2f - parking_cost: %.2f - total: %.2f",
                 getInvoiceItemId(),
+                getFormattedDate(),
                 duration,
                 energyKwh,
                 chargerType.name(),
