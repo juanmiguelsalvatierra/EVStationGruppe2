@@ -11,6 +11,8 @@ public class LocationManager {
             int newId = locationRepo.size() + 1;
             locationRepo.put(newId, new Location(name, address));
             locationRepo.get(newId).setId(newId);
+        } else {
+            throw new IllegalArgumentException("Exception - Location already exists");
         }
     }
 
@@ -52,7 +54,7 @@ public class LocationManager {
         if (locationRepo.containsKey(id)){
             locationRepo.remove(id);
         } else{
-            System.out.println("Location not found");
+            throw new IllegalArgumentException("Exception - Location does not exist");
         }
     }
 

@@ -61,3 +61,50 @@ Feature: Manage chargers
     3 - DC - IN_OPERATION_FREE
     4 - DC - OUT_OF_ORDER
     """
+
+  @US7.3
+  Scenario: Update a charger for a location
+    Given a location "Karlsplatz Charging" exists with address "Karlsplatz 1, 1010 Wien" for chargers
+    And the following chargers exist at location "Karlsplatz Charging":
+      | type | status             |
+      | AC   | IN_OPERATION_FREE  |
+      | AC   | OCCUPIED           |
+      | DC   | IN_OPERATION_FREE  |
+      | DC   | OUT_OF_ORDER       |
+    When I update the charger with ID 2 at location "Karlsplatz Charging" to Type "DC" Status "IN_OPERATION_FREE"
+    Then I see at location "Karlsplatz Charging" the following chargers:
+    """
+    1 - AC - IN_OPERATION_FREE
+    2 - DC - IN_OPERATION_FREE
+    3 - DC - IN_OPERATION_FREE
+    4 - DC - OUT_OF_ORDER
+    """
+
+  @US7.3
+  Scenario: Delete a charger for a location
+    Given a location "Karlsplatz Charging" exists with address "Karlsplatz 1, 1010 Wien" for chargers
+    And the following chargers exist at location "Karlsplatz Charging":
+      | type | status             |
+      | AC   | IN_OPERATION_FREE  |
+      | AC   | OCCUPIED           |
+      | DC   | IN_OPERATION_FREE  |
+      | DC   | OUT_OF_ORDER       |
+    When I delete the charger with ID 2 at location "Karlsplatz Charging"
+    Then I see at location "Karlsplatz Charging" the following chargers:
+    """
+    1 - AC - IN_OPERATION_FREE
+    3 - DC - IN_OPERATION_FREE
+    4 - DC - OUT_OF_ORDER
+    """
+
+  @US7.3 @negative
+  Scenario: Delete a non existent charger for a location
+    Given a location "Karlsplatz Charging" exists with address "Karlsplatz 1, 1010 Wien" for chargers
+    And the following chargers exist at location "Karlsplatz Charging":
+      | type | status             |
+      | AC   | IN_OPERATION_FREE  |
+      | AC   | OCCUPIED           |
+      | DC   | IN_OPERATION_FREE  |
+      | DC   | OUT_OF_ORDER       |
+    When I delete the charger with ID 6 at location "Karlsplatz Charging"
+    Then the Exception Message will be displayed with "Exception - Charger does not exist"

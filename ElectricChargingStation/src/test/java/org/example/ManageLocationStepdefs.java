@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ManageLocationStepdefs {
     LocationManager lm = new LocationManager();
+    String thrownExceptionMessage;
 
     public ManageLocationStepdefs(){
         LocationManager.locationRepo.clear();
@@ -71,7 +72,11 @@ public class ManageLocationStepdefs {
 
     @When("I try to create a location {string} with address {string}")
     public void iTryToCreateALocationWithAddress(String name, String address) {
-        lm.createLocation(name, address);
+        try{
+            lm.createLocation(name, address);
+        }catch (Exception e){
+            thrownExceptionMessage = e.getMessage();
+        }
     }
 
     @And("reading the locations as lists shows following output:")
@@ -147,12 +152,21 @@ public class ManageLocationStepdefs {
 
     @When("I try to delete location with ID {int}")
     public void iTryToDeleteLocationWithID(int id) {
-        lm.deleteLocation(id);
+        try{
+            lm.deleteLocation(id);
+        }catch (Exception e){
+            thrownExceptionMessage = e.getMessage();
+        }
     }
 
     @And("the number of locations remains {int}")
     public void theNumberOfLocationsRemains(int count) {
         assertEquals(lm.locationRepo.size(), count);
+    }
+
+    @And("the Exception Message will be displayed {string}")
+    public void theExceptionMessageWillBeDisplayed(String exceptionMessage) {
+        assertEquals(exceptionMessage, thrownExceptionMessage);
     }
     //endregion
 }

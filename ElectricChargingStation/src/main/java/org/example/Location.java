@@ -57,7 +57,7 @@ public class Location {
 
     public void createPrices(double price_per_kWh_AC, double price_per_kWh_DC, double parking_price_AC, double parking_price_DC, LocalDateTime valid_From) {
         if (price_per_kWh_DC < 0||price_per_kWh_AC < 0||parking_price_AC < 0||parking_price_DC < 0) {
-            return;
+            throw new IllegalArgumentException("Exeption - Invalid price");
         }
         int newId = priceList.size() + 1;
         priceList.put(newId, new Price(newId, price_per_kWh_AC, price_per_kWh_DC, parking_price_AC, parking_price_DC, valid_From));
@@ -73,9 +73,29 @@ public class Location {
         StringBuilder actualOutput = new StringBuilder();
 
         actualOutput.append(mostRecentPrice.toString());
-        actualOutput.insert(0, "---"+this.getName()+"---\n");
+        actualOutput.insert(0, "---"+this.getName()+ " at " + mostRecentPrice.valid_From +"---\n");
 
         return actualOutput.toString();
+    }
+
+    public void deleteCharger(int id) {
+        if (chargersRepo.containsKey(id)){
+            chargersRepo.remove(id);
+        } else{
+            throw new IllegalArgumentException("Exception - Charger does not exist");
+        }
+    }
+
+    public void updateCharger(int id, String type, String status){
+
+        ChargerType typeparsed = ChargerType.valueOf(type);
+        Status statusparsed = Status.valueOf(status);
+        if (chargersRepo.containsKey(id)){
+            chargersRepo.get(id).setStatus(statusparsed);
+            chargersRepo.get(id).setType(typeparsed);
+        } else{
+            throw new IllegalArgumentException("Exception - Charger does not exist");
+        }
     }
 
     @Override

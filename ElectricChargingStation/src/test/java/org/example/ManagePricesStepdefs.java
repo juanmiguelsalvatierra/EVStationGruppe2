@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ManagePricesStepdefs {
     LocationManager lm = new LocationManager();
+    String thrownExceptionMessage;
     @Given("the location {string} with address {string} exists")
     public void theLocationWithAddressExists(String name, String address) {
         LocationManager.locationRepo.clear();
@@ -35,14 +36,16 @@ public class ManagePricesStepdefs {
         double parkingPriceAC = 0;
         double pricePerKwhDC = 0;
         double pricePerKwhAC = 0;
+        LocalDateTime datetime = LocalDateTime.now();
         for (Map<String, String> priceRow : prices) {
             // Parse the values from the table
             pricePerKwhAC = Double.parseDouble(priceRow.get("price_per_kWh_AC"));
             pricePerKwhDC = Double.parseDouble(priceRow.get("price_per_kWh_DC"));
             parkingPriceAC = Double.parseDouble(priceRow.get("parking_price_AC"));
             parkingPriceDC = Double.parseDouble(priceRow.get("parking_price_DC"));
+            datetime = LocalDateTime.parse(priceRow.get("Datetime"));
         }
-        lm.locationRepo.get(id).createPrices(pricePerKwhAC, pricePerKwhDC, parkingPriceAC, parkingPriceDC, LocalDateTime.now());
+        lm.locationRepo.get(id).createPrices(pricePerKwhAC, pricePerKwhDC, parkingPriceAC, parkingPriceDC, datetime);
     }
 
     @When("I read all current prices of location with id {int}")
@@ -74,30 +77,44 @@ public class ManagePricesStepdefs {
         double parkingPriceAC = 0;
         double pricePerKwhDC = 0;
         double pricePerKwhAC = 0;
+        LocalDateTime datetime = LocalDateTime.now();
         for (Map<String, String> priceRow : prices) {
             // Parse the values from the table
             pricePerKwhAC = Double.parseDouble(priceRow.get("price_per_kWh_AC"));
             pricePerKwhDC = Double.parseDouble(priceRow.get("price_per_kWh_DC"));
             parkingPriceAC = Double.parseDouble(priceRow.get("parking_price_AC"));
             parkingPriceDC = Double.parseDouble(priceRow.get("parking_price_DC"));
+            datetime = LocalDateTime.parse(priceRow.get("Datetime"));
         }
-        lm.locationRepo.get(id).createPrices(pricePerKwhAC, pricePerKwhDC, parkingPriceAC, parkingPriceDC, LocalDateTime.now());
+        lm.locationRepo.get(id).createPrices(pricePerKwhAC, pricePerKwhDC, parkingPriceAC, parkingPriceDC, datetime);
     }
 
     @When("I create the new price at location with id {int}:")
     public void iCreateTheNewPriceAtLocationWithId(int id, DataTable pricesDataTable) {
-        List<Map<String, String>> prices = pricesDataTable.asMaps();
-        double parkingPriceDC = 0;
-        double parkingPriceAC = 0;
-        double pricePerKwhDC = 0;
-        double pricePerKwhAC = 0;
-        for (Map<String, String> priceRow : prices) {
-            // Parse the values from the table
-            pricePerKwhAC = Double.parseDouble(priceRow.get("price_per_kWh_AC"));
-            pricePerKwhDC = Double.parseDouble(priceRow.get("price_per_kWh_DC"));
-            parkingPriceAC = Double.parseDouble(priceRow.get("parking_price_AC"));
-            parkingPriceDC = Double.parseDouble(priceRow.get("parking_price_DC"));
+        try{
+            List<Map<String, String>> prices = pricesDataTable.asMaps();
+            double parkingPriceDC = 0;
+            double parkingPriceAC = 0;
+            double pricePerKwhDC = 0;
+            double pricePerKwhAC = 0;
+            LocalDateTime datetime = LocalDateTime.now();
+            for (Map<String, String> priceRow : prices) {
+                // Parse the values from the table
+                pricePerKwhAC = Double.parseDouble(priceRow.get("price_per_kWh_AC"));
+                pricePerKwhDC = Double.parseDouble(priceRow.get("price_per_kWh_DC"));
+                parkingPriceAC = Double.parseDouble(priceRow.get("parking_price_AC"));
+                parkingPriceDC = Double.parseDouble(priceRow.get("parking_price_DC"));
+                datetime = LocalDateTime.parse(priceRow.get("Datetime"));
+            }
+            lm.locationRepo.get(id).createPrices(pricePerKwhAC, pricePerKwhDC, parkingPriceAC, parkingPriceDC, datetime);
+        }catch (Exception e){
+            thrownExceptionMessage = e.getMessage();
         }
-        lm.locationRepo.get(id).createPrices(pricePerKwhAC, pricePerKwhDC, parkingPriceAC, parkingPriceDC, LocalDateTime.now());
+
+    }
+
+    @Then("the Exception Message will be displayed as {string}")
+    public void theExceptionMessageWillBeDisplayedAs(String exceptionMessage) {
+        assertEquals(exceptionMessage, thrownExceptionMessage);
     }
 }
