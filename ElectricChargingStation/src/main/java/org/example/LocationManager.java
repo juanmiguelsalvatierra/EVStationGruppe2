@@ -12,7 +12,7 @@ public class LocationManager {
             locationRepo.put(newId, new Location(name, address));
             locationRepo.get(newId).setId(newId);
         } else {
-            throw new IllegalArgumentException("Location already exists");
+            throw new IllegalArgumentException("Exception - Location already exists");
         }
     }
 
@@ -54,7 +54,7 @@ public class LocationManager {
         if (locationRepo.containsKey(id)){
             locationRepo.remove(id);
         } else{
-            throw new IllegalArgumentException("Location does not exist");
+            throw new IllegalArgumentException("Exception - Location does not exist");
         }
     }
 

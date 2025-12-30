@@ -139,10 +139,9 @@ public class ManageChargersStepdefs {
 
     @When("I update the charger with ID {int} at location {string} to Type {string} Status {string}")
     public void iUpdateTheChargerWithIDAtLocationToTypeStatus(int id, String location, String type, String status) {
-        ChargerType chargertype = ChargerType.valueOf(type);
-        Status statusenum = Status.valueOf(status);
         try{
-            lm.locationRepo.get(id).updateCharger(id, chargertype, statusenum);
+            Location loc = lm.getLocationByName(location);
+            loc.updateCharger(id, type, status);
         }catch (Exception e){
             thrownExceptionMessage = e.getMessage();
         }
@@ -151,7 +150,8 @@ public class ManageChargersStepdefs {
     @When("I delete the charger with ID {int} at location {string}")
     public void iDeleteTheChargerWithIDAtLocation(int id, String location) {
         try{
-            lm.locationRepo.get(id).deleteCharger(id);
+            Location loc = lm.getLocationByName(location);
+            loc.deleteCharger(id);
         }catch (Exception e){
             thrownExceptionMessage = e.getMessage();
         }

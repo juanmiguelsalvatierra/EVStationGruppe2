@@ -49,4 +49,4 @@ Feature: Manage charging prices
     When I create the new price at location with id 1:
       | price_per_kWh_AC | price_per_kWh_DC| parking_price_AC|parking_price_DC| Datetime            |
       | -2.00            | 3.00            | 3.50            | 4.50           | 2025-03-16T14:30 |
-    Then the Exception Message will be displayed as "Invalid price"
+    Then the Exception Message will be displayed as "Exception - Invalid price"

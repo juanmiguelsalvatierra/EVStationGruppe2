@@ -107,4 +107,4 @@ Feature: Manage chargers
       | DC   | IN_OPERATION_FREE  |
       | DC   | OUT_OF_ORDER       |
     When I delete the charger with ID 6 at location "Karlsplatz Charging"
-    Then the Exception Message will be displayed with "Charger does not exist"
+    Then the Exception Message will be displayed with "Exception - Charger does not exist"

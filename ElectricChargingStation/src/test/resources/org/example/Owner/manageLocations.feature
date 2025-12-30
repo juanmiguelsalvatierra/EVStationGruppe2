@@ -48,7 +48,7 @@ Feature: Manage locations
     Given a location "Brigittenau, Wien" exists with address "Höchstädtplatz 6, 1200 Wien"
     When I try to create a location "Brigittenau, Wien" with address "Höchstädtplatz 6, 1200 Wien"
     Then the number of locations remains 1
-    And the Exception Message will be displayed "Location already exists"
+    And the Exception Message will be displayed "Exception - Location already exists"
 
   @US6.2
   Scenario: Read all existing locations
@@ -189,5 +189,5 @@ Feature: Manage locations
       | Zentralfriedhof | Simmeringer Hauptstraße 234, 1110 Wien |
     When I try to delete location with ID 11
     Then the number of locations remains 10
-    And the Exception Message will be displayed "Location does not exist"
+    And the Exception Message will be displayed "Exception - Location does not exist"
 
