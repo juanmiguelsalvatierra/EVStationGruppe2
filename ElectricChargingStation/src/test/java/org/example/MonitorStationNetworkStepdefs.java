@@ -6,26 +6,36 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MonitorStationNetworkStepdefs {
     LocationManager lm = new LocationManager();
 
-
-    @Given("A location {string} exists with the address {string}")
-    public void aLocationExistsWithTheAddress(String name, String address) {
-        lm.createLocation(name, address);
+    @Given("ten locations with the following parameters exist:")
+    public void tenLocationsWithTheFollowingParametersExist(DataTable locationsDataTable) {
+        List<Map<String, String>> locations = locationsDataTable.asMaps(String.class, String.class);
+        for (Map<String, String> locationMap : locations) {
+            String name = locationMap.get("name");
+            String address = locationMap.get("address");
+            lm.createLocation(name, address);
+        }
     }
 
+    // @US3.1
+    @Given("the following chargers exist at each location:")
+    public void theFollowingChargersExistAtEachLocation(DataTable chargersDataTable) {
+        List<Map<String, String>> chargers = chargersDataTable.asMaps(String.class, String.class);
 
-    @Given("the following chargers exist at the location {string}:")
-    public void theFollowingChargersExistAtTheLocation(String locationName, DataTable dataTable) {
-        Location location = LocationManager.getLocationByName(locationName);
+        for (Location location : LocationManager.locationRepo.values()) {
 
-        for (var row : dataTable.asMaps()) {
-            String type = row.get("type");
-            String status = row.get("status");
-            location.createCharger(type, status);
+            for (Map<String, String> row : chargers) {
+                String type = row.get("type");
+                String status = row.get("status");
+                location.createCharger(type, status);
+            }
         }
     }
 
@@ -40,4 +50,6 @@ public class MonitorStationNetworkStepdefs {
         String actual = lm.viewLocationsInformation();
         assertEquals(expected.trim(), actual.trim());
     }
+
+
 }
