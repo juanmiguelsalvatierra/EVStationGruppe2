@@ -29,17 +29,19 @@ Feature: View invoices
     """
 
   @US5.1
-  Scenario: View invoice items after multiple top-ups
+  Scenario: View invoice items after multiple transactions
     Given the customer with the ID 1 top-ups the amount 30 at "2025-03-15T14:30:00"
     And the customer with the ID 1 top-ups the amount 20 at "2025-03-15T14:40:00"
     And the customer with the ID 1 top-ups the amount 50 at "2025-03-15T14:50:00"
+    And the customer with the ID 1 withdraws the amount 70 at "2025-03-15T15:00:00"
     When I view the invoice items of the customer with the ID 1
-    Then the invoice item count for the customer with the ID 1 is 3
+    Then the invoice item count for the customer with the ID 1 is 4
     And the invoice items for the customer with the ID 1 show the following:
     """
     1 - TOPUP - 15.03.2025 14:30 - amount: 30,00 - balance after: 30,00
     2 - TOPUP - 15.03.2025 14:40 - amount: 20,00 - balance after: 50,00
     3 - TOPUP - 15.03.2025 14:50 - amount: 50,00 - balance after: 100,00
+    4 - WITHDRAW - 15.03.2025 15:00 - amount: -70,00 - balance after: 30,00
     """
 
   @US5.1
