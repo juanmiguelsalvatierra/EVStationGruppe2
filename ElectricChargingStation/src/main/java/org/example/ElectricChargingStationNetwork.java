@@ -208,7 +208,7 @@ public class ElectricChargingStationNetwork {
         //Customer Franz tops up 300.99 € at 1.12.2025 14:30
         topUpDateTime = LocalDateTime.parse("2025-12-01T14:30:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         franz.topUp(300.99, topUpDateTime);
-        System.out.println("\n---------Franzi tops up 300.99€ at 1.12.2025 14:30---------");
+        System.out.println("\n---------Franz tops up 300.99€ at 1.12.2025 14:30---------");
 
         //#US2.1 View Balance
         System.out.println("\n---------Balances---------");
@@ -219,7 +219,7 @@ public class ElectricChargingStationNetwork {
         //Customer Franz withdraws 100.99€ at 3.12.2025 16:00
         LocalDateTime withdrawDateTime = LocalDateTime.parse("2025-12-03T16:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         franz.withdraw(100.99, withdrawDateTime);
-        System.out.println("\n---------Franzi withdraws 100.99€ at 3.12.2025 16:00---------");
+        System.out.println("\n---------Franz withdraws 100.99€ at 3.12.2025 16:00---------");
 
         //View Balance again after Franz's withdrawal
         System.out.println("\n---------Balances after withdrawal---------");
@@ -240,7 +240,7 @@ public class ElectricChargingStationNetwork {
         //Hansi charges his EV for 60 minutes at location 1 Karlsplatz Charging, charger 1 (AC) at 26.12.2025 - 18:00
         LocalDateTime chargingDateTime = LocalDateTime.parse("2025-12-26T18:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         hans.chargeEv(1, 1, 60, "AC", chargingDateTime);
-        System.out.println("---------Hansi charges his EV at Location 1 Karlsplatz, Charger 1, Type AC for 60 minutes at 26.12.2025 - 18:00---------");
+        System.out.println("---------Hans charges his EV at Location 1 Karlsplatz, Charger 1, Type AC for 60 minutes at 26.12.2025 - 18:00---------");
 
 
         //Franz charges his EV for 30 minutes at location 9 Rathaus Charging, charger 1 (DC) at 27.12.2025 - 19:30
