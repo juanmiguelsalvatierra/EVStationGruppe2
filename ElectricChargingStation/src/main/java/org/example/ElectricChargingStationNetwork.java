@@ -9,6 +9,7 @@ public class ElectricChargingStationNetwork {
         CustomerManager customerManager = new CustomerManager();
 
         //US1.1 Create Customer Account
+        System.out.println("---------Customers Hansi and Franz are created---------");
         customerManager.createCustomer("Hansi", "Huberti@gmail.com");
         customerManager.createCustomer("Franz", "Ferdinand@erzherzog.at");
 
