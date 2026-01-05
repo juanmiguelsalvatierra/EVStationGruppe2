@@ -57,7 +57,7 @@ public class Location {
 
     public void createPrices(double price_per_kWh_AC, double price_per_kWh_DC, double parking_price_AC, double parking_price_DC, LocalDateTime valid_From) {
         if (price_per_kWh_DC < 0||price_per_kWh_AC < 0||parking_price_AC < 0||parking_price_DC < 0) {
-            throw new IllegalArgumentException("Exeption - Invalid price");
+            throw new IllegalArgumentException("Exception - Invalid price");
         }
         int newId = priceList.size() + 1;
         priceList.put(newId, new Price(newId, price_per_kWh_AC, price_per_kWh_DC, parking_price_AC, parking_price_DC, valid_From));
