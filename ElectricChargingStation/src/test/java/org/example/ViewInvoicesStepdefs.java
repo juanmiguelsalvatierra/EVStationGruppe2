@@ -69,6 +69,15 @@ public class ViewInvoicesStepdefs {
         foundCustomer.topUp(topUpValue, topUpDateTime);
     }
 
+    @And("the customer with the ID {int} withdraws the amount {int} at {string}")
+    public void theCustomerWithTheIDWithdrawsTheAmountAt(int id, int withdrawValue, String dateTime) {
+        assertTrue(withdrawValue >= 0);
+        LocalDateTime withdrawTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        Customer foundCustomer = customerManager.customerRepo.get(id);
+
+        foundCustomer.withdraw(withdrawValue, withdrawTime);
+    }
+
     @And("a location {string} with address {string} exists")
     public void aLocationWithAddressExists(String name, String address) {
         locationManager.createLocation(name, address);
@@ -139,6 +148,7 @@ public class ViewInvoicesStepdefs {
                 actualOutput.replace("\r\n", "\n").trim()
         );
     }
+
 
 
 }

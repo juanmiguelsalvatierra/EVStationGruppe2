@@ -19,8 +19,9 @@ public class TransactionItem extends InvoiceItem{
     @Override
     public String toString() {
         return String.format(
-                "%d - TOPUP - %s - amount: %.2f",
+                "%d - %s - %s - amount: %.2f",
                 getInvoiceItemId(),
+                transactionAmount < 0 ? "WITHDRAW" : "TOPUP",
                 getFormattedDate(),
                 transactionAmount
         );
