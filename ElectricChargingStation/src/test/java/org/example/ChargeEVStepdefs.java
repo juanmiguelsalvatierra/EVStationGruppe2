@@ -48,8 +48,10 @@ public class ChargeEVStepdefs {
     @And("the location {string} has a charger with Id {int} of type {string} and status {string}")
     public void theLocationHasAChargerWithIdOfTypeAndStatus(String locationName, int chargerId, String type, String status) {
         Location loc = locationManager.getLocationByName(locationName);
+        assertNotNull(loc);
 
         Charger charger = loc.createCharger(type, status);
+        assertNotNull(charger);
 
         assertEquals(chargerId, charger.getChargerId());
     }
@@ -57,6 +59,8 @@ public class ChargeEVStepdefs {
     @And("the location {string} has the following current prices:")
     public void theLocationWithIdHasTheFollowingCurrentPrices(String locationName, DataTable pricesDataTable) {
         Location l = LocationManager.getLocationByName(locationName);
+        assertNotNull(l);
+
         l.priceList.clear();
 
         List<Map<String, String>> prices = pricesDataTable.asMaps();
@@ -80,8 +84,9 @@ public class ChargeEVStepdefs {
     //endregion
     @Given("a customer with id {int} has a balance of {int} €")
     public void aCustomerWithIdHasABalanceOf(int customerId, int expectedBalance) {
-        assertTrue(expectedBalance >= 0);
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
+
+        assertNotNull(foundCustomer);
 
         assertTrue(foundCustomer.invoiceItems.isEmpty());
 
@@ -97,7 +102,10 @@ public class ChargeEVStepdefs {
         LocalDateTime chargingDate = LocalDateTime.parse(stringChargingDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
+        assertNotNull(foundCustomer);
+
         Location location = locationManager.getLocationByName(locationName);
+        assertNotNull(location);
 
         try{
             foundCustomer.chargeEv(location.getId(), chargerId, minutes, type, chargingDate);
@@ -121,6 +129,8 @@ public class ChargeEVStepdefs {
     @And("at location {string} exists a charger with id {int} of type {string} and status {string}")
     public void atLocationExistsAChargerWithIdOfTypeAndStatus(String locationName, int chargerId, String type, String status) {
         Location location = locationManager.getLocationByName(locationName);
+        assertNotNull(location);
+
         Charger charger = location.createCharger(type, status);
 
         assertEquals(chargerId, charger.getChargerId());
@@ -129,6 +139,7 @@ public class ChargeEVStepdefs {
     @And("the balance of customer with id {int} is {double} €")
     public void theBalanceOfCustomerWithIdIs€(int customerId, double expectedBalance) {
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
+        assertNotNull(foundCustomer);
 
         double actuelBalance = foundCustomer.getBalance();
 
@@ -138,6 +149,7 @@ public class ChargeEVStepdefs {
     @Then("the balance for customer {int} remains {double} €")
     public void theBalanceForCustomerRemains€(int customerId, double expectedBalance) {
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
+        assertNotNull(foundCustomer);
 
         double actuelBalance = foundCustomer.getBalance();
 
