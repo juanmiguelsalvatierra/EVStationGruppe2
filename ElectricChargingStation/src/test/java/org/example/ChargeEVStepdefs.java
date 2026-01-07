@@ -64,15 +64,18 @@ public class ChargeEVStepdefs {
         double parkingPriceAC = 0;
         double pricePerKwhDC = 0;
         double pricePerKwhAC = 0;
+        LocalDateTime datetime = LocalDateTime.now();
+
         for (Map<String, String> priceRow : prices) {
             // Parse the values from the table
             pricePerKwhAC = Double.parseDouble(priceRow.get("price_per_kWh_AC"));
             pricePerKwhDC = Double.parseDouble(priceRow.get("price_per_kWh_DC"));
             parkingPriceAC = Double.parseDouble(priceRow.get("parking_price_AC"));
             parkingPriceDC = Double.parseDouble(priceRow.get("parking_price_DC"));
+            datetime = LocalDateTime.parse(priceRow.get("Datetime"));
         }
 
-        l.createPrices(pricePerKwhAC, pricePerKwhDC, parkingPriceAC, parkingPriceDC, LocalDateTime.now());
+        l.createPrices(pricePerKwhAC, pricePerKwhDC, parkingPriceAC, parkingPriceDC, datetime);
     }
     //endregion
     @Given("a customer with id {int} has a balance of {int} €")

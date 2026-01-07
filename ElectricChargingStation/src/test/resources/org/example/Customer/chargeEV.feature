@@ -11,8 +11,8 @@ Feature: Charge EV and pay by consumption/duration
     And a location "Karlsplatz charging" with the address "Karlsplatz 1, 1010 Wien" exists
     And the location "Karlsplatz charging" has a charger with Id 1 of type "AC" and status "IN_OPERATION_FREE"
     And the location "Karlsplatz charging" has the following current prices:
-      | price_per_kWh_AC | price_per_kWh_DC| parking_price_AC|parking_price_DC|
-      | 1.00             | 2.00            | 2               | 4              |
+      | price_per_kWh_AC | price_per_kWh_DC| parking_price_AC|parking_price_DC| Datetime         |
+      | 1.00             | 2.00            | 2               | 4              | 2025-03-15T14:30 |
 
   @US4.1
   Scenario: Successful charging session
