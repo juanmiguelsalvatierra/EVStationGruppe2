@@ -11,7 +11,7 @@ Feature: Monitor station network
       | Stephansplatz   | Stephansplatz 3, 1010 Wien             |
       | Prater          | Praterstraße 10, 1020 Wien             |
       | Mariahilf       | Mariahilfer Straße 50, 1060 Wien       |
-      | Technikum       | Hochstaedtplatz, 120 Wien             |
+      | Technikum       | Hochstaedtplatz, 1200 Wien             |
       | Wirtschaftsuni  | Welthandelsplatz, 1020 Wien            |
       | Staatsoper      | Opernring 2, 1010 Wien                 |
       | Rathaus         | Rathausplatz 1, 1010 Wien              |
@@ -37,64 +37,64 @@ Feature: Monitor station network
     Then I see a list of every location and their chargers:
     """
     --- Donauinsel ---
-    1 - AC - IN_OPERATION_FREE - Price: 1.0 kWh
-    2 - AC - OCCUPIED - Price: 1.0 kWh
-    3 - DC - OUT_OF_ORDER - Price: 2.0 kWh
-    4 - DC - OUT_OF_ORDER - Price: 2.0 kWh
+    1 - AC - IN_OPERATION_FREE - Charging Price: 1.0 € kWh - Parking Price: 2.5 per hour
+    2 - AC - OCCUPIED - Charging Price: 1.0 € kWh - Parking Price: 2.5 per hour
+    3 - DC - OUT_OF_ORDER - Charging Price: 2.0 € kWh - Parking Price: 3.5 per hour
+    4 - DC - OUT_OF_ORDER - Charging Price: 2.0 € kWh - Parking Price: 3.5 per hour
 
     --- Stephansplatz ---
-    1 - AC - IN_OPERATION_FREE - Price: 1.0 kWh
-    2 - AC - OCCUPIED - Price: 1.0 kWh
-    3 - DC - OUT_OF_ORDER - Price: 2.0 kWh
-    4 - DC - OUT_OF_ORDER - Price: 2.0 kWh
+    1 - AC - IN_OPERATION_FREE - Charging Price: 1.0 € kWh - Parking Price: 2.5 per hour
+    2 - AC - OCCUPIED - Charging Price: 1.0 € kWh - Parking Price: 2.5 per hour
+    3 - DC - OUT_OF_ORDER - Charging Price: 2.0 € kWh - Parking Price: 3.5 per hour
+    4 - DC - OUT_OF_ORDER - Charging Price: 2.0 € kWh - Parking Price: 3.5 per hour
 
     --- Prater ---
-    1 - AC - IN_OPERATION_FREE - Price: 1.0 kWh
-    2 - AC - OCCUPIED - Price: 1.0 kWh
-    3 - DC - OUT_OF_ORDER - Price: 2.0 kWh
-    4 - DC - OUT_OF_ORDER - Price: 2.0 kWh
+    1 - AC - IN_OPERATION_FREE - Charging Price: 1.0 € kWh - Parking Price: 2.5 per hour
+    2 - AC - OCCUPIED - Charging Price: 1.0 € kWh - Parking Price: 2.5 per hour
+    3 - DC - OUT_OF_ORDER - Charging Price: 2.0 € kWh - Parking Price: 3.5 per hour
+    4 - DC - OUT_OF_ORDER - Charging Price: 2.0 € kWh - Parking Price: 3.5 per hour
 
     --- Mariahilf ---
-    1 - AC - IN_OPERATION_FREE - Price: 1.0 kWh
-    2 - AC - OCCUPIED - Price: 1.0 kWh
-    3 - DC - OUT_OF_ORDER - Price: 2.0 kWh
-    4 - DC - OUT_OF_ORDER - Price: 2.0 kWh
+    1 - AC - IN_OPERATION_FREE - Charging Price: 1.0 € kWh - Parking Price: 2.5 per hour
+    2 - AC - OCCUPIED - Charging Price: 1.0 € kWh - Parking Price: 2.5 per hour
+    3 - DC - OUT_OF_ORDER - Charging Price: 2.0 € kWh - Parking Price: 3.5 per hour
+    4 - DC - OUT_OF_ORDER - Charging Price: 2.0 € kWh - Parking Price: 3.5 per hour
 
     --- Technikum ---
-    1 - AC - IN_OPERATION_FREE - Price: 1.0 kWh
-    2 - AC - OCCUPIED - Price: 1.0 kWh
-    3 - DC - OUT_OF_ORDER - Price: 2.0 kWh
-    4 - DC - OUT_OF_ORDER - Price: 2.0 kWh
+    1 - AC - IN_OPERATION_FREE - Charging Price: 1.0 € kWh - Parking Price: 2.5 per hour
+    2 - AC - OCCUPIED - Charging Price: 1.0 € kWh - Parking Price: 2.5 per hour
+    3 - DC - OUT_OF_ORDER - Charging Price: 2.0 € kWh - Parking Price: 3.5 per hour
+    4 - DC - OUT_OF_ORDER - Charging Price: 2.0 € kWh - Parking Price: 3.5 per hour
 
     --- Wirtschaftsuni ---
-    1 - AC - IN_OPERATION_FREE - Price: 2.0 kWh
-    2 - AC - OCCUPIED - Price: 2.0 kWh
-    3 - DC - OUT_OF_ORDER - Price: 4.0 kWh
-    4 - DC - OUT_OF_ORDER - Price: 4.0 kWh
+    1 - AC - IN_OPERATION_FREE - Charging Price: 2.0 € kWh - Parking Price: 5.0 per hour
+    2 - AC - OCCUPIED - Charging Price: 2.0 € kWh - Parking Price: 5.0 per hour
+    3 - DC - OUT_OF_ORDER - Charging Price: 4.0 € kWh - Parking Price: 7.0 per hour
+    4 - DC - OUT_OF_ORDER - Charging Price: 4.0 € kWh - Parking Price: 7.0 per hour
 
     --- Staatsoper ---
-    1 - AC - IN_OPERATION_FREE - Price: 2.0 kWh
-    2 - AC - OCCUPIED - Price: 2.0 kWh
-    3 - DC - OUT_OF_ORDER - Price: 4.0 kWh
-    4 - DC - OUT_OF_ORDER - Price: 4.0 kWh
+    1 - AC - IN_OPERATION_FREE - Charging Price: 2.0 € kWh - Parking Price: 5.0 per hour
+    2 - AC - OCCUPIED - Charging Price: 2.0 € kWh - Parking Price: 5.0 per hour
+    3 - DC - OUT_OF_ORDER - Charging Price: 4.0 € kWh - Parking Price: 7.0 per hour
+    4 - DC - OUT_OF_ORDER - Charging Price: 4.0 € kWh - Parking Price: 7.0 per hour
 
     --- Rathaus ---
-    1 - AC - IN_OPERATION_FREE - Price: 2.0 kWh
-    2 - AC - OCCUPIED - Price: 2.0 kWh
-    3 - DC - OUT_OF_ORDER - Price: 4.0 kWh
-    4 - DC - OUT_OF_ORDER - Price: 4.0 kWh
+    1 - AC - IN_OPERATION_FREE - Charging Price: 2.0 € kWh - Parking Price: 5.0 per hour
+    2 - AC - OCCUPIED - Charging Price: 2.0 € kWh - Parking Price: 5.0 per hour
+    3 - DC - OUT_OF_ORDER - Charging Price: 4.0 € kWh - Parking Price: 7.0 per hour
+    4 - DC - OUT_OF_ORDER - Charging Price: 4.0 € kWh - Parking Price: 7.0 per hour
 
     --- Belvedere ---
-    1 - AC - IN_OPERATION_FREE - Price: 2.0 kWh
-    2 - AC - OCCUPIED - Price: 2.0 kWh
-    3 - DC - OUT_OF_ORDER - Price: 4.0 kWh
-    4 - DC - OUT_OF_ORDER - Price: 4.0 kWh
+    1 - AC - IN_OPERATION_FREE - Charging Price: 2.0 € kWh - Parking Price: 5.0 per hour
+    2 - AC - OCCUPIED - Charging Price: 2.0 € kWh - Parking Price: 5.0 per hour
+    3 - DC - OUT_OF_ORDER - Charging Price: 4.0 € kWh - Parking Price: 7.0 per hour
+    4 - DC - OUT_OF_ORDER - Charging Price: 4.0 € kWh - Parking Price: 7.0 per hour
 
     --- Zentralfriedhof ---
-    1 - AC - IN_OPERATION_FREE - Price: 2.0 kWh
-    2 - AC - OCCUPIED - Price: 2.0 kWh
-    3 - DC - OUT_OF_ORDER - Price: 4.0 kWh
-    4 - DC - OUT_OF_ORDER - Price: 4.0 kWh
+    1 - AC - IN_OPERATION_FREE - Charging Price: 2.0 € kWh - Parking Price: 5.0 per hour
+    2 - AC - OCCUPIED - Charging Price: 2.0 € kWh - Parking Price: 5.0 per hour
+    3 - DC - OUT_OF_ORDER - Charging Price: 4.0 € kWh - Parking Price: 7.0 per hour
+    4 - DC - OUT_OF_ORDER - Charging Price: 4.0 € kWh - Parking Price: 7.0 per hour
     """
 
 

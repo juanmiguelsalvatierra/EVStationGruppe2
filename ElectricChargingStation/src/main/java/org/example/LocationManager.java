@@ -72,11 +72,16 @@ public class LocationManager {
             else {
                 for (Charger charger : location.chargersRepo.values()) {
                     actualOutput.append(charger.toString());
-                    actualOutput.append(" - Price: ");
+                    actualOutput.append(" - Charging Price: ");
                     actualOutput.append(charger.getChargerType().equals(ChargerType.AC)
                             ? location.getCurrentPrice().price_per_kWh_AC
                             : location.getCurrentPrice().price_per_kWh_DC);
-                    actualOutput.append(" kWh");
+                    actualOutput.append(" € kWh");
+                    actualOutput.append(" - Parking Price: ");
+                    actualOutput.append(charger.getChargerType().equals(ChargerType.AC)
+                            ? location.getCurrentPrice().parking_pricePerHour_AC
+                            : location.getCurrentPrice().parking_pricePerHour_DC);
+                    actualOutput.append(" per hour");
                     actualOutput.append("\n");
                 }
                 actualOutput.append("\n");
