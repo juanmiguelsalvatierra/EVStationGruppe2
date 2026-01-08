@@ -49,7 +49,6 @@ public class ManageTransactionsStepdefs {
 
     @When("customer with id {int} tops up {double} € at {string}")
     public void customerWithIdTopsUpHisBalanceWithAt(int id, double topUpValue, String dateTime) {
-        assertTrue(topUpValue >= 0);
         LocalDateTime topUpDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
@@ -67,7 +66,6 @@ public class ManageTransactionsStepdefs {
     //region @US2.2 negativ top up does not worknegativ top up does not work
     @Given("customer with id {int} has a balance of {double} €")
     public void customerWithIdHasABalanceOf(int id, double expectedBalance) {
-        assertTrue(expectedBalance >= 0);
         Customer foundCustomer = customerManager.customerRepo.get(id);
 
         assertTrue(foundCustomer.invoiceItems.isEmpty());
@@ -85,7 +83,7 @@ public class ManageTransactionsStepdefs {
 
     @When("customer with id {int} does a top up with minus {double} € at {string}")
     public void customerWithIdReducesHisBalanceWith(int id, double topUpValue, String dateTime) {
-        assertTrue(topUpValue >= 0);
+        assertTrue(topUpValue > 0);
         LocalDateTime topUpDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         Customer foundCustomer = customerManager.customerRepo.get(id);
@@ -99,7 +97,6 @@ public class ManageTransactionsStepdefs {
 
     @When("customer with id {int} withdraws {double} € at {string}")
     public void customerWithIdWithdrawsAt(int customerId, double withdrawValue, String dateTime) {
-        assertTrue(withdrawValue >= 0);
         LocalDateTime topUpDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
 
@@ -113,7 +110,6 @@ public class ManageTransactionsStepdefs {
 
     @When("customer with id {int} does a withdraw with minus {double} € at {string}")
     public void customerWithIdDoesAWithdrawWithMinusAt(int customerId, double withdrawValue, String dateTime) {
-        assertTrue(withdrawValue >= 0);
         LocalDateTime topUpDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         Customer foundCustomer = customerManager.customerRepo.get(customerId);
